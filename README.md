@@ -6,7 +6,7 @@ Contrary to expectations [3], this regulation has not stopped the influx of one-
 
 This thesis will propose an improved approach which will hopefully maximize the number of returned one-way bottles and effectively steer users towards reusable ones. A prototype simulating this incentivized bottle-return system will be implemented by utilizing smart- contracts and micro-transactions on the blockchain. Further, additional features and benefits that arise from employing this digital solution are to be discussed and drafted accordingly. Finally, it shall be examined whether this system can be applied to other domains, including coffee-to-go cups or fast food containers.
 
-[1] § 9 Abs. 2 VerpackV (2001)
-[2] Abfüllung von Getränken in Mehrweg- und ökologisch vorteilhaften Einweggetränkeverpackungen - Umwelt Bundesamt (2014)
-[3] § 8 VerpackV (2001)
-[4] Mehrweg- und Recyclingsystem für ausgewählte Getränkeverpackungen aus Nachhaltigkeitssicht - PWC (2011)
+- [1] § 9 Abs. 2 VerpackV (2001)
+- [2] Abfüllung von Getränken in Mehrweg- und ökologisch vorteilhaften Einweggetränkeverpackungen - Umwelt Bundesamt (2014)
+- [3] § 8 VerpackV (2001)
+- [4] Mehrweg- und Recyclingsystem für ausgewählte Getränkeverpackungen aus Nachhaltigkeitssicht - PWC (2011)
