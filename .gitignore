@@ -1,7 +1,6 @@
 *.synctex.gz
 .project
 output/
-dokumentation.pdf
 *.pdf
 *.swp
 *.backup
@@ -11,3 +10,4 @@ dokumentation.pdf
 .texpadtmp/
 *.DS_Store
 missfont.log
+!main.pdf
