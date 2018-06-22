@@ -10,4 +10,5 @@ output/
 .texpadtmp/
 *.DS_Store
 missfont.log
-!main.pdf
+!thesis.pdf
+copy_pasta.tex

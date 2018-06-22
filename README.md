@@ -1,4 +1,4 @@
-# Evaluation and Implementation of an Incentivized Blockchain-Based Deposit-Refund System
+# Technical Feasability of an Incentivized Blockchain-Based Deposit-Refund System
 
 Compared to glass, plastic or aluminum packaging represents a lightweight and durable alternative. The impact of lightweight materials on shipping costs is non-negligible and has therefore been leveraged in the beverage industry for the past 30 years. Simultaneously, the quote of reusable bottles (Mehrwegflasche) has steadily fallen (from 72% in 1991 [1] to 45,1% in 2014 [2]), which prompted German lawmakers to introduce a system of returnable one- way bottles (Einwegflasche) in 2003 on which a deposit is payable [1].
 
