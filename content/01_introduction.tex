@@ -1,48 +1,5 @@
 %!TEX root = ../main.tex
 
-\chapter{Introduction}
-
-\section{Motivation}
-\label{sec:motivation}
-Compared to glass, plastic or aluminum packaging represents a lightweight and durable alternative. The impact of lightweight materials on shipping costs is non-negligible and has therefore been leveraged in the beverage industry for the past 30 years. Simultaneously, the quote of reusable bottles (Mehrwegflasche) has steadily fallen (from 72\% in 1991 \cite[§ 9 Abs. 2]{verpackV} to 45,1\% in 2014 \cite{umweltBundesamt}), which prompted German lawmakers to introduce a system of returnable one-way bottles (Einwegflasche) in 2003 on which a deposit is payable \cite[§ 9 Abs. 2]{verpackV}. 
-
-Contrary to expectations \cite[§ 8]{verpackV}, this regulation has not stopped the influx of one-way bottles but has rather benefitted bottlers. Whenever consumers pollute by leaving behind one-way bottles, an instant 25 cent profit -- assuming that no one else has returned them -- is generated for the producer. This passive profit was estimated to have reached up to 175M\euro{} in 2015 alone \cite{mehrwegSystem}. 
-
-%TODO: highlight that the following is an original idea?
-
-Ideally, this pollution of the environment should be punished by splitting non-claimed deposits of one-way bottles between environmental agencies and those consumers who regularly purchase reusable bottles, which save more resources. As a further consequence, those consumers who repeatedly neglect to return their one-ways should be required to pay a higher deposit. Such a revised approach will hopefully maximize the number of returned one-way bottles and effectively steer users towards reusable ones. Otherwise, a further decline may be inevitable and is shown to have had a direct negative impact on global warming, in addition to the excess amount of waste produced hereof \cite{einwegUmweltbelastung}.
-
-When considered on a case-by-case basis, this problem inherently deals with deposits of very low extrinsic value. Therefore, implementing the proposed approach by utilizing smart-contracts and micro-transactions on the Blockchain may come to mind upon choosing the underlying architecture.
-
-%TODO: any factors that are not taken into account? > ; factors such as the 
-%TODO: problem statement clear enough?
-%TODO: exclude implementation of client-server model approach as architecture outline should suffice for experienced reader (i.e. 4 semesters of CS)?
-
-\section{Goals and Scope of Tasks}
-Since no research on the feasibility of this approach has been undertaken for an application as specific as this one, the study focuses on both a Blockchain implementation as well as that of a traditional client-server model. The objective of the research is to provide a technological recommendation to supporters of an incentivized deposit-refund system and guide \ac{HPE} and interested parties alike in developing decentralized applications on a general basis. The results are relevant as they reduce the go-to-market time of the previously outlined solution to stop the influx of one-way bottles, which in turn reduces pollution and warming of the earth (comp. \ref{sec:motivation}), a serious concern to today's society. Moreover, \ac{HPE} can offer more in-depth Blockchain-related consulting services through the insights gained.
-
-It shall be explicitly noted that the study does not cover analyzing the effectiveness of employing such a system or wether this even represents the best possible approach. Similarly, the legal framework and ethical questions pertaining to its usage are disregarded.
-
-%TODO: cannot ask examples since they make difficult to maintain objectivity as research
-
-%- examples > What are the positives or values of x? How well does x work? How appropriate or desirable is x? What are the advantages and disadvantages of x? > 
-%- evaluative questions > enable to provide an opinion or judgement
-%- comparative question > explore differences between two or more items 
-
-\section{Research Design}
-The main research question is of comparative nature and can be formulated as following: 
-
-\begin{quote}
-	"What are the differences and similarities between a Blockchain-based implementation of an incentivized deposit-refund system and that of a traditional client-server model approach?"
-\end{quote}
-
-%In order to limit the discussion and ensure a 
-
-
-%- research design > experiment, i.e. implementation with benchmarking, to conduct research (research methodology)
-
-
-
 %- research problem / problem statement
 %    - problem definition > define problem you will address (and why) in research
 %        - context + background information > who has a problem, when/where does problem arise > what is the cause? 
@@ -61,6 +18,58 @@ The main research question is of comparative nature and can be formulated as fol
 %- brief description of research design
 %	- describe study design (part of research plan) > where, when, how (= research method/-ology > survey, experiment etc.), with whom
 
+\chapter{Introduction}
 
+\section{Motivation}
+\label{sec:motivation}
+Compared to glass, plastic or aluminum packaging represents a lightweight and durable alternative. The impact of lightweight materials on shipping costs is non-negligible and has therefore been leveraged in the beverage industry for the past 30 years. Simultaneously, the quote of reusable bottles (Mehrwegflasche) has steadily fallen (from 72\% in 1991 \cite[§ 9 Abs. 2]{verpackV} to 45,1\% in 2014 \cite{umweltBundesamt}), which prompted German lawmakers to introduce a system of returnable one-way bottles (Einwegflasche) in 2003 on which a deposit is payable \cite[§ 9 Abs. 2]{verpackV}. 
+
+Contrary to expectations \cite[§ 8]{verpackV}, this regulation has not stopped the influx of one-way bottles but has rather benefitted bottlers. Whenever consumers pollute by leaving behind one-way bottles, an instant 25 cent profit -- assuming that no one else has returned them -- is generated for the producer. This passive profit was estimated to have reached up to 175M\euro{} in 2015 alone \cite{mehrwegSystem}. 
+
+%TODO: highlight that the following is an original idea?
+
+Ideally, this pollution of the environment should be punished by splitting non-claimed deposits of one-way bottles between environmental agencies and those consumers who regularly purchase reusable bottles, which save more resources. As a further consequence, those consumers who repeatedly neglect to return their one-ways should be required to pay a higher deposit. Such a revised approach can hopefully maximize the number of returned one-way bottles and effectively steer users towards reusable ones. Otherwise, a further decline may be inevitable and is shown to have had a direct negative impact on global warming, in addition to the excess amount of waste produced hereof \cite{einwegUmweltbelastung}.
+
+When considered on a case-by-case basis, this problem inherently deals with deposits of very low extrinsic value. Therefore, implementing the proposed approach by utilizing smart-contracts and micro-transactions on the Blockchain may come to mind upon choosing the underlying architecture.
+
+%TODO: any factors that are not taken into account? > ; factors such as the 
+%TODO: problem statement clear enough?
+%TODO: exclude implementation of client-server model approach as architecture outline should suffice for experienced reader (i.e. 4 semesters of CS)?
+
+\section{Goals and Scope of Tasks}
+Since no research on the feasibility of this approach has been undertaken for an application as specific as this one, the study focuses on both a Blockchain implementation as well as that of a traditional client-server model. The objective of the research is to provide a technological recommendation to supporters of an incentivized deposit-refund system and guide \ac{HPE} and interested parties alike in developing decentralized applications on a general basis. The results are relevant as they reduce the go-to-market time of the previously outlined solution to stop the influx of one-way bottles, which in turn reduces pollution and warming of the earth (comp. \ref{sec:motivation}), a serious concern to today's society. Moreover, \ac{HPE} can offer more in-depth Blockchain-related consulting services through the insights gained.
+
+It shall be explicitly noted that the study does not cover analyzing the effectiveness of employing such a system or wether this even represents the best possible approach. Similarly, the legal framework and ethical questions pertaining to its usage are disregarded.
+
+%TODO: cannot be evaluative question since it makes it difficult to maintain objectivity as research
+
+%- evaluative questions > enable to provide an opinion or judgement
+%	- examples > What are the positives or values of x? How well does x work? How appropriate or desirable is x? What are the advantages and disadvantages of x? > 
+%- comparative question > explore differences between two or more items 
+
+\section{Research Design}
+The main research question is of comparative nature and can be formulated as following: 
+
+\begin{quote}
+	"What are the differences and similarities between a Blockchain-based implementation of an incentivized deposit-refund system and that of a traditional client-server model approach?"
+\end{quote}
+
+To limit the variables and length of discussion, a comparison framework is defined based upon the most important metrics inherent to web services as presented in literature. Additionally, solution specific characteristics such as the prevention of counterfeit claims are considered. Further, both implementations revolve around the same, limited feature set specified later.
+
+All performance tests (\textit{benchmarking}) are carried out on the following machine:
+
+\begin{table}[hbt]
+	\centering
+	\begin{tabular}{l|l}
+		CPU & 2.5 GHz Intel Core i7 \\
+		\hline
+		GPU & AMD Radeon R9 M370X 2048 MB \\
+		\hline
+		Memory & 16 GB 1600 MHz DDR3 RAM \\
+		\hline
+		Storage & 500 GB SSD \\
+	\end{tabular}
+	\caption{MacBook Pro (Retina, 15-inch, Mid 2015) Technical Specifications~\cite{macbookproSpecifications}}
+\end{table}
 
 \section{Thesis Overview}
