@@ -129,3 +129,13 @@
 %\usepackage{titlesec}
 
 \newcommand{\hide}[1]{\ignorespaces}
+
+\makeatletter
+\newcommand\storedescriptionlabel[1]{%
+  \let\orglabel\label
+  \let\label\@gobble
+  \phantomsection
+  \edef\@currentlabel{#1}%
+  \let\label\orglabel
+  #1}
+\makeatother

@@ -79,7 +79,7 @@ The German packaging ordinance underwent several revisions, including a change o
 	
 	\item[2008]
 	\hfill \\
-	Orders distributors to clearly mark bottles as being obliged to a deposit. Further, distributors are demanded to participate in a nationwide deposit-refund system to enable the mutual settlement of claimed deposits \cite[§~9]{verpackV2008}. Lastly, the exemption for dietary products is reduced to infant nutrition. This acts as a measure to counteract increasingly false product declarations attempting to forego deposits \cite[pp. 531]{verpackV2008} \cite[p.~171]{Flanderka/Stroetmann2009}.
+	Orders distributors to clearly mark bottles as being obliged to a deposit. Further, distributors are demanded to participate in a nationwide deposit-refund system to enable the mutual settlement of claimed deposits \cite[§~9]{verpackV2008}. Lastly, the exemption for dietary products is reduced to infant nutrition. This acts as a measure to counteract increasingly false product declarations attempting to forego deposits \cite[pp.~531]{verpackV2008} \cite[p.~171]{Flanderka/Stroetmann2009}.
 \end{description}
 
 \todo[inline, color=orange]{add 2019 amendment}
@@ -162,10 +162,10 @@ Johnston's Law states that everything that can be decentralised, will be decentr
 
 The architectural structure embodied by the web has not always been as pronounced as is these days. In its early days, people would host personal servers for others to connect to and everyone owned their data. But soon, it was recognised that one individual or group could pay for the maintenance of a server and profit from users that utilize it (eg.~Amazon Web Services) and since this was easier to the average user, both conceptually and programmatically, the transition to few centralized controlling entities started \cite[pp.~14]{Raval.2016}. 
 
-Now, users willingly give their data to service providers in return for free usage, trusting them to not misuse or sell the data elsewhere \cite[p.~24]{Raval.2016}. However, Snowden proved that this trust can, has and will be broken as long as we entrust (encrypted) data to central entities which represent a surveillance state's dream \cite{Guardian2013} \cite[p.~25]{Raval.2016}. In addition, centralized infrastructure and services increase the chances for downtime, censorship and counterparty risk \cite[p.~23]{Antonopoulos.2018}. Drawbacks like these have attributed to the development of \acp{dApp}, first pioneered by Bitcoin as a currency \cite[p.~1]{Johnston2015} \cite[p.~1]{bitcoin}. Simultaneously, recent apps (e.g.~Uber and AirBnb) attempt to decentralize real world parts of a business by providing a central and trusted data store, foreshadowing the development of decentralized apps beyond pure finances \footnote{Supports the blockchain evolution theorem proposed in \cite{Swan.2015}.} \cite[p.~15]{Raval.2016}.
+Now, users willingly give their data to service providers in return for free usage, trusting them to not misuse or sell the data elsewhere \cite[p.~24]{Raval.2016}. However, Snowden proved that this trust can, has and will be broken as long as we entrust (encrypted) data to central entities which represent a surveillance state's dream \cite{Guardian2013} \cite[p.~25]{Raval.2016}. In addition, centralized infrastructure and services increase the chances for downtime, censorship and counterparty risk \cite[p.~23]{Antonopoulos.2018}. Drawbacks like these have attributed to the development of \acp{dApp}, first fully realized by Bitcoin \footnote{BitTorrent, as an earlier example, depends on centralized trackers for data discovery \cite[p.~26]{Raval.2016}.} as a currency \cite[p.~1]{Johnston2015} \cite[p.~1]{bitcoin}. Simultaneously, recent apps (e.g.~Uber and AirBnb) attempt to decentralize real world parts of a business by providing a central and trusted data store, foreshadowing the development of decentralized apps beyond pure finances \footnote{Supports the blockchain evolution theorem proposed in \cite{Swan.2015}.} \cite[p.~15]{Raval.2016}.
 
-The concept of \acp{dApp} is meant to take the web to its next \footnote{Web 2.0 describes the evolution towards user-generated content, responsive interfaces and interactivity \cite[p.~34]{Antonopoulos.2018}.} natural evolution \cite[pp.~34]{Antonopoulos.2018}. Web3 represents the vision of a serverless internet, encouraging applications to incorporate decentralised protocols in order to put users in control of their own data, identity and destiny \cite{web3}. As global economy evolves, data will become the primary form of value \cite[p.~25]{Raval.2016}, leading \citeauthor{Raval.2016} to believe that:
-
+The concept of \acp{dApp} is meant to take the web to its next \footnote{Web 2.0 describes the evolution towards user-generated content, responsive interfaces and interactivity \cite[p.~34]{Antonopoulos.2018}.} natural evolution \cite[pp.~34]{Antonopoulos.2018}. Web3 represents the vision of a serverless \footnote{Not to be confused with the centralized Function-as-a-Service offerings detailed in \cite{serverlessComputing}.} internet, encouraging applications to incorporate decentralised protocols in order to put users in control of their own data, identity and destiny \cite{web3}. As global economy evolves, data will become the primary form of value \cite[p.~25]{Raval.2016}, leading \citeauthor{Raval.2016} to believe that:
+~
 \begin{quote}
   "[\acp{dApp}] will someday become more widely used than the world's most popular web apps." \cite[p.~5]{Raval.2016}
 \end{quote}
@@ -207,7 +207,7 @@ To be considered a \ac{dApp}, \citeauthor{Johnston2015} assume that an applicati
 Moreover, he classifies \acp{dApp} based on whether they have their own blockchain (Type~I), use that of another \ac{dApp} (Type~II) or use a Type~II \ac{dApp} as its underlying protocol (Type~III). The latter is also known as a protocol \cite[pp.~3-4]{Johnston2015}.
 
 \subsubsection{\citeyear{Raval.2016}}
-Although similar to the elements proposed priorly, the definition given in \citetitle{Raval.2016} highlights their importance and thus requires that a profitable \ac{dApp} \cite[pp.~9-14]{Raval.2016}:
+Although similar to the elements proposed priorly, the definition given in \citetitle{Raval.2016} highlights their importance and by such requires that a profitable \ac{dApp} \cite[pp.~9-14]{Raval.2016}:
  
  \begin{itemize}
   \item is \textbf{open-source} to achieve transparency and gain trust among users 
@@ -220,7 +220,7 @@ Although similar to the elements proposed priorly, the definition given in \cite
 Finally, \citeauthor{Antonopoulos.2018} (co-founder of Ethereum) back up and clarify \citeauthor{EthereumWhitepaper}'s design guidelines by stating that a \ac{dApp} is composed of at least \cite[p.~34]{Antonopoulos.2018}:
 
 \begin{itemize}
-  \item \textbf{smart contracts} \footnote{Here: Program which is executed in the \acl{EVM} \cite[p.~57]{Antonopoulos.2018}. Can be generalised to refer to programs that change singleton state of globally accessible, unbounded state-machine (colloquially: world-computer) \cite[p.~23]{Antonopoulos.2018}.} on a \textbf{blockchain}
+  \item \textbf{smart contracts} \hide{\footnote{Here: Program which is executed in the \acl{EVM} \cite[p.~57]{Antonopoulos.2018}. Can be generalised to refer to programs that change singleton state of globally accessible, unbounded state-machine (colloquially: world-computer) \cite[p.~23]{Antonopoulos.2018}.}} on a \textbf{blockchain}
   \item a web frontend \textbf{user interface}
 \end{itemize}
 
@@ -231,30 +231,73 @@ Optionally, a \ac{dApp} may rely on other decentralized components such as:
   \item decentralized messaging
 \end{itemize}
 
-%\subsubsection{Derived Definition}
-%An application is considered to be a \acf{dApp} if it exhibits the following characteristic features:
-%
-%\begin{description}
-%	\item[Open-source]
+\subsubsection{Derived Definition}
+An application is considered to be a \acf{dApp} if it exhibits all of the characteristic features marked as a \textit{must}. Secondary or recommended traits are labelled as \textit{can} or \textit{should} respectively. These traits can be categorised as following:
+
+\begin{description}[format={\storedescriptionlabel}]
+	\item[Open-source]
+	\hfill \\	
+	Traditional business models require the service for sale to be better than that of a competitor. By open-sourcing a solution, copying is inevitable \cite[p.~10]{Raval.2016}. However, users will want to remain with the team that is best suited to maintain the application \cite[p.~11]{Raval.2016}. Therefore, developers should not fear trading secrecy for transparency. Transparency removes a barrier to adoption as users are no longer required to trust that an application works as advertised \cite[p.~9]{Raval.2016}. Additionally, open-source development often sparks the attraction of enthusiastic developers who contribute freely \cite[p.~11]{Raval.2016}.
+	
+	\begin{itemize}
+  		\item \textit{must} be deployed visibly (i.e. the executed code can be inspected by a user)
+  		\item \textit{should} be developed on an open-source platform (e.g. GitHub)
+	\end{itemize}
+	
+	\citeauthor{Johnston2015} call for an application to only alter its protocol by the consensus of its users. Yet, it can be argued that this does not represent a core property of a \ac{dApp} since users can revert to the desired state at any time by forking the project.
+
+	\begin{itemize}
+  		\item \textit{can} require the consensus of users to upgrade its protocol (e.g. majority vote)
+	\end{itemize}
+
+	\item[Decentralized \label{decentralizedConsensus} consensus]
+	\hfill \\
+	Usually, application-level constructs (e.g. usernames, high-scores or status updates) are managed and modified only through the centralized application provider, thereby ensuring a single and consistent state (\textit{singleton}). Luckily, blockchains provide the means to reach consensus in a decentralized manner. Traditionally, this is only applied to transactional logs \cite[p.~1]{bitcoin}. Extending this consensus mechanism to cover the outcome of a computer program and consequently storing the result on a blockchain for future retrieval as an input, would enable virtually any application. Seeing that such an application would always have a single globally valid state, the underlying infrastructure can be colloquially termed a world-computer.
+	
+	\citeauthor{Raval.2016}, \citeauthor{Antonopoulos.2018}, refer to these programs as smart-contracts and equally expect them to be secured by and executed on a blockchain \cite[p.~13]{Raval.2016} \cite[pp.~23,~34]{Antonopoulos.2018}. In this sense, any application that utilises smart-contracts as its business-logic determining the next state to be taken in response to a request will be considered a type II \ac{dApp}.
+	
+	It must be noted that 	\citeauthor{Buterin2014} consistently denotes smart-contracts as being a subset of contracts. The former is of financial nature and may involve redistributing digital assets or unlocking value depending on the conditions met \cite[pp.~1,~13]{EthereumWhitepaper}. The latter can be used to encode arbitrary state transition functions required to build decentralized applications which may as well issue tokens \cite[pp.~1,~19]{EthereumWhitepaper}. For simplification purposes, the logic of both applications types will be referred to as smart-contracts. 	
+
+	\begin{itemize}
+  		\item Type I \textit{must} achieve decentralized consensus on transactions
+  		\item Type II \textit{must} only modify its data by invoking a smart-contract
+	\end{itemize}
+
+	Finally, to achieve decentralized consensus, it is ultimately necessary to have a complete picture of the transactions or method invocations that affected an application's state. While theoretically possible, applications have never been observed to only store its delta changes, due to the long processing needed to rebuild the current state. 
+	
+	\begin{itemize}
+  		\item \textit{must} store its records of operation and current data in a public blockchain
+	\end{itemize}
+
+	\item[Internal currency]
+	\hfill \\
+	According to \citeauthor{Raval.2016}, profit is a cornerstone of any successful, robust and sustainable application \cite[p.~9]{Raval.2016}. Because traditional revenue streams (e.g. fees, advertising, subscriptions) are not applicable without preventing the possibility of a fork, he proposes an internal currency \footnote{Type I: Blockchain-native cryptocurrency, Type II: Smart-contract-issued token.} that is required to use the service \cite[p.~11]{Raval.2016}, hoping that it will appreciate in value by being listed on an exchange. Nevertheless, not every application is designed for profit.
+	
+	\begin{itemize}
+  		\item \textit{can} use an internal currency for monetisation
+  		\item \textit{can} use an internal currency for access / service usage
+	\end{itemize}
+	
+	On the other hand, using an internal currency to reward the contribution of value is especially important for Type I \acp{dApp} which employ their own blockchain and thus require an incentivization structure that keeps both miners and developers active \cite[p.~9]{Raval.2016}.
+	
+	\begin{itemize}
+		\item Type I \textit{must} use an internal currency to reward the contribution of value
+		\item Type II \textit{can} use an internal currency to reward the contribution of value
+	\end{itemize}
+	
+	Lastly, \citeauthor{Johnston2015} specify that tokens shall only be generated according to a predefined cryptographic algorithm. This is inherently true for Type I \acp{dApp} which issue their internal currency as a reward for completing the cryptographic challenge (e.g.~proof-of-work) \cite[pp.~3-4]{bitcoin}. In this context, tokens are considered to be a feature of Type II \acp{dApp} (comp. \ref{decentralizedConsensus}). Therefore, their generation is not directly tied to cryptographic algorithms, but rather to the program's control flow.
+	
+	\begin{itemize}
+		\item Type I \textit{must} use a cryptographic algorithm to generate its internal currency
+		\item Type II \textit{can} only generate its internal currency via smart-contracts
+	\end{itemize}
+	
+%	\item[Decentralized protocols]
 %	\hfill \\
 %	
-%	\item[Decentralized consensus]
-%	\hfill \\
-%\end{description}
-%
-%Secondary (nonessential) traits may include:
-%
-%\begin{description}
 %	\item[User interface]
-%	\item[Internal currency or token]
 %	\hfill \\
-%	Sometimes referred to as an appcoin \cite[p.~11]{Raval.2016}, 
-%	\item[Decentralized storage]
-%	\hfill \\
-%	
-%	\item[Decentralized messaging]
-%	\hfill \\
-%\end{description}
+\end{description}
 
 \subsection{Tokens}
 
