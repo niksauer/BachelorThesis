@@ -29,6 +29,7 @@ These objectives were supported by introducing the:
 %\todo[inline]{explain highs and separation of dataset}
 
 \begin{figure}[hbt]
+	\centering
 	\begin{tikzpicture}
         \begin{axis}[
 %            xlabel = Lines to process (\#),
@@ -71,7 +72,7 @@ The German packaging ordinance underwent several revisions, including a change o
 	\hfill \\
 	Trims deposit obligation to those beverages for which the quote of reusable packaging has fallen when compared to 1991, though still necessitates that overall aggregated quote undercuts threshold of 72\% \cite[pp.~142]{Flanderka1999}. Even though all five segments (beer, mineral water, carbonated soft drinks, fruit juice/non-carbonated soft drinks and wine) have failed this comparison \cite[p.~1]{BMU2015}, juices/non-carbonated soft drinks and wine are exempted because their decline and market volume has not been regarded significant enough to justify the costs introduced with such a system \hide{\cite[pp.~1]{BMU 2002}} \cite[pp.~6,~9]{Hartlep2011Recycling}. 
 	
-\todo[inline]{figure showcasing development of reusable packing quote in each segment (appendix)}
+\todo[inline]{figure / table showcasing development of reusable packing quote in each segment (appendix)}
 
 	\item[2005]
 	\hfill \\
@@ -130,6 +131,7 @@ Each buyer of a returnable bottle must directly pay the designated deposit to th
 %\todo[inline]{figure showcasing deposit-refund cycle}
 
 \begin{figure}[hbt]
+  \centering
   \includegraphics{images/deposit_cycle_current_short}
   \caption{Deposit-refund cycle \cite[p.~14]{Hartlep2011Recycling}}
   \label{fig:depositRefundCycle}
@@ -140,9 +142,10 @@ Since take-back points refund consumers independent of a bottle’s purchasing l
 %\todo[inline]{figure showcasing manual and automated return methods}
 
 \begin{figure}[hbt]
-  \includegraphics{images/bottle_return_current}
-  \caption{Clearing process for manual and automated bottle returns \cite[p.~18]{Hartlep2011Recycling}}
-  \label{fig:clearingProcess}
+	\centering
+  	\includegraphics{images/bottle_return_current}
+  	\caption{Clearing process for manual and automated bottle returns \cite[p.~18]{Hartlep2011Recycling}}
+  	\label{fig:clearingProcess}
 \end{figure}
 
 Refund invoices must also include data representing the number of bottles for which a refund was issued. This data originates from the return process in which each bottle is eventually captured. Capture refers to both validating the universal security mark printed on a bottle’s label as well as extracting the \ac{EAN} by scanning its barcode. By outfitting reverse vending machines with a network connection, looking up the \ac{EAN} in question becomes possible, thus ensuring that a deposit for the bottle has been collected beforehand\hide{\cite[pp.~2]{Wincor Nixdorf 2010}}. For each valid bottle, a signed record is then produced and stored on the machine\hide{\cite[p.~18]{Hartlep2011Recycling}}. This data must be retrieved and transmitted within one week\hide{\cite[p.~90]{DPG/Roland Berger 2010}}. Likewise, retailers receive a similar dataset when relying on a counting center\hide{\cite[p.~18]{Hartlep2011Recycling}}. Finally, any transmitted data is anonymised by removing the return location and summing up the refunds for each \ac{EAN} captured\hide{\cite[pp.~90]{DPG/Roland Berger 2010}}. Initial distributors must pay the invoice within ten business days or five-teen calendar days at the lastet \hide{\cite[p.~40]{DPG/Roland Berger 2010}} \cite[p.~18-19]{Hartlep2011Recycling}.
@@ -160,7 +163,7 @@ Refund invoices must also include data representing the number of bottles for wh
 \subsection{History \& Raison d'Être}
 Johnston's Law states that everything that can be decentralised, will be decentralised \cite{JohnstonsLaw}. Fittingly, a new model for building massively scalable, successful and profitable applications, known as \textit{\acp{dApp}}, is emerging \cite[p.~5]{Raval.2016} \cite[pp.~1-2]{Johnston2015}, suggesting that this will also become the fate of the vast majority of web software applications as those follow a centralized server-client model in which individuals directly depend on a central power to send and receive information \cite[pp.~7-8]{Raval.2016}. 
 
-The architectural structure embodied by the web has not always been as pronounced as is these days. In its early days, people would host personal servers for others to connect to and everyone owned their data. But soon, it was recognised that one individual or group could pay for the maintenance of a server and profit from users that utilize it (eg.~Amazon Web Services) and since this was easier to the average user, both conceptually and programmatically, the transition to few centralized controlling entities started \cite[pp.~14]{Raval.2016}. 
+The architectural structure embodied by the Web has not always been as pronounced as is these days. In its early days, people would host personal servers for others to connect to and everyone owned their data. But soon, it was recognised that one individual or group could pay for the maintenance of a server and profit from users that utilize it (e.g.~Amazon Web Services \footnote{Amazon controls roughly 40\% of the cloud market and serves customers like AirBnb, Expedia, Netflix, Slack and Spotify \cite{Verge2018}. Please install \cite{fuckOffAWS}, to experience the impact of an AWS downtime.}) and since this was easier to the average user, both conceptually and programmatically, the transition to few centralized controlling entities started \cite[pp.~14]{Raval.2016}. 
 
 Now, users willingly give their data to service providers in return for free usage, trusting them to not misuse or sell the data elsewhere \cite[p.~24]{Raval.2016}. However, Snowden proved that this trust can, has and will be broken as long as we entrust (encrypted) data to central entities which represent a surveillance state's dream \cite{Guardian2013} \cite[p.~25]{Raval.2016}. In addition, centralized infrastructure and services increase the chances for downtime, censorship and counterparty risk \cite[p.~23]{Antonopoulos.2018}. Drawbacks like these have attributed to the development of \acp{dApp}, first fully realized by Bitcoin \footnote{BitTorrent, as an earlier example, depends on centralized trackers for data discovery \cite[p.~26]{Raval.2016}.} as a currency \cite[p.~1]{Johnston2015} \cite[p.~1]{bitcoin}. Simultaneously, recent apps (e.g.~Uber and AirBnb) attempt to decentralize real world parts of a business by providing a central and trusted data store, foreshadowing the development of decentralized apps beyond pure finances \footnote{Supports the blockchain evolution theorem proposed in \cite{Swan.2015}.} \cite[p.~15]{Raval.2016}.
 
@@ -239,10 +242,19 @@ Optionally, a \ac{dApp} may rely on other decentralized components such as:
 %	\hfill \\		
 %\end{description}
 
-\todo[inline, color=orange]{explain that classification has been slimmed down}
+\todo[inline, color=orange]{explain that classification has been slimmed down to Type I \& II dApps}
 
 \subsubsection{Derived Definition}
-An application is considered to be a \acf{dApp} if it exhibits all of the characteristic features marked as a \textit{must}. Secondary or recommended traits are labelled as \textit{can} or \textit{should} respectively. 
+An application is considered to be a \acf{dApp} if it exhibits all of the characteristic features marked as a \textit{must}. Secondary or recommended traits are labelled as \textit{can} or \textit{should} respectively. The resulting architecture compared to that of a traditional web application is detailed in \autoref{fig:dAppArchitecture}. 
+
+\begin{figure}[hbt]
+	\centering
+  	\includegraphics{images/dApp_architecture}
+  	\caption{Infrastructure model comparison between traditional web application and \ac{dApp}}
+  	\label{fig:dAppArchitecture}
+\end{figure}
+
+\todo[inline]{textually compare infrastructure model against traditional web apps?}
 
 \begin{description}[format={\storedescriptionlabel}]
 	\item[Open-source]
@@ -264,7 +276,7 @@ An application is considered to be a \acf{dApp} if it exhibits all of the charac
 	\hfill \\
 	Usually, application-level constructs (e.g. usernames, high-scores or status updates) are managed and modified only through the centralized application provider, thereby ensuring a single and consistent state (\textit{singleton}). Luckily, blockchains provide the means to reach consensus in a decentralized manner. Traditionally, this is only applied to transactional logs \cite[p.~1]{bitcoin}. Extending this consensus mechanism to cover the outcome of a computer program and consequently storing the result on a blockchain for future retrieval as an input, would enable virtually any application. Seeing that such an application would always have a single globally valid state, the underlying infrastructure can be colloquially termed a world-computer.
 	
-	\citeauthor{Raval.2016}, \citeauthor{Antonopoulos.2018}, refer to these programs as smart-contracts and equally expect them to be secured by and executed on a blockchain \cite[p.~13]{Raval.2016} \cite[pp.~23,~34]{Antonopoulos.2018}. It must be noted that \citeauthor{Buterin2014} consistently denotes smart-contracts as being a subset of contracts. The former is of financial nature and may involve redistributing digital assets among parties or unlocking value depending on the conditions met \cite[pp.~1,~13]{EthereumWhitepaper}. The latter can be used to encode arbitrary state transition functions required to build decentralized applications which may also issue tokens \cite[pp.~1,~19]{EthereumWhitepaper}. For simplification purposes, the logic of both applications types will be referred to as smart-contracts. 	
+	\citeauthor{Raval.2016}, \citeauthor{Antonopoulos.2018}, refer to these programs as smart-contracts and equally expect them to be secured by and executed on a blockchain \cite[p.~13]{Raval.2016} \cite[pp.~23,~34]{Antonopoulos.2018}. It must be noted that \citeauthor{Buterin2014} consistently denotes smart-contracts as being a subset of contracts. The former is of financial nature and may involve redistributing digital assets among parties or unlocking value depending on the conditions met \cite[pp.~1,~13]{EthereumWhitepaper}. The latter can be used to encode arbitrary state transition functions required to build decentralized applications which may also issue tokens \cite[pp.~1,~19]{EthereumWhitepaper}. For simplification purposes, the business logic of both applications types will be referred to as smart-contracts. 	
 
 	\begin{itemize}
   		\item Type I \textit{must} achieve decentralized consensus on state-transitions

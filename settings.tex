@@ -139,3 +139,6 @@
   \let\label\orglabel
   #1}
 \makeatother
+
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
