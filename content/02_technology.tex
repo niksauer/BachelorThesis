@@ -25,9 +25,6 @@ These objectives were supported by introducing the:
 	A deposit is to be charged by the distributor that will be refunded to the purchaser upon return of the bottle. This duty is applicable on all levels of trade involving domestic beverages sold in non-\gls{reusable packaging} (\textit{one-way packaging}) \cite[§~7]{verpackV1991} and becomes effective as soon as the quote of reusable beverage packaging falls below 72\% \footnote{Aggregated quote derived from weighted average of percentages of reusable packaging encountered across individual segments in 1990 \cite[§~9]{verpackV1991} \cite[p.~134]{Rummler/Schutt1991}} \cite[§~9]{verpackV1991}.
 \end{description}
 
-%\todo[inline]{figure showcasing development of aggregated reusable packaging quote}
-%\todo[inline]{explain highs and separation of dataset}
-
 \begin{figure}[hbt]
 	\centering
 	\begin{tikzpicture}
@@ -51,6 +48,7 @@ These objectives were supported by introducing the:
                 (11, 61.13) (12, 56.2) (13, 63.6) (14, 60.33) (15, 55.99) (16, 50.64)
                 (17, 46.44) (18, 44.74) (19, 44.33) (21, 42.31) (23, 40.8)
                 
+%				statista dataset                
 %                (20, 48) (21, 48) (22, 45.7) (23, 45.1) (24, 45.1) (25, 44.3) 
             };
         
@@ -58,7 +56,7 @@ These objectives were supported by introducing the:
         
 		\end{axis}
 	\end{tikzpicture}
-  	\caption{Aggregated quote of reusable beverage packaging between 1991 and 2013 \cite[p.~1]{BMU2015} \hide{\cite{statista2015Mehrweg}}}
+  	\caption{Aggregated quote of reusable beverage packaging (in \%) between 1991 and 2013 \cite[p.~1]{BMU2015} \hide{\cite{statista2015Mehrweg}}}
   	\label{fig:reusableQuoteDevelopment}
 \end{figure}
 
@@ -84,7 +82,6 @@ The German packaging ordinance underwent several revisions, including a change o
 \end{description}
 
 \todo[inline, color=orange]{add 2019 amendment}
-%\todo[inline]{figure showcasing current situation}
 
 \begin{figure}[hbt]
 	\centering
@@ -128,8 +125,6 @@ As indicated, actors of the deposit-refund cycle (e.g. retailer selling returnab
 \subsubsection{Deposit-Refund Cycle}
 Each buyer of a returnable bottle must directly pay the designated deposit to the seller. This process starts with the initial distributor (step 1 of \autoref{fig:depositRefundCycle}) and is repeated for each sub-distributor until the bottles reaches retail which acts as the final distributor to end consumers (step 2 of \autoref{fig:depositRefundCycle}). After consumption, the consumer may return the packaging at any retail store obliged to take back the packaging in question (take-back point) (step 3 of \autoref{fig:depositRefundCycle}). Return may be performed manually (step 1a of \autoref{fig:clearingProcess}) or can be automated through reverse vending machines (step 1b of \autoref{fig:clearingProcess}). The former requires personnel to count the number of returned bottles and refund the consumer accordingly. Following count, the collected bottles must be shipped to a counting center which is responsible for digitally capturing each bottle (step 2a of \autoref{fig:clearingProcess})\hide{\cite[p.~76]{DPG/Roland Berger 2010}}\hide{\cite[p.~17]{Hartlep2011Recycling}}. At last, the bottles will be compressed to eliminate the possibility of repeated refunds\hide{\cite[p.~77]{DPG/Roland Berger 2010}}. In the case of reverse vending machines, the process of counting, capturing and compressing bottles can take place locally at a retail store (step 2b of \autoref{fig:clearingProcess})\hide{\cite[p.~76]{DPG/Roland Berger 2010}}. Alternatively, retailers are permitted to return the packaging to the previous distributor, thereby unwinding the deposit-refund chain. However, this practice is rarely exercised since the packaging will not be reused and transportation would only induce additional ecological and financial strain\hide{\cite[p.~17]{Hartlep2011Recycling}}. Instead, the compressed packaging can be sold directly to recycling companies (step 3 of \autoref{fig:clearingProcess}) \cite[p.~16-17]{Hartlep2011Recycling} \cite{reiling}.  
 
-%\todo[inline]{figure showcasing deposit-refund cycle}
-
 \begin{figure}[hbt]
   \centering
   \includegraphics{images/deposit_cycle_current_short}
@@ -138,8 +133,6 @@ Each buyer of a returnable bottle must directly pay the designated deposit to th
 \end{figure}
 
 Since take-back points refund consumers independent of a bottle’s purchasing location, a settlement process (\textit{clearing}) is required to reimburse retailers for making advance refunds (step 4 of \autoref{fig:depositRefundCycle}). This clearing happens by issuing a refund invoice to the initial distributor who can use the deposits originally collected the pay the bill (step 4 of \autoref{fig:clearingProcess}). Ideally, all accounts are in balance, meaning that all packaging has been returned. Otherwise, a surplus on the part of an initial distributor is to be experienced \cite[p.~17]{Hartlep2011Recycling}.
-
-%\todo[inline]{figure showcasing manual and automated return methods}
 
 \begin{figure}[hbt]
 	\centering
@@ -150,11 +143,10 @@ Since take-back points refund consumers independent of a bottle’s purchasing l
 
 Refund invoices must also include data representing the number of bottles for which a refund was issued. This data originates from the return process in which each bottle is eventually captured. Capture refers to both validating the universal security mark printed on a bottle’s label as well as extracting the \ac{EAN} by scanning its barcode. By outfitting reverse vending machines with a network connection, looking up the \ac{EAN} in question becomes possible, thus ensuring that a deposit for the bottle has been collected beforehand\hide{\cite[pp.~2]{Wincor Nixdorf 2010}}. For each valid bottle, a signed record is then produced and stored on the machine\hide{\cite[p.~18]{Hartlep2011Recycling}}. This data must be retrieved and transmitted within one week\hide{\cite[p.~90]{DPG/Roland Berger 2010}}. Likewise, retailers receive a similar dataset when relying on a counting center\hide{\cite[p.~18]{Hartlep2011Recycling}}. Finally, any transmitted data is anonymised by removing the return location and summing up the refunds for each \ac{EAN} captured\hide{\cite[pp.~90]{DPG/Roland Berger 2010}}. Initial distributors must pay the invoice within ten business days or five-teen calendar days at the lastet \hide{\cite[p.~40]{DPG/Roland Berger 2010}} \cite[p.~18-19]{Hartlep2011Recycling}.
 
-\todo[inline, color=orange]{explain situation surrounding deposits on reusable bottles}
 
-%\subsection{Intentions \& Effects}
-%
-%\subsection{Reusable Bottles}
+\todo[inline]{explain intention / presumed effects of bottle deposits?}
+
+\todo[inline, color=orange]{explain situation surrounding deposits on reusable bottles?}
 
 \pagebreak
 
@@ -168,7 +160,7 @@ The architectural structure embodied by the Web has not always been as pronounce
 Now, users willingly give their data to service providers in return for free usage, trusting them to not misuse or sell the data elsewhere \cite[p.~24]{Raval.2016}. However, Snowden proved that this trust can, has and will be broken as long as we entrust (encrypted) data to central entities which represent a surveillance state's dream \cite{Guardian2013} \cite[p.~25]{Raval.2016}. In addition, centralized infrastructure and services increase the chances for downtime, censorship and counterparty risk \cite[p.~23]{Antonopoulos.2018}. Drawbacks like these have attributed to the development of \acp{dApp}, first fully realized by Bitcoin \footnote{BitTorrent, as an earlier example, depends on centralized trackers for data discovery \cite[p.~26]{Raval.2016}.} as a currency \cite[p.~1]{Johnston2015} \cite[p.~1]{bitcoin}. Simultaneously, recent apps (e.g.~Uber and AirBnb) attempt to decentralize real world parts of a business by providing a central and trusted data store, foreshadowing the development of decentralized apps beyond pure finances \footnote{Supports the blockchain evolution theorem proposed in \cite{Swan.2015}.} \cite[p.~15]{Raval.2016}.
 
 The concept of \acp{dApp} is meant to take the web to its next \footnote{Web 2.0 describes the evolution towards user-generated content, responsive interfaces and interactivity \cite[p.~34]{Antonopoulos.2018}.} natural evolution \cite[pp.~34]{Antonopoulos.2018}. Web3 represents the vision of a serverless \footnote{Not to be confused with the centralized Function-as-a-Service offerings detailed in \cite{serverlessComputing}.} internet, encouraging applications to incorporate decentralised protocols in order to put users in control of their own data, identity and destiny \cite{web3}. As global economy evolves, data will become the primary form of value \cite[p.~25]{Raval.2016}, leading \citeauthor{Raval.2016} to believe that:
-~
+
 \begin{quote}
   "[\acp{dApp}] will someday become more widely used than the world's most popular web apps." \cite[p.~5]{Raval.2016}
 \end{quote}
@@ -330,18 +322,16 @@ An application is considered to be a \acf{dApp} if it exhibits all of the charac
 	
 \end{description}
 
-%which can be maximised by employing additional decentralized protocols as outlined above
-
 The definition presented within this section purposely does not make any assumptions about the user interface or a \ac{dApp}'s resiliency. More importantly, the primary focus and goal of any \ac{dApp} developer should be to give users the confidence that a product works as promised by solely relying on open, decentralized peer-to-peer infrastructure services that can be inspected for functioning from end-to-end.
 
-
+%which can be maximised by employing additional decentralized protocols as outlined above
 
 %in addition to prescribing that every \ac{dApp} must not have a central point of failure. 
 
 %In this sense, any application that utilises smart-contracts as its business-logic determining the next state to be taken in response to a request will be considered a type II \ac{dApp}.
 	
-
 \subsection{Tokens}
+
 
 \pagebreak
 
