@@ -153,6 +153,7 @@ Refund invoices must also include data representing the number of bottles for wh
 \section{Decentralized Applications}
 
 \subsection{History \& Raison d'Être}
+\label{dAppHistory}
 Johnston's Law states that everything that can be decentralised, will be decentralised \cite{JohnstonsLaw}. Fittingly, a new model for building massively scalable, successful and profitable applications, known as \textit{\acp{dApp}}, is emerging \cite[p.~5]{Raval.2016} \cite[pp.~1-2]{Johnston2015}, suggesting that this will also become the fate of the vast majority of web software applications as those follow a centralized server-client model in which individuals directly depend on a central power to send and receive information \cite[pp.~7-8]{Raval.2016}. 
 
 The architectural structure embodied by the Web has not always been as pronounced as is these days. In its early days, people would host personal servers for others to connect to and everyone owned their data. But soon, it was recognised that one individual or group could pay for the maintenance of a server and profit from users that utilize it (e.g.~Amazon Web Services \footnote{Amazon controls roughly 40\% of the cloud market and serves customers like AirBnb, Expedia, Netflix, Slack and Spotify \cite{Verge2018}. Please install \cite{fuckOffAWS}, to experience the impact of an AWS downtime.}) and since this was easier to the average user, both conceptually and programmatically, the transition to few centralized controlling entities started \cite[pp.~14]{Raval.2016}. 
@@ -215,7 +216,7 @@ Although similar to the elements proposed priorly, the definition given in \cite
 Finally, \citeauthor{Antonopoulos.2018} (co-founder of Ethereum) back up and clarify \citeauthor{EthereumWhitepaper}'s design guidelines by stating that a \ac{dApp} is composed of at least \cite[p.~34]{Antonopoulos.2018}:
 
 \begin{itemize}
-  \item \textbf{smart contracts} \hide{\footnote{Here: Program which is executed in the \acl{EVM} \cite[p.~57]{Antonopoulos.2018}. Can be generalised to refer to programs that change singleton state of globally accessible, unbounded state-machine (colloquially: world-computer) \cite[p.~23]{Antonopoulos.2018}.}} on a \textbf{blockchain}
+  \item \textbf{smart-contracts} on a \textbf{blockchain}
   \item a web frontend \textbf{user interface}
 \end{itemize}
 
@@ -237,16 +238,7 @@ Optionally, a \ac{dApp} may rely on other decentralized components such as:
 \todo[inline, color=orange]{explain that classification has been slimmed down to Type I \& II dApps}
 
 \subsubsection{Derived Definition}
-An application is considered to be a \acf{dApp} if it exhibits all of the characteristic features marked as a \textit{must}. Secondary or recommended traits are labelled as \textit{can} or \textit{should} respectively. The resulting architecture, compared to that of a traditional web application, is detailed in \autoref{fig:dAppArchitecture}. 
-
-\begin{figure}[hbt]
-	\centering
-  	\includegraphics{images/dApp_architecture}
-  	\caption{Infrastructure model comparison between traditional web application and \ac{dApp}}
-  	\label{fig:dAppArchitecture}
-\end{figure}
-
-\todo[inline]{textually compare infrastructure model against traditional web apps?}
+An application is considered to be a \acf{dApp} if it exhibits all of the characteristic features marked as a \textit{must}. Secondary or recommended traits are labelled as \textit{can} or \textit{should} respectively.
 
 \begin{description}[format={\storedescriptionlabel}]
 	\item[Open-source]
@@ -324,11 +316,24 @@ An application is considered to be a \acf{dApp} if it exhibits all of the charac
 
 The definition presented within this section purposely does not make any assumptions about the user interface or a \ac{dApp}'s resiliency. More importantly, the primary focus and goal of any \ac{dApp} developer should be to give users the confidence that a product works as promised by solely relying on open, decentralized peer-to-peer infrastructure services that can be inspected for functioning from end-to-end.
 
+\todo[inline]{draw comparison to CLIs in respect to UI}
+
 %which can be maximised by employing additional decentralized protocols as outlined above
 
 %in addition to prescribing that every \ac{dApp} must not have a central point of failure. 
 
 %In this sense, any application that utilises smart-contracts as its business-logic determining the next state to be taken in response to a request will be considered a type II \ac{dApp}.
+
+%The resulting architecture, compared to that of a traditional web application, is detailed in \autoref{fig:dAppArchitecture}. 
+%
+%\begin{figure}[hbt]
+%	\centering
+%  	\includegraphics{images/dApp_architecture}
+%  	\caption{Infrastructure model comparison between traditional web application and \ac{dApp}}
+%  	\label{fig:dAppArchitecture}
+%\end{figure}
+
+\todo[inline]{compare infrastructure model against traditional web apps to highlight open deployment}
 	
 \subsection{Tokens}
 By introducing a digital equivalent, blockchain has evoked a semantic change for the word token originally used to mean privately-issued coin-like items that have insignificant value and are designed for a single purpose (e.g. transportation-, arcade- or laundry tokens). Now, tokens are used to simultaneously convey ownership, access rights, as well as the right to vote, for instance. Moreover, they are more easily exchangeable, a pitfall commonly cited \cite[p.~173]{Antonopoulos.2018}. According to \citeauthor{Antonopoulos.2018}, this could make tokens quite valuable when used in a way that does not re-create the conditions that made physical tokens worthless \cite[p.178]{Antonopoulos.2018}, hereby hoping for industry wide solutions. 
@@ -354,12 +359,77 @@ Further, most projects employ tokens for two reasons: \textit{utility} and/or \t
 Tokens are fungible if any single unit can be substituted for another without incurring a difference in value or function. A token is not entirely fungible if its historical provenance can be tracked, as this enables black- and whitelisting. The latter is the case for most cryptocurrencies \footnote{Monero pursues complete anonymity and therefore faces the possibility to be banned in Japan \cite{monero}.}. Lastly, non-fungible tokens represent unique tangible or intangible items which are not interchangeable \cite[p.~175]{Antonopoulos.2018}.
 
 \subsubsection{Intrinsicality \& Counterparty Risk}
-While some tokens represent blockchain-native digital items, many tokens are used to represent extrinsic things. By such, consensus rules do not entirely apply and human law or agreements decide whether the transfer of ownership through tokens will be recognised. It is therefore even more important to understand who possess the associated asset and know what formal rules apply \cite[pp.~175-176]{Antonopoulos.2018}. Leveraging tokens and smart-contracts to eliminate counterparty risk will most likely play part in future market strategies.
+While some tokens represent blockchain-native digital items, many tokens are used to represent extrinsic things. By such, consensus rules do not entirely apply and human law or agreements decide whether the transfer of ownership through tokens will be recognised. It is therefore even more important to understand who possess the associated asset and know what formal rules apply \cite[pp.~175-176]{Antonopoulos.2018}. Leveraging tokens and smart-contracts to eliminate counterparty risk will most likely play part in fut
+ure market strategies.
 
 \pagebreak
 
 \section{Ethereum}
+\subsection{Overview}
+In line with the web3's vision of a serverless internet (comp. \ref{dAppHistory}), Ethereum was designed to abstract the details of a blockchain to provide a deterministic and secure programming environment for decentralized applications in which developers  are no longer required to bootstrap the underlying mechanisms \cite[p.~27]{Antonopoulos.2018}. By such, it is practically regarded as an open-source, globally decentralized computing infrastructure that executes programs, known as smart-contracts, for which the current state and transitions leading to this state are stored in a blockchain alongside a cryptocurrency called Ether. However, it must be emphasised that Ether is primarily intended as a utility currency to meter and constrain resource usage during execution which stands in stark contrast with Bitcoin's sole purpose of being a digital payment network \cite[p.~23]{Antonopoulos.2018} \cite[p.~1]{bitcoin}.
 
-\pagebreak
+Compared to a general purpose computer, the main differences are that \cite[p.~28]{Antonopoulos.2018}:
 
-\section{Web Service Quality}
+\begin{itemize}
+  \item state changes are governed by rules of consensus
+  \item state is distributed globally on a shared ledger
+\end{itemize}
+
+From a computer science perspective, Ethereum may therefore be described as a deterministic but practically unbounded state-machine characterised by its \cite[p.~23]{Antonopoulos.2018}: 
+
+\begin{itemize}
+  \item globally accessible singleton state
+  \item virtual machine that applies changes to that state
+\end{itemize}
+ 
+%\hide{\footnote{Here: Program which is executed in the \acl{EVM} \cite[p.~57]{Antonopoulos.2018}. Can be generalised to refer to programs that change singleton state of globally accessible, unbounded state-machine (colloquially: world-computer) \cite[p.~23]{Antonopoulos.2018}.}}
+
+%This is achieved by using the blockchain to synchronise and store the state 
+
+%a tedious process when aiming for a secure and distributed network.
+
+%, thereby launching yet another (potentially unsecured) blockchain.
+
+%which should no longer be required to bootstrap the underlying 
+
+% without having them bootstrap the underlying infrastructure and by such launching yet another blockchain.
+
+%that go beyond digital currencies. 
+
+
+%Ethereum is commonly described as being a word computer, meaning that its programs run everywhere but yet produce a common state 
+
+\subsection{Developer Popularity \& Community Adoption}
+Naturally, and as is the case with most base layer technologies, Ethereum does not represent the only smart-contract platform available \footnote{Contenders include (alphabetically listed): Cardano, EOS, Hyperledger Fabric, Lisk, NEM, NEO, Stratis and Waves.}. Nevertheless, several key figures support the claim of Ethereum dominating this space: 
+
+\begin{itemize}
+  \item 94 of top 100 tokens launched on Ethereum (and 87\% of top 800) \cite{coinmarketTop100Tokens} \cite{ethereumNetworkState}
+  \item ranks well above competitors (\#33 vs. \#72 for EOS) when comparing traffic of dedicated topics on StackExchange network \cite{stackExchangeTechnology}
+  \item 1M MetaMask users (browser plug-in for lightweight blockchain connectivity) \cite{ethereumNetworkState}
+\end{itemize}
+
+Moreover, \citeauthor{10.1371/journal.pone.0169556} argue that upon emergence of a new, technically more advanced platform, the blockchain with a stronger development team and open-source community is more likely to succeed \cite[p.~14]{10.1371/journal.pone.0169556}. This developer and community focused nature is clearly seen within the Ethereum landscape:
+
+\begin{itemize}
+  \item StackExchange topic encounters mainly developer focused questions \cite[p.~6]{blockchainTechnologyGrowth}
+  \item \textasciitilde 14.3k answered questions (vs. \textasciitilde 850 for EOS) [68\% vs. 81\% of total questions] \cite{stackExchangeTechnology}
+  \item 17.5k repositories on GitHub
+  \item 550k downloads of Truffle (development \& testing framework) \cite{ethereumNetworkState}
+\end{itemize}
+
+Most importantly, Ethereum is estimated to have around 250k developers \cite{ethereumNetworkState}, a 30-fold lead to Hyperledger Fabric, the second most active community, according to a report from Gartner \cite{bloomberg2017}. 
+
+Similarly, the degree of decentralization should not be neglected when considering platforms based on public blockchains. To this extent, Ethereum boosts 17.6k nodes across six continents \cite{ethernodes}.  
+
+
+%The scope of activity is also the best indicator of a cryptocurrency's market valuation \cite[p.~8]{10.1371/journal.pone.0169556}.   
+
+
+% suggest that developer activity is the best indicator of a cryptocurrency's market valuation and 
+%Moreover, developer activity is 
+
+
+
+%\pagebreak
+%
+%\section{Web Service Quality}
