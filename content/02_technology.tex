@@ -316,7 +316,9 @@ An application is considered to be a \acf{dApp} if it exhibits all of the charac
 
 The definition presented within this section purposely does not make any assumptions about the user interface or a \ac{dApp}'s resiliency. More importantly, the primary focus and goal of any \ac{dApp} developer should be to give users the confidence that a product works as promised by solely relying on open, decentralized peer-to-peer infrastructure services that can be inspected for functioning from end-to-end.
 
-\todo[inline]{draw comparison to CLIs in respect to UI}
+\todo[inline]{draw comparison to CLIs in respect to UI absence}
+
+\todo[inline]{compare infrastructure model against traditional web apps to highlight open deployment}
 
 %which can be maximised by employing additional decentralized protocols as outlined above
 
@@ -332,8 +334,6 @@ The definition presented within this section purposely does not make any assumpt
 %  	\caption{Infrastructure model comparison between traditional web application and \ac{dApp}}
 %  	\label{fig:dAppArchitecture}
 %\end{figure}
-
-\todo[inline]{compare infrastructure model against traditional web apps to highlight open deployment}
 	
 \subsection{Tokens}
 By introducing a digital equivalent, blockchain has evoked a semantic change for the word token originally used to mean privately-issued coin-like items that have insignificant value and are designed for a single purpose (e.g. transportation-, arcade- or laundry tokens). Now, tokens are used to simultaneously convey ownership, access rights, as well as the right to vote, for instance. Moreover, they are more easily exchangeable, a pitfall commonly cited \cite[p.~173]{Antonopoulos.2018}. According to \citeauthor{Antonopoulos.2018}, this could make tokens quite valuable when used in a way that does not re-create the conditions that made physical tokens worthless \cite[p.178]{Antonopoulos.2018}, hereby hoping for industry wide solutions. 
@@ -399,13 +399,13 @@ From a computer science perspective, Ethereum may therefore be described as a de
 
 %Ethereum is commonly described as being a word computer, meaning that its programs run everywhere but yet produce a common state 
 
-\subsection{Developer Popularity \& Community Adoption}
-Naturally, and as is the case with most base layer technologies, Ethereum does not represent the only smart-contract platform available \footnote{Contenders include (alphabetically listed): Cardano, EOS, Hyperledger Fabric, Lisk, NEM, NEO, Stratis and Waves.}. Nevertheless, several key figures support the claim of Ethereum dominating this space: 
+\subsection{Developer Popularity \& Adoption}
+Naturally, and as is the case with most base layer technologies, Ethereum does not represent the only smart-contract platform available \footnote{Contenders include (alphabetically listed): Cardano, Corda, EOS, Hyperledger Fabric, Lisk, NEM, NEO, Stratis and Waves.}. Nevertheless, several key figures support the claim of Ethereum dominating this space: 
 
 \begin{itemize}
-  \item 94 of top 100 tokens launched on Ethereum (and 87\% of top 800) \cite{coinmarketTop100Tokens} \cite{ethereumNetworkState}
-  \item ranks well above competitors (\#33 vs. \#72 for EOS) when comparing traffic of dedicated topics on StackExchange network \cite{stackExchangeTechnology}
-  \item 1M MetaMask users (browser plug-in for lightweight blockchain connectivity) \cite{ethereumNetworkState}
+  \item 94 of top 100 tokens (i.e. \acp{dApp}) launched on Ethereum (87\% of top 800) \cite{coinmarketTop100Tokens} \cite{ethereumNetworkState}
+  \item ranks well above competitors (\#33 vs. \#72 for EOS) when comparing traffic of dedicated sites in StackExchange network \cite{stackExchangeTechnology}
+%  \item 1M MetaMask users (browser plug-in for lightweight blockchain connectivity) \cite{ethereumNetworkState}
 \end{itemize}
 
 Moreover, \citeauthor{10.1371/journal.pone.0169556} argue that upon emergence of a new, technically more advanced platform, the blockchain with a stronger development team and open-source community is more likely to succeed \cite[p.~14]{10.1371/journal.pone.0169556}. This developer and community focused nature is clearly seen within the Ethereum landscape:
@@ -413,13 +413,13 @@ Moreover, \citeauthor{10.1371/journal.pone.0169556} argue that upon emergence of
 \begin{itemize}
   \item StackExchange topic encounters mainly developer focused questions \cite[p.~6]{blockchainTechnologyGrowth}
   \item \textasciitilde 14.3k answered questions (vs. \textasciitilde 850 for EOS) [68\% vs. 81\% of total questions] \cite{stackExchangeTechnology}
-  \item 17.5k repositories on GitHub
-  \item 550k downloads of Truffle (development \& testing framework) \cite{ethereumNetworkState}
+  \item \textasciitilde17.5k repositories on GitHub (vs. \textasciitilde3.4k for EOS \& \textasciitilde2.5k for Hyperledger)  \footnote{A fuzzy, top-level search has been conducted on \href{https://github.com/search?q=ethereum}{GitHub}.}
+%  \item 550k downloads of Truffle (development \& testing framework) \cite{ethereumNetworkState}
 \end{itemize}
 
 Most importantly, Ethereum is estimated to have around 250k developers \cite{ethereumNetworkState}, a 30-fold lead to Hyperledger Fabric, the second most active community, according to a report from Gartner \cite{bloomberg2017}. 
 
-Similarly, the degree of decentralization should not be neglected when considering platforms based on public blockchains. To this extent, Ethereum boosts 17.6k nodes across six continents \cite{ethernodes}.  
+Similarly, the degree of decentralization should not be neglected when considering platforms based on public permissionless blockchains. To this extent, Ethereum boosts \textasciitilde17.6k nodes across six continents \footnote{EOS does not qualify since the 21 block producers used in its delegated proof-of-stake consensus mechanism are elected from a list of pre-approved candidates \cite[p.~6]{eosWhitepaper} \cite{eosBlockproducers}. A similar case can be made for NEO which is only currently in the process of decentralization \cite{neoDecentralization} \cite{neoConsensus}.} \cite{ethernodes}.  
 
 
 %The scope of activity is also the best indicator of a cryptocurrency's market valuation \cite[p.~8]{10.1371/journal.pone.0169556}.   
