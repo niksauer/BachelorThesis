@@ -524,9 +524,10 @@ Ethereum, by definition, is a system that allows concurrency of operations but e
   \item Check that block number, difficulty and various other low-level Ethereum-specific parameters are valid
   \item Check that proof-of-work on block is valid
   \item Set $\texttt{s[0]} =$ state of previous block
-  \item Set $\texttt{TX} =$ block transaction list (with n transactions). For each \texttt{i} in \texttt{0...n-1}, set $\texttt{s[i+1] = APPLY(S[i], TX[i])}$. Return an error, if any iteration returns an error (comp. \nameref{sec:stateTransition}) or total gas consumed exceeds the \texttt{GASLIMIT} \footnote{Similar to Bitcoin's block size, the \texttt{GASLIMIT} regulates the maximum number of transactions that can be included within a block \cite{blocksizeControversy} \cite[p.~8]{ethereumYellowPaper}}.
+  \item Set $\texttt{TX} =$ block transaction list (with n transactions). For each \texttt{i} in \texttt{0...n-1}, set $\texttt{s[i+1] = APPLY(S[i], TX[i])}$. Return an error, if any iteration returns an error (comp. \nameref{sec:stateTransition}) or total gas consumed exceeds the \texttt{GASLIMIT} \footnote{Similar to Bitcoin's block size, the \texttt{GASLIMIT} regulates the maximum number of transactions that can be included within a block \cite{blocksizeControversy} \cite[p.~8]{ethereumYellowPaper}.}.
   \item Set $\texttt{s\_final} = \texttt{s[n]}$ with block reward paid to miner
   \item Verify that merkle tree root of \texttt{s\_final} is equal to root provided in header
 \end{enumerate}
 
 This procedure also directly answers the question where contract code will be executed in terms of physical hardware. Namely, on all nodes that download and validate blocks containing transactions whose data field matches one of the methods of the recipient's contract code \cite[p.~24]{ethereumWhitepaperGitHub}.
+a
