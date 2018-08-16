@@ -366,7 +366,7 @@ ure market strategies.
 
 \section{Ethereum}
 \subsection{Overview}
-In line with the web3's vision of a serverless internet (comp. \ref{dAppHistory}), Ethereum was designed to abstract the details of a blockchain to provide a deterministic and secure programming environment for decentralized applications in which developers  are no longer required to bootstrap the underlying mechanisms \cite[p.~27]{Antonopoulos.2018}. By such, it is practically regarded as an open-source, globally decentralized computing infrastructure that executes programs, known as smart-contracts, for which the current state and transitions leading to this state are stored in a blockchain alongside a cryptocurrency called Ether. However, it must be emphasised that Ether is primarily intended as a utility currency to meter and constrain resource usage during execution which stands in stark contrast with Bitcoin's sole purpose of being a digital payment network \cite[p.~23]{Antonopoulos.2018} \cite[p.~1]{bitcoin}.
+In line with the web3's vision of a serverless internet (comp. \ref{dAppHistory}), Ethereum was designed to abstract the details of a blockchain to provide a deterministic and secure programming environment for decentralized applications in which developers  are no longer required to bootstrap the underlying mechanisms \cite[p.~27]{Antonopoulos.2018}. By such, it is practically regarded as an open-source, globally decentralized computing infrastructure that executes programs, known as smart-contracts, for which the current state and transitions leading to this state are stored in a blockchain alongside a cryptocurrency called Ether. However, it must be emphasised that Ether is primarily intended as a utility currency \footnote{Amusingly, Vitalik Buterin, co-founder of Ethereum, would like to use Bitcoin Cash for day-to-day transactions \cite{forbes2018}.} to meter and constrain resource usage during execution which stands in stark contrast with Bitcoin's sole purpose of being a digital payment network \cite[p.~23]{Antonopoulos.2018} \cite[p.~1]{bitcoin}.
 
 Compared to a general purpose computer, the main differences are that \cite[p.~28]{Antonopoulos.2018}:
 
@@ -450,7 +450,7 @@ Further, two types of accounts are distinguished \cite[p.~17]{ethereumWhitepaper
 \end{description}
 
 \subsubsection{Messages and Transactions}
-As previously indicated, a transaction is a signed data package that stores a message which originated from an \ac{EOA}. It works analogously as expected from any cryptocurrency (i.e. it results in a transfer of value, if confirmed and non-zero, positive amount was specified) but has been expanded by three additional fields for contract invocation \cite[p.~18]{ethereumWhitepaperGitHub}: 
+As previously indicated, a transaction is a signed data package that stores a message which originated from an \ac{EOA}. It works as expected from any cryptocurrency (i.e. it results in a transfer of value, if confirmed and non-zero, positive amount was specified) but has been expanded by three additional fields for contract invocation \cite[p.~18]{ethereumWhitepaperGitHub}: 
 
 \begin{AutoMultiColItemize}
   \item recipient
@@ -464,21 +464,25 @@ As previously indicated, a transaction is a signed data package that stores a me
 On the other hand, messages are virtual objects that are never serialized \cite[p.~19]{ethereumWhitepaperGitHub}. This is due to the fact that all messages can be reconstructed by replying the transaction that triggered a contract's code to run and thus, produced the message in question \footnote{Messages are generated whenever a contract uses the \texttt{CALL} upcode \cite[p.~19]{ethereumWhitepaperGitHub}}. More, they only implicitly contain the sender's address and do not allow the gas price to be specified as is explained in the following section.
 
 \subsubsection{Gas}
-Whereas Bitcoin's scripting language is constrained to simple \texttt{true/false} evaluation of spending conditions, Ethereum's language is Turing-complete, meaning that it can execute code of arbitrary and unbounded complexity \cite[p.~25]{Antonopoulos.2018}. In turn, this leads to additional security and resource management problems as it cannot be predicted whether a program will terminate or run in infinite loops to effectively cause a Denial-of-Service. 
+Whereas Bitcoin's scripting language is constrained to simple \texttt{true/false} evaluation of spending conditions, Ethereum's language is Turing-complete, meaning that it can execute code of arbitrary and unbounded complexity \cite[p.~25]{Antonopoulos.2018}. In turn, this leads to additional security and resource management problems as it cannot be predicted whether a program will terminate or run in infinite loops to effectively cause a Denial-of-Service. To combat this attacking scheme, Ethereum introduces a metering mechanism called \textit{gas} which accounts for every instruction performed and assigns each a predetermined cost in units of gas \footnote{The current fee schedule can be found in \cite[p.~25]{ethereumYellowPaper}.} relative to the degree of computation required or burden imposed from writing to a persistent data store \cite[pp.~32-33]{Antonopoulos.2018}. For simple transactions (i.e. a payment), the amount needed has been fixed at 21k units \cite[p.~153]{Antonopoulos.2018}. 
 
-To combat this attacking scheme, Ethereum introduces a metering mechanism called \textit{gas} which accounts for every instruction performed and assigns each a predetermined cost in units of gas \footnote{The current fee schedule can be found in \cite[p.~25]{ethereumYellowPaper}.} relative to the degree of computation required or burden imposed from writing to the persistent data storage. By requiring transactions to set an upper limit (\texttt{STARTGAS}), execution will deterministically terminate as soon as the gas consumed exceeds the gas supplied \cite[pp.~32-33]{Antonopoulos.2018}. Logically, the total amount to be consumed by invoking a particular method can only be estimated because contracts can evaluate different conditions leading to different execution paths \cite[p.~154]{Antonopoulos.2018}. However, simple transactions (i.e. a payment) will always require 21k units of gas.
+By requiring transactions to set an upper limit (\texttt{STARTGAS}), execution will deterministically terminate as soon as the gas consumed exceeds the gas supplied \cite[p.~33]{Antonopoulos.2018}. This gas allowance applies to both the transaction itself, as well as all sub-executions triggered through the encapsulated message \cite[p.~19]{ethereumWhitepaperGitHub}. Logically, the total amount to be consumed by invoking a particular method can only be estimated because contracts can evaluate different conditions leading to different execution paths. In any case, \acp{EOA} are only billed for the gas actually used \footnote{Assert-style exceptions consume all gas available \cite[p.~75]{solidityDocs}} \cite[p.~154]{Antonopoulos.2018}. 
 
-Additionally, the \texttt{GASPRICE} field allows an originator to set the exchange rate for each unit of gas (measured in Wei per gas unit) \footnote{Often, the suggested gas price is calculated as the median across the last several blocks \cite[p.~153]{Antonopoulos.2018}.}. Analogous to other cryptocurrencies, the higher the gas price, the faster the transaction is likely to confirm. Still, it may also be set to zero and might even get mined during periods of low demand \cite[p.~153]{Antonopoulos.2018}. 
+Additionally, the \texttt{GASPRICE} field allows an originator to set the exchange rate for each unit of gas (measured in Wei per gas unit). Analogous to other cryptocurrencies, the higher the gas price \footnote{Often, the suggested gas price is calculated as the median across the last several blocks \cite[p.~153]{Antonopoulos.2018}. However, gas prices are predominantly determined by miners and can therefore fluctuate unexpectedly \cite[p.~54]{Antonopoulos.2018}.}, the faster the transaction is likely to confirm. Still, it may also be set to zero and the transaction might even get mined during periods of low demand \cite[p.~153]{Antonopoulos.2018}. 
 
-In this sense, gas is the fuel of Ethereum and has been purposefully separated as such to protect the system from Ether's volatility in value \cite[p.~152]{Antonopoulos.2018}.
+With these two parameters in place, the transaction fee, collected by miners, can be calculated as specified in \autoref{eq:transactionFee} \cite[p.~53]{Antonopoulos.2018} \cite[p.~20]{ethereumWhitepaperGitHub}.
 
-% - gas allowance assigned by transaction applies to total gas consumed by that transaction and all sub-executions [ADD, WP p. 19]
-% - give equation for transaction fee
-% - cost of basic transaction is 21000 gas units > gas prices can fluctuate as they are predominantly determined by miners [ADD, ME p. 54]
-% - every transaction requires payment of a fee collected by the miners to validate transaction > charged in virtual currency galled gas payed with ether as part of the transaction [ADD, ME pp. 53-54] 
-% - (in any case, EOS) only billed for gas actually consumed [ME, p. 154]
-% - invocation of your smart contract comes with transaction costs. You always need to think of incentives for people to use your application [2] [ADD, SO p. ]
+\begin{equation}
+\label{eq:transactionFee}
+fee = gas\ consumed * gas\ price
+\end{equation}
 
+In this sense, gas is the fuel of Ethereum and has been purposefully separated as such to protect the system from Ether's volatility in value \cite[p.~152]{Antonopoulos.2018}. At the same time, developers need to think of incentives for people to use the application since invocation of a smart-contract ultimately incurs monetary costs \cite[p.~4]{blockchainTechnologyGrowth}. 
+
+\subsection{Functioning}
+\subsubsection{State Transition Function}
+\subsubsection{Code Execution}
+\subsubsection{Blockchain}
 %\pagebreak
 %
 %\section{Web Service Quality}
