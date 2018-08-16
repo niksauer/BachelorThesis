@@ -449,7 +449,8 @@ Further, two types of accounts are distinguished \cite[p.~17]{ethereumWhitepaper
 	Accounts containing code that executes whenever a message is received from another account \cite[p.~13]{Antonopoulos.2018}. Consequently, they are owned and controlled by the logic of the code stored respectively \cite[p.~57]{Antonopoulos.2018}. This code allows contract accounts to read and write to internal storage and send messages. The latter unlocks additional capabilities such as transferring Ether and creating new or interacting with existing contracts \cite[p.~19]{ethereumWhitepaperGitHub}.
 \end{description}
 
-\subsubsection{Messages and Transactions}
+\subsubsection{Messages \& Transactions}
+\label{sec:messagesTransactions}
 As previously indicated, a transaction is a signed data package that stores a message which originated from an \ac{EOA}. It works as expected from any cryptocurrency (i.e. it results in a transfer of value, if confirmed and non-zero, positive amount was specified) but has been expanded by three additional fields for contract invocation \cite[p.~18]{ethereumWhitepaperGitHub}: 
 
 \begin{AutoMultiColItemize}
@@ -470,7 +471,7 @@ By requiring transactions to set an upper limit (\texttt{STARTGAS}), execution w
 
 Additionally, the \texttt{GASPRICE} field allows an originator to set the exchange rate for each unit of gas (measured in Wei per gas unit). Analogous to other cryptocurrencies, the higher the gas price \footnote{Often, the suggested gas price is calculated as the median across the last several blocks \cite[p.~153]{Antonopoulos.2018}. However, gas prices are predominantly determined by miners and can therefore fluctuate unexpectedly \cite[p.~54]{Antonopoulos.2018}.}, the faster the transaction is likely to confirm. Still, it may also be set to zero and the transaction might even get mined during periods of low demand \cite[p.~153]{Antonopoulos.2018}. 
 
-With these two parameters in place, the transaction fee, collected by miners, can be calculated as specified in \autoref{eq:transactionFee} \cite[p.~53]{Antonopoulos.2018} \cite[p.~20]{ethereumWhitepaperGitHub}.
+With these two parameters in place, the definite transaction fee, collected by miners, can be calculated as specified in \autoref{eq:transactionFee} \cite[p.~53]{Antonopoulos.2018} \cite[p.~20]{ethereumWhitepaperGitHub}.
 
 \begin{equation}
 \label{eq:transactionFee}
@@ -481,8 +482,51 @@ In this sense, gas is the fuel of Ethereum and has been purposefully separated a
 
 \subsection{Functioning}
 \subsubsection{State Transition Function}
+\label{sec:stateTransition}
+Like any (distributed) state machine, Ethereum requires a function to transition the current state (\texttt{S}) to the next final state (\texttt{S'}). This function is defined as \texttt{APPLY(S, TX)~->~S'}, where \texttt{TX} represents any unprocessed (i.e. unconfirmed) transaction. Application works as following \cite[p.~20]{ethereumWhitepaperGitHub}:  
+
+\begin{enumerate}
+  \item Check if transaction is well formed, contains valid signature and matches nonce
+  \item Calculate $\texttt{FEE} = \texttt{STARTGAS} \times \texttt{GASPRICE}$, determine sending address from signature, subtract fee and increment nonce
+  \item Set $\texttt{GAS} = \texttt{STARTGAS}$ and take off certain quantity per byte to pay for in transaction
+  \item Transfer value to receiving account and run specified contract code if present
+  \item If transaction failed due to insufficient funds or out of gas exception, revert all state changes except payment of mining fees
+  \item Otherwise, refund remaining gas to sender and add fee to miner's balance
+\end{enumerate}
+
 \subsubsection{Code Execution}
-\subsubsection{Blockchain}
-%\pagebreak
+Instead of only tracking the state of currency ownership, Ethereum tracks a general-purpose, key-value data store \cite[p.~28]{Antonopoulos.2018}. More complex state transitions (i.e. not a payment) can be achieved by loading the code stored for a specific contract account into memory and running it on an emulated computer called the \ac{EVM} \cite[p.~57]{Antonopoulos.2018}. \ac{EVM} code is written in a low-level, stack-based bytecode language, generated from compiling one of the many high-level languages available \footnote{A curated list of compatible smart-contract languages can be found at \cite{smartContractLanguages}.} (e.g. LLL, Solidity, Vyper) \cite[p.~22]{ethereumWhitepaperGitHub} \cite[p.~29]{Antonopoulos.2018}. 
+
+In general, code execution is an infinite loop that repeatedly carries out the operation at the current program counter until the end of code is reached or an \texttt{ERROR}, \texttt{STOP} or \texttt{RETURN} instruction is detected. During execution in the \ac{EVM}, code may access the value, sender and data of an incoming message, in addition to basic block header data and the global account state. Furthermore, operations have access to three types of space in which to store data \cite[p.~22]{ethereumWhitepaperGitHub}:
+
+\begin{itemize}
+  \item stack (follows LIFO-principle with push and pop methods)
+  \item memory (infinitely expandable byte array)
+  \item storage (persistent key-value store)
+\end{itemize}
+
+Lastly, it must be mentioned that the \ac{EVM} is modelled as a completely isolated, sandboxed process preventing access to the network and filesystem \cite[p.~19]{solidityDocs}. This has the negative effect of rendering most traditional APIs useless \cite[p.~46]{Raval.2016}. 
+
+%Solidity represents the most dominant and widely used language \cite[p.~58]{Antonopoulos.2018}.
+
+%Similar to the formal definition of a Turing machine, the full computational state during execution in the \ac{EVM} can be described as a tuple in which \texttt{block\_state} refers to the global state containing all accounts: 
 %
-%\section{Web Service Quality}
+%\begin{quotation}
+%(\texttt{block\_state, transaction, message, code, memory, stack, pc, gas})
+%\end{quotation}
+
+\subsubsection{Block Validation}
+Ethereum, by definition, is a system that allows concurrency of operations but enforces a singleton state at each mined block \cite[p.~151]{Antonopoulos.2018}. To ensure that this state (also applies to forks) represents a valid state, the following block validation algorithm must be carried out by each node upon downloading a foreign block \cite[p.~57]{Antonopoulos.2018} \cite[pp.~23]{ethereumWhitepaperGitHub}:
+
+\begin{enumerate}
+  \item Check if previous block referenced exists and is valid
+  \item Check that timestamp is greater than previous but less than 15 minutes in future
+  \item Check that block number, difficulty and various other low-level Ethereum-specific parameters are valid
+  \item Check that proof-of-work on block is valid
+  \item Set $\texttt{s[0]} =$ state of previous block
+  \item Set $\texttt{TX} =$ block transaction list (with n transactions). For each \texttt{i} in \texttt{0...n-1}, set $\texttt{s[i+1] = APPLY(S[i], TX[i])}$. Return an error, if any iteration returns an error (comp. \nameref{sec:stateTransition}) or total gas consumed exceeds the \texttt{GASLIMIT} \footnote{Similar to Bitcoin's block size, the \texttt{GASLIMIT} regulates the maximum number of transactions that can be included within a block \cite{blocksizeControversy} \cite[p.~8]{ethereumYellowPaper}}.
+  \item Set $\texttt{s\_final} = \texttt{s[n]}$ with block reward paid to miner
+  \item Verify that merkle tree root of \texttt{s\_final} is equal to root provided in header
+\end{enumerate}
+
+This procedure also directly answers the question where contract code will be executed in terms of physical hardware. Namely, on all nodes that download and validate blocks containing transactions whose data field matches one of the methods of the recipient's contract code \cite[p.~24]{ethereumWhitepaperGitHub}.
