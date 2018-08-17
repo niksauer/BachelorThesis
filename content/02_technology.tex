@@ -16,11 +16,11 @@ Anticipating the depletion of capacity in disposal sites and due to the consider
 
 These objectives were supported by introducing the:
 
-\begin{description}
+\begin{description}[format={\storedescriptionlabel}]
 	\item[Obligation to take back packaging]
 	\hfill \\
 	Producers and distributors of packaging are obliged to take back packaging free of charge, restricted to those goods of type, shape, size and material found within their stock \cite[§§~4-6]{verpackV1991}. Distributors with a retail area of less than 200$m^2$ are further exempted to the same brands. This duty may be only be ignored if a distributor participates in a system which ensures the periodical collection of waste \cite[§~6]{verpackV1991}, known and implemented as a refuse recycling system (\textit{duales System}) in 1990 \cite[p.~3]{Hartlep2011Recycling}.
-	\item[Obligation to levy deposits on \gls{beverage packaging}] \footnote{Information regarding the assumed effects and critique thereof can be found in \cite[p.~630]{Cora2000} and \cite{wacker2008pflichtpfand}.}
+	\item[Obligation to levy deposits on \gls{beverage packaging}\label{itm:levyDepositObligation}] \footnote{Information regarding the presumed effects and critique thereof can be found in \cite[p.~630]{Cora2000} and \cite{wacker2008pflichtpfand}.}
 	\hfill \\
 	A deposit is to be charged by the distributor that will be refunded to the purchaser upon return of the bottle. This duty is applicable on all levels of trade involving domestic beverages sold in non-\gls{reusable packaging} (\textit{one-way packaging}) \cite[§~7]{verpackV1991} and becomes effective as soon as the quote of reusable beverage packaging falls below 72\% \footnote{Aggregated quote derived from weighted average of percentages of reusable packaging encountered across individual segments in 1990 \cite[§~9]{verpackV1991} \cite[p.~134]{Rummler/Schutt1991}} \cite[§~9]{verpackV1991}.
 \end{description}
@@ -56,7 +56,7 @@ These objectives were supported by introducing the:
         
 		\end{axis}
 	\end{tikzpicture}
-  	\caption{Aggregated quote of reusable beverage packaging (in \%) between 1991 and 2013 \cite[p.~1]{BMU2015} \hide{\cite{statista2015Mehrweg}}}
+  	\caption{Quote of reusable beverage packaging (in \%) between 1991 and 2013 \cite[p.~1]{BMU2015} \hide{\cite{statista2015Mehrweg}}}
   	\label{fig:reusableQuoteDevelopment}
 \end{figure}
 
@@ -123,7 +123,8 @@ As indicated, actors of the deposit-refund cycle (e.g. retailer selling returnab
 \end{description}
 
 \subsubsection{Deposit-Refund Cycle}
-Each buyer of a returnable bottle must directly pay the designated deposit to the seller. This process starts with the initial distributor (step 1 of \autoref{fig:depositRefundCycle}) and is repeated for each sub-distributor until the bottles reaches retail which acts as the final distributor to end consumers (step 2 of \autoref{fig:depositRefundCycle}). After consumption, the consumer may return the packaging at any retail store obliged to take back the packaging in question (take-back point) (step 3 of \autoref{fig:depositRefundCycle}). Return may be performed manually (step 1a of \autoref{fig:clearingProcess}) or can be automated through reverse vending machines (step 1b of \autoref{fig:clearingProcess}). The former requires personnel to count the number of returned bottles and refund the consumer accordingly. Following count, the collected bottles must be shipped to a counting center which is responsible for digitally capturing each bottle (step 2a of \autoref{fig:clearingProcess})\hide{\cite[p.~76]{DPG/Roland Berger 2010}}\hide{\cite[p.~17]{Hartlep2011Recycling}}. At last, the bottles will be compressed to eliminate the possibility of repeated refunds\hide{\cite[p.~77]{DPG/Roland Berger 2010}}. In the case of reverse vending machines, the process of counting, capturing and compressing bottles can take place locally at a retail store (step 2b of \autoref{fig:clearingProcess})\hide{\cite[p.~76]{DPG/Roland Berger 2010}}. Alternatively, retailers are permitted to return the packaging to the previous distributor, thereby unwinding the deposit-refund chain. However, this practice is rarely exercised since the packaging will not be reused and transportation would only induce additional ecological and financial strain\hide{\cite[p.~17]{Hartlep2011Recycling}}. Instead, the compressed packaging can be sold directly to recycling companies (step 3 of \autoref{fig:clearingProcess}) \cite[p.~16-17]{Hartlep2011Recycling} \cite{reiling}.  
+\label{sec:depositRefundCycle}
+Each buyer of a returnable bottle must directly pay the designated deposit to the seller. This process starts with the initial distributor (step 1 of \autoref{fig:depositRefundCycle}) and is repeated for each sub-distributor until the bottles reaches a retailer which acts as the final distributor to end consumers (step 2 of \autoref{fig:depositRefundCycle}). After consumption, the consumer may return the packaging at any retail store obliged to take back the packaging in question (take-back point) (step 3 of \autoref{fig:depositRefundCycle}). Return may be performed manually (step 1a of \autoref{fig:clearingProcess}) or can be automated through reverse vending machines (step 1b of \autoref{fig:clearingProcess}). The former requires personnel to count the number of returned bottles and refund the consumer accordingly. Following count, the collected bottles must be shipped to a counting center which is responsible for digitally capturing each bottle (step 2a of \autoref{fig:clearingProcess})\hide{\cite[p.~76]{DPG/Roland Berger 2010}}\hide{\cite[p.~17]{Hartlep2011Recycling}}. At last, the bottles will be compressed to eliminate the possibility of repeated refunds\hide{\cite[p.~77]{DPG/Roland Berger 2010}}. In the case of reverse vending machines, the process of counting, capturing and compressing bottles can take place locally at a retail store (step 2b of \autoref{fig:clearingProcess})\hide{\cite[p.~76]{DPG/Roland Berger 2010}}. Alternatively, retailers are permitted to return the packaging to the previous distributor, thereby unwinding the deposit-refund chain. However, this practice is rarely exercised since the packaging will not be reused and transportation would only induce additional ecological and financial strain\hide{\cite[p.~17]{Hartlep2011Recycling}}. Instead, the compressed packaging can be sold directly to recycling companies (step 3 of \autoref{fig:clearingProcess}) \cite[p.~16-17]{Hartlep2011Recycling} \cite{reiling}.  
 
 \begin{figure}[hbt]
   \centering
@@ -143,8 +144,7 @@ Since take-back points refund consumers independent of a bottle’s purchasing l
 
 Refund invoices must also include data representing the number of bottles for which a refund was issued. This data originates from the return process in which each bottle is eventually captured. Capture refers to both validating the universal security mark printed on a bottle’s label as well as extracting the \ac{EAN} by scanning its barcode. By outfitting reverse vending machines with a network connection, looking up the \ac{EAN} in question becomes possible, thus ensuring that a deposit for the bottle has been collected beforehand\hide{\cite[pp.~2]{Wincor Nixdorf 2010}}. For each valid bottle, a signed record is then produced and stored on the machine\hide{\cite[p.~18]{Hartlep2011Recycling}}. This data must be retrieved and transmitted within one week\hide{\cite[p.~90]{DPG/Roland Berger 2010}}. Likewise, retailers receive a similar dataset when relying on a counting center\hide{\cite[p.~18]{Hartlep2011Recycling}}. Finally, any transmitted data is anonymised by removing the return location and summing up the refunds for each \ac{EAN} captured\hide{\cite[pp.~90]{DPG/Roland Berger 2010}}. Initial distributors must pay the invoice within ten business days or five-teen calendar days at the lastet \hide{\cite[p.~40]{DPG/Roland Berger 2010}} \cite[p.~18-19]{Hartlep2011Recycling}.
 
-
-\todo[inline]{explain intention / presumed effects of bottle deposits?}
+An extended diagrammatical overview of this cycle can be found in the appendix \autoref{appendix:theoreticalFramework} on \autopageref{fig:depositCycleCurrent}. It includes the various scenarios encountered nowadays which lead to differently balanced accounting states, as indicated previously. Also, the process of buying a returnable bottle from the perspective of a whole-seller or any other special entity such as a caterer is reflected in both figures since these parties are ultimately responsible for returning the one-way bottle as long as it has not been further distributed and by such, should be regarded as a consumer.
 
 \todo[inline, color=orange]{explain situation surrounding deposits on reusable bottles?}
 
@@ -530,4 +530,3 @@ Ethereum, by definition, is a system that allows concurrency of operations but e
 \end{enumerate}
 
 This procedure also directly answers the question where contract code will be executed in terms of physical hardware. Namely, on all nodes that download and validate blocks containing transactions whose data field matches one of the methods of the recipient's contract code \cite[p.~24]{ethereumWhitepaperGitHub}.
-a

@@ -1,12 +1,62 @@
 % !TeX root = ../dokumentation.tex
 
+% appendices settings
+%\renewcommand*{\chapterpagestyle}{empty}
+
+%\makeatletter
+%\newcommand{\unchapter}[1]{%
+%  \begingroup
+%  \let\@makechapterhead\@gobble % make \@makechapterhead do nothing
+%  \chapter{#1}
+%  \endgroup
+%}
+%\makeatother
+
+%\newcommand*\Hide{%
+%\titleformat{\chapter}
+%  {}{0pt}{0pt}{}
+%\titleformat{\part}
+%  {}{}{0pt}{}
+%}
+
+% appendices start
 \begin{appendices}
-	
+
+\chapter{Theoretical Framework}
+\label{appendix:theoreticalFramework}
+
+\pagebreak
+
+\begin{sidewaysfigure}[ht]
+    \includegraphics[width=\textwidth]{deposit_cycle_current.pdf}
+    \caption{Current deposit-refund cycle}
+	\label{fig:depositCycleCurrent}
+\end{sidewaysfigure}
+
+\FloatBarrier
+
+
+\chapter{Concept}
+\label{appendix:concept}
+
+\pagebreak
+
+\begin{sidewaysfigure}[ht]
+    \includegraphics[width=\textwidth]{deposit_cycle_future.pdf}
+    \caption{Future deposit-refund cycle}
+	\label{fig:depositCycleFuture}
+\end{sidewaysfigure}
+
+\FloatBarrier
+
+
+\chapter{Implementation}
+
 \end{appendices}
 
 
 %\addchap{\langanhang}
-
+%
 %(Beispielhafter Anhang)
 % 
 %
@@ -18,7 +68,7 @@
 %\end{enumerate}
 %}
 %\pagebreak
-%\includepdf[pages=-,scale=.9,pagecommand={}]{Aufgabenstellung.pdf} % PDF um 10% verkleinert einbinden --> Kopf- und Fußzeile  werden so korrekt dargestellt. Die Option `pages' ermöglicht es, eine bestimmte Sequenz von Seiten (z.B. 2-10 oder `-' für alle Seiten) auszuwählen.
+%%\includepdf[pages=-,scale=.9,pagecommand={}]{Aufgabenstellung.pdf} % PDF um 10% verkleinert einbinden --> Kopf- und Fußzeile  werden so korrekt dargestellt. Die Option `pages' ermöglicht es, eine bestimmte Sequenz von Seiten (z.B. 2-10 oder `-' für alle Seiten) auszuwählen.
 %\pagebreak
 %\section*{B. List of CD Contents}
 %\begin{tabbing}
@@ -50,3 +100,4 @@
 %	\> \>  $\vdash$  \textbf{images/}   \> $\Rightarrow$ \textit{All used images}\\
 %	\> \>  $\vdash$  \textbf{lang/}  \> $\Rightarrow$ \textit{Language files for \LaTeX~template}\\ %\llcorner
 %\end{tabbing}
+

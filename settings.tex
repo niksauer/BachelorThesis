@@ -125,11 +125,14 @@
 \usepackage{pgfplots}
 \usepackage{enumitem}
 \usepackage{multirow}
-\usepackage[toc]{appendix}
-%\usepackage{titlesec}
+\usepackage[toc, page]{appendix}
+%\usepackage[explicit]{titlesec}
+\usepackage{rotating}
 
+% hide text
 \newcommand{\hide}[1]{\ignorespaces}
 
+% nameref for description
 \makeatletter
 \newcommand\storedescriptionlabel[1]{%
   \let\orglabel\label
@@ -143,7 +146,8 @@
 \newcommand*\circled[1]{\tikz[baseline=(char.base)]{
             \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
             
-            
+
+% multi column            
 \usepackage{etoolbox,refcount}
 \usepackage{multicol}
 
@@ -171,3 +175,8 @@
 \setupcountitems\begin{itemize}}%
 {\end{itemize}%
 \unskip\computecountitems\ifnumcomp{\previtemizecount}{>}{3}{\end{multicols}}{}}
+
+% fix appendices font
+\let\appendixpagenameorig\appendixpagename
+\renewcommand{\appendixpagename}{\sffamily\appendixpagenameorig}
+

@@ -4,14 +4,47 @@
 \label{chp:concept}
 
 \section{Solution Overview}
-	
-	\subsection{Functional Requirements}
-	
-	\subsection{Non-Functional Requirements}
 
-\section{Evaluation Framework}
+%- Usability (Rechenzeit, Storage, Dauer, Kosten)
+%- Design Ansätze > Backlog, Wartezeit (Vergleich mit Internetspeed damals), Transaktionsminimierung
+%- Public oder Private Blockchain?
+%- Abrechnung pro Monat, da ansonsten kein Prozentsatz ermittelt werden kann
+%- funktional > User Stories
+%- nicht-funktional > schnelle Antwortzeiten, günstige Transaktionen, Skalierbarkeit 
+
+
+An incentivized deposit-refund system, as is outlined in the following, aims to:
+
+\begin{enumerate}[label=(\Alph*)]
+  \item \label{bolsterQuote} bolster the quote of beverages sold in reusable packaging
+  \item \label{preventPollution} prevent pollution of the environment caused from throwing away bottles
+  \item support the cause of environmental agencies
+\end{enumerate}
+
+From a game theoretical perspective, \ref{bolsterQuote} and \ref{preventPollution} are presumably achieved by \footnote{Lending itself to the fact that solely threatening retailers and bottlers with the introduction of a deposit-refund system had not been a successful approach (comp. \ref{itm:levyDepositObligation} and \autoref{fig:reusableQuoteDevelopment}).}:
+
+\begin{itemize}
+  \item rewarding consumers who purchase reusable bottles
+  \item punishing consumers whose bottles are eventually thrown away
+\end{itemize}
+
+To translate these measures into reality, it will be necessary to alter the current deposit-refund system (see \ref{sec:depositRefundCycle}) so that:
+
+\begin{itemize}
+  \item non-claimed deposits are redistributed among agencies and reusable bottle consumers
+  \item a penalty is added onto future deposits of consumers who repeatedly pollute
+\end{itemize}
+
+This revised deposit-refund system is portrayed in \autoref{fig:depositCycleFuture} on \autopageref{fig:depositCycleFuture}.
+
+	
+\subsection{Functional Requirements}
+	
+\subsection{Non-Functional Requirements}
+	
+\subsection{Derived Assumptions}
+
+%\section{Evaluation Framework}
 
 \section{Architecture}
-
-	\subsection{Assumptions}
 
