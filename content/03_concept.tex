@@ -3,16 +3,9 @@
 \chapter{Concept}
 \label{chp:concept}
 
-\section{Solution Overview}
+\section{Incentivized Deposit-Refund System}
 
-%- Usability (Rechenzeit, Storage, Dauer, Kosten)
-%- Design Ansätze > Backlog, Wartezeit (Vergleich mit Internetspeed damals), Transaktionsminimierung
-%- Public oder Private Blockchain?
-%- Abrechnung pro Monat, da ansonsten kein Prozentsatz ermittelt werden kann
-%- funktional > User Stories
-%- nicht-funktional > schnelle Antwortzeiten, günstige Transaktionen, Skalierbarkeit 
-
-
+\subsection{Overview}
 An incentivized deposit-refund system, as is outlined in the following, aims to:
 
 \begin{enumerate}[label=(\Alph*)]
@@ -35,35 +28,79 @@ To translate these measures into reality, it will be necessary to alter the curr
   \item a penalty is added onto future deposits of consumers who repeatedly pollute
 \end{itemize}
 
-Practically, this will require garbage collection to report how many and which specific bottles have been thrown away. Otherwise, it will not be possible to calculate the amount of non-claimed deposits and identify which consumer was responsible for the bottle at last. The latter infers that bottles must be uniquely identifiable. On the other hand, such a system can only be realized if retailers forward the information that a consumer has bought reusable bottles and has thereby become eligible to receive rewards. Naturally, it should also be prevented that anybody can report these figures, pretend to be an environmental agency or claim someone else's rewards. This core functionality, together with the existing minimum level of service, can be expressed in terms of the different interactions a certain user may have with the system, known as a use case diagram and given by \autoref{fig:useCaseOverview}.
+Practically, this will require garbage collection to report how many and which specific one-way bottles have been thrown away. Otherwise, it will not be possible to calculate the amount of non-claimed deposits and identify which consumer was responsible for the bottle at last. The latter infers that bottles must be uniquely identifiable. On the other hand, such a system can only be realized if retailers forward the information that a consumer has bought reusable bottles and has thereby become eligible to receive rewards. In order to establish proper ownership, they must also report which one-way bottles a consumer has purchased. Naturally, it should be prevented that anybody can report these figures, pretend to be an environmental agency or claim someone else's rewards. This core functionality, together with the existing minimum level of service, can be expressed in terms of the different interactions a certain user may have with the system, known as a use case diagram and given by \autoref{fig:useCaseOverview}.
 
 \begin{figure}[hbt]
   \includegraphics[width=\textwidth]{images/concept/use_case_overview}
-  \caption{Use Case Overview}
+  \caption{Use case overview}
   \label{fig:useCaseOverview}
 \end{figure}
 
 \FloatBarrier
 
-%In order to fully realize 
+\newlist{FR}{enumerate}{1}
+\setlist[FR]{label=FR-\arabic*:}
+
+\subsection{Proposed Rules}
+
+
+%In tandem, the first set of functional requirements is formulated accordingly:
+
 %This revised deposit-refund system is portrayed in \autoref{fig:depositCycleFuture} on \autopageref{fig:depositCycleFuture}.
 
+% functional requirements formatter
+\def\twodigits#1{%
+%  \ifnum#1<100 0\fi
+  \ifnum#1<10 0\fi
+  \number#1}
 
-
-
-
-
-
-	
 \subsection{Derived Functional Requirements}
+
+\subsubsection{Garbage collector}
+\begin{enumerate}[label={\textbf{FR-\protect\twodigits{\theenumi}}},leftmargin=*]
+	\item As a garbage collector, I can report the number of thrown away bottles, so that the amount of non-claimed deposits can be calculated
+	\item As a garbage collector, I can report the identifier of a thrown away bottle, so that the responsible consumer can be punished
+\end{enumerate}
+
+\subsubsection{Retailer}
+\begin{enumerate}[resume, label={\textbf{FR-\protect\twodigits{\theenumi}}},leftmargin=*]
+	\item As a retailer, I can report that a consumer has purchased reusable bottles, so that he becomes eligible to receive rewards
+	\item As a retailer, I can report how many reusable bottles a consumer has bought, so that his share of rewards can be calculated 
+	\item As a retailer, I can report which one-way bottles a consumer has bought, so that the ownership of each bottle can be established
+	\item As a retailer, I can query the penalty a specific consumer must pay, so that this amount can be added onto the deposit of each bottle
+\end{enumerate}
+
+\subsubsection{Take-back point}
+\begin{enumerate}[resume, label={\textbf{FR-\protect\twodigits{\theenumi}}},leftmargin=*]
+	\item As a tack-back point, I can put in a claim to be reimbursed for making advance refunds, so that I do not experience a loss from offering this service
+\end{enumerate}
 	
-\subsection{Derived Assumptions}
+\subsubsection{Consumer}
+\begin{enumerate}[resume, label={\textbf{FR-\protect\twodigits{\theenumi}}},leftmargin=*]  
+	\item As a consumer, I can claim a reward for purchasing reusable bottles, so that I will be motivated to so in the future even though one-way packaging is less of a hassle
+\end{enumerate}
+
+\subsubsection{Environmental agency}
+\begin{enumerate}[resume, label={\textbf{FR-\protect\twodigits{\theenumi}}},leftmargin=*]  
+	\item As an environmental agency, I can claim a donation, so that my cause is better supported through the funding received
+\end{enumerate}
+	
+\subsection{Derived Preconditions}
 
 \subsection{Non-Functional Requirements}
 
-\subsection{Blockchain Value Add}
+%\subsection{Blockchain Value Add}
 	
+%- Usability (Rechenzeit, Storage, Dauer, Kosten)
+%- Design Ansätze > Backlog, Wartezeit (Vergleich mit Internetspeed damals), Transaktionsminimierung
+%- Public oder Private Blockchain?
+%- Abrechnung pro Monat, da ansonsten kein Prozentsatz ermittelt werden kann
+%- funktional > User Stories
+%- nicht-funktional > schnelle Antwortzeiten, günstige Transaktionen, Skalierbarkeit 
+	
+
 \pagebreak
 
 \section{Architecture}
 
+\subsection{Deployment}
