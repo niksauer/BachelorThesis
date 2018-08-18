@@ -38,11 +38,42 @@ Practically, this will require garbage collection to report how many and which s
 
 \FloatBarrier
 
-\newlist{FR}{enumerate}{1}
-\setlist[FR]{label=FR-\arabic*:}
+From this it becomes apparent that a revised approach will essentially incorporate an accounting layer to enable the punishment and rewarding of consumers. Basic protocols of interaction (i.e. buying and returning a bottle) should only be modified to the minimum extent needed.
 
 \subsection{Proposed Rules}
+Having given a high-level introduction to an incentivized deposit-refund system, this section aims to provide an exemplary set of rules that may constitute the underlying business logic. Again, it must be noted that this only serves as a guideline for architecting such a solution. The precise economics, psychological effectiveness and ethics introduced hereby are disregarded (comp. \ref{sec:goalsScope}).
 
+\subsubsection{Rewards \& Donations}
+
+\begin{itemize}
+ 	\item 50\% of non-claimed deposits are reserved for donations (\textit{agency fund})
+  	\item 50\% of non-claimed deposits are reserved for rewards (\textit{consumer fund})
+  	\item rewards and donations can be claimed once in each period
+  	\item a period's duration is set at 4 weeks
+  	\item a consumer's reward ($r_c$) is based on the amount of reusable bottles ($b$) he has purchased within the previous period, thus can be calculated as:
+
+\begin{equation}
+r_c = \frac{b}{b_{total}} \times f_c
+\end{equation}
+
+where $b_{total}$ denotes the total number of reusable bottles sold within that period and $f_c$ resembles the consumer fund
+
+	\item non-claimed rewards are withheld for self-financing
+  	\item the agency fund ($f_a$) is evenly distributed, so that each's donation ($d$) will be $d = f_a/n$, where $n$ refers to the number of approved agencies
+  	\item non-claimed donations remain available for all agencies in the next period
+\end{itemize}
+
+\subsubsection{Penalties}
+
+\begin{itemize}
+ 	\item if a consumer repeatedly pollutes, he must pay a penalty on top of each deposit
+	\item the threshold ($t$) to receive a penalty is set at 5 thrown away bottles
+  	\item the penalty's value ($v$) is set at \EUR{0.05}
+  	\item a consumer's penalty ($p_c$) is proportional to the number of bottles ($b$) he has thrown away during the lifetime of this system, meaning that $p_c = b \mod t \times v$ 
+  	\item the penalty is refunded, if the consumer returns the bottle on his own
+  	\item the penalty is seized, if the bottle is thrown away or returned by someone else
+  	\item seized penalties are also used for self-financing
+\end{itemize}
 
 %In tandem, the first set of functional requirements is formulated accordingly:
 
@@ -54,35 +85,38 @@ Practically, this will require garbage collection to report how many and which s
   \ifnum#1<10 0\fi
   \number#1}
 
-\subsection{Derived Functional Requirements}
+\newlist{FR}{enumerate}{1}
+\setlist[FR]{label=FR-\arabic*:}
 
+% start of functional requirements
+\subsection{Derived Functional Requirements}
 \subsubsection{Garbage collector}
 \begin{enumerate}[label={\textbf{FR-\protect\twodigits{\theenumi}}},leftmargin=*]
-	\item As a garbage collector, I can report the number of thrown away bottles, so that the amount of non-claimed deposits can be calculated
-	\item As a garbage collector, I can report the identifier of a thrown away bottle, so that the responsible consumer can be punished
+	\item As a garbage collector, I can report the number of thrown away bottles, so that the amount of non-claimed deposits can be calculated.
+	\item As a garbage collector, I can report the identifier of a thrown away bottle, so that the responsible consumer can be punished.
 \end{enumerate}
 
 \subsubsection{Retailer}
 \begin{enumerate}[resume, label={\textbf{FR-\protect\twodigits{\theenumi}}},leftmargin=*]
-	\item As a retailer, I can report that a consumer has purchased reusable bottles, so that he becomes eligible to receive rewards
-	\item As a retailer, I can report how many reusable bottles a consumer has bought, so that his share of rewards can be calculated 
-	\item As a retailer, I can report which one-way bottles a consumer has bought, so that the ownership of each bottle can be established
-	\item As a retailer, I can query the penalty a specific consumer must pay, so that this amount can be added onto the deposit of each bottle
+	\item As a retailer, I can report that a consumer has purchased reusable bottles, so that he becomes eligible to receive rewards.
+	\item As a retailer, I can report how many reusable bottles a consumer has bought, so that his share of rewards can be calculated. 
+	\item As a retailer, I can report which one-way bottles a consumer has bought, so that the ownership of each bottle can be tracked.
+	\item As a retailer, I can look up the penalty that a specific consumer must pay, so that this amount can be added onto the deposit of each bottle during purchase.
 \end{enumerate}
 
-\subsubsection{Take-back point}
-\begin{enumerate}[resume, label={\textbf{FR-\protect\twodigits{\theenumi}}},leftmargin=*]
-	\item As a tack-back point, I can put in a claim to be reimbursed for making advance refunds, so that I do not experience a loss from offering this service
-\end{enumerate}
+%\subsubsection{Take-back point}
+%\begin{enumerate}[resume, label={\textbf{FR-\protect\twodigits{\theenumi}}},leftmargin=*]
+%	\item As a tack-back point, I can put in a claim to be reimbursed for making advance refunds, so that I do not experience a loss by offering this service.
+%\end{enumerate}
 	
 \subsubsection{Consumer}
 \begin{enumerate}[resume, label={\textbf{FR-\protect\twodigits{\theenumi}}},leftmargin=*]  
-	\item As a consumer, I can claim a reward for purchasing reusable bottles, so that I will be motivated to so in the future even though one-way packaging is less of a hassle
+	\item As a consumer, I can claim a reward for having purchased reusable bottles, so that I will be motivated to so in the future even though one-way packaging is lighter and more durable when compared to glass. 
 \end{enumerate}
 
 \subsubsection{Environmental agency}
 \begin{enumerate}[resume, label={\textbf{FR-\protect\twodigits{\theenumi}}},leftmargin=*]  
-	\item As an environmental agency, I can claim a donation, so that my cause is better supported through the funding received
+	\item As an environmental agency, I can claim a donation, so that my cause will be better supported through the funding secured.
 \end{enumerate}
 	
 \subsection{Derived Preconditions}
