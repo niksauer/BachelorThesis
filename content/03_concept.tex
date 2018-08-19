@@ -69,7 +69,12 @@ where $b_{total}$ denotes the total number of reusable bottles sold within that 
  	\item if a consumer repeatedly pollutes, he must pay a penalty on top of each deposit
 	\item the threshold ($t$) to receive a penalty is set at 5 thrown away bottles
   	\item the penalty's value ($v$) is set at \EUR{0.05}
-  	\item a consumer's penalty ($p_c$) is proportional to the number of bottles ($b$) he has thrown away during the lifetime of this system, meaning that $p_c = b \mod t \times v$ 
+  	\item a consumer's penalty ($p_c$) is proportional to the number of bottles ($b$) he has thrown away during the lifetime of this system, meaning that: 
+
+\begin{equation}
+p_c = \frac{b - (b \mod t)}{t} \times v
+\end{equation}
+
   	\item the penalty is refunded, if the consumer returns the bottle on his own
   	\item the penalty is seized, if the bottle is thrown away or returned by someone else
   	\item seized penalties are also used for self-financing
@@ -138,3 +143,12 @@ where $b_{total}$ denotes the total number of reusable bottles sold within that 
 \section{Architecture}
 
 \subsection{Deployment}
+\begin{description}
+	\item[Public]
+	\hfill \\
+	
+	\item[Private]
+	\hfill \\
+	
+\end{description}
+

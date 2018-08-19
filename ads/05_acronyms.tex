@@ -10,16 +10,27 @@
 %		\acp{Abk.}  --> gibt Plural aus (angefügtes 's'); das zusätzliche 'p' funktioniert auch bei obigen Befehlen
 %	siehe auch: http://golatex.de/wiki/%5Cacronym
 %	
+
+% acronym settings
+\makeatletter
+\newif\if@in@acrolist
+\AtBeginEnvironment{acronym}{\@in@acrolisttrue}
+\newrobustcmd{\LU}[2]{\if@in@acrolist#1\else#2\fi}
+
+\newcommand{\ACF}[1]{{\@in@acrolisttrue\acf{#1}}}
+\makeatother
+
+% start acronyms
 \begin{acronym}[YTMMM]
 \setlength{\itemsep}{-\parsep}
 
 \acro{dApp}{Decentralized Application}
 \acro{DPG}{Deutsche Pfandsystem GmbH}
 \acro{EAN}{European Article Number}
-\acro{EOA}{Externally Owned Account}
+%\acro{EOA}{Externally Owned Account}
+\acro{EOA}{\LU{E}{E}xternally \LU{O}{o}wned \LU{A}{a}ccount}
 \acro{EVM}{Ethereum Virtual Machine}
 \acro{HPE}{Hewlett Packard Enterprise}
-\acro{VerpackV}{Verpackungsverordnung}
 \acro{VerpackV}{Verpackungsverordnung}
 
 \end{acronym}
