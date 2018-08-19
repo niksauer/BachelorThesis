@@ -128,6 +128,10 @@
 %\usepackage[explicit]{titlesec}
 \usepackage{rotating}
 
+% continuous footnote numbering
+\usepackage{chngcntr}
+\counterwithout{footnote}{chapter}
+
 % hide text
 \newcommand{\hide}[1]{\ignorespaces}
 
@@ -179,3 +183,12 @@
 \let\appendixpagenameorig\appendixpagename
 \renewcommand{\appendixpagename}{\sffamily\appendixpagenameorig}
 
+% rangeref
+\newcommand{\rangelabelstart}[1]{\label{#1START}}
+\newcommand{\rangelabelend}[1]{\label{#1END}}
+
+\newcommand{\rangeref}[1]{\pageref{#1START}--\pageref{#1END}}
+
+% autoref
+\def\Appendixautorefname{Appendix}%
+%\def\Hfootnoteautorefname{Footnote}%

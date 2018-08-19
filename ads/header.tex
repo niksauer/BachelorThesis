@@ -66,7 +66,7 @@
 \usepackage[right]{eurosym}
 \usepackage{wrapfig}
 \usepackage{pgffor} % für automatische Kapiteldateieinbindung
-\usepackage[perpage, hang, multiple, stable]{footmisc} % Fussnoten
+\usepackage[hang, multiple, stable]{footmisc} % Fussnoten
 \usepackage[printonlyused]{acronym} % falls gewünscht kann die Option footnote eingefügt werden, dann wird die Erklärung nicht inline sondern in einer Fußnote dargestellt
 \usepackage{listings}
 
@@ -102,6 +102,8 @@
 	pdfdisplaydoctitle=true, 		% Dokumenttitel statt Dateiname anzeigen.
 	pdflang={\sprache}, 			% Sprache des Dokuments.
 ]{hyperref}
+
+\usepackage[nameinlink]{cleveref}
 
 % (Farb-)einstellungen für die Links im PDF
 \hypersetup{%
