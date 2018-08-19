@@ -93,7 +93,7 @@ p_c = \frac{b - (b \mod t)}{t} \times v
 
 % start of functional requirements
 \subsection{Derived Functional Requirements}
-In accordance to \ref{sec:incentivizedOverview} and \ref{sec:rules}, the following functional requirements are defined as the bare minimum of features any implementation must provide for it to be used as the accounting backend of an incentivized deposit-refund system. These requirements are expressed from the perspective of an end-user (\textit{user story}) who hopes to achieve different goals by using the system and are sorted by the various roles encountered (comp.~\autoref{fig:useCaseOverview}).
+In accordance to \ref{sec:incentivizedOverview} and \ref{sec:rules}, the following functional requirements are defined as the bare minimum of features any implementation must provide in order to be used as the accounting backend of an incentivized deposit-refund system. These requirements are expressed from the perspective of an end-user who hopes to achieve different goals by using the system and are sorted by the various roles encountered (comp.~\autoref{fig:useCaseOverview}).
 
 \paragraph{Garbage collector}
 \begin{enumerate}[label={\textbf{FR-\protect\twodigits{\theenumi}}},leftmargin=*]
@@ -125,10 +125,22 @@ In accordance to \ref{sec:incentivizedOverview} and \ref{sec:rules}, the followi
 \end{enumerate}
 	
 \subsection{Derived Preconditions}
+While an incentivized deposit-refund system may be effective, it does assume a variety of conditions that must be in place for it to function properly. As previously hinted, they can be described as the:
+
+\begin{description}[format={\storedescriptionlabel}]
+	\item[Obligation to report thrown away bottles]
+	\hfill \\
+	In addition to reporting the total number of thrown away bottles, garbage collection must also be obliged to communicate the individual identifiers. This assumes that one-way bottles are marked with a label that is unique across all bottles in circulation. Finally, and to automate the whole process, special object recognition machinery will be required along the sorting belt of any given recycling centre.
+	\item[Obligation to report bottle purchase]
+	\hfill \\
+	Retailers and initial distributors alike must report how many and which particular one-way bottles a consumer has purchased. The same (i.e. quantity) goes for buying reusable bottles although this happens through opt-in since the system should not force people to accept rewards. In any case, it will be necessary to have consumers present a unique means of identification as they complete the purchase.
+\end{description}
+
+These prevailing conditions could be enforced by amending the system's legal basis (see~\ref{sec:legalBasis}) and then integrating the relevant clauses into the contracts that \ac{DPG} maintains with each participant (see~\ref{sec:DPGAdministration}). However, the exact realization including that of the measures needed as explained above is out of scope (comp.~\ref{sec:goalsScope}) and thus, assumed to be satisfied for the remainder of this paper. 
 
 \subsection{Non-Functional Requirements}
 
-%In tandem, the first set of functional requirements is formulated accordingly:
+
 
 %This revised deposit-refund system is portrayed in \autoref{fig:depositCycleFuture} on \autopageref{fig:depositCycleFuture}.
 
