@@ -6,6 +6,7 @@
 \section{Incentivized Deposit-Refund System}
 
 \subsection{Overview}
+\label{sec:incentivizedOverview}
 An incentivized deposit-refund system, as is outlined in the following, aims to:
 
 \begin{enumerate}[label=(\Alph*)]
@@ -41,6 +42,7 @@ Practically, this will require garbage collection to report how many and which s
 From this it becomes apparent that a revised approach will essentially incorporate an accounting layer to enable the punishment and rewarding of consumers. Basic protocols of interaction (i.e.~buying and returning a bottle) should only be modified to the minimum extent needed.
 
 \subsection{Proposed Rules}
+\label{sec:rules}
 Having given a high-level introduction to an incentivized deposit-refund system, this section aims to provide an exemplary set of rules that may constitute the underlying business logic. Again, it must be noted that this only serves as a guideline for architecting such a solution. The precise economics, psychological effectiveness and ethics introduced hereby are disregarded (comp.~\ref{sec:goalsScope}).
 
 \subsubsection{Rewards \& Donations}
@@ -80,10 +82,6 @@ p_c = \frac{b - (b \mod t)}{t} \times v
   	\item seized penalties are also used for self-financing
 \end{itemize}
 
-%In tandem, the first set of functional requirements is formulated accordingly:
-
-%This revised deposit-refund system is portrayed in \autoref{fig:depositCycleFuture} on \autopageref{fig:depositCycleFuture}.
-
 % functional requirements formatter
 \def\twodigits#1{%
 %  \ifnum#1<100 0\fi
@@ -95,17 +93,19 @@ p_c = \frac{b - (b \mod t)}{t} \times v
 
 % start of functional requirements
 \subsection{Derived Functional Requirements}
-\subsubsection{Garbage collector}
+In accordance to \ref{sec:incentivizedOverview} and \ref{sec:rules}, the following functional requirements are defined as the bare minimum of features any implementation must provide for it to be used as the accounting backend of an incentivized deposit-refund system. These requirements are expressed from the perspective of an end-user (\textit{user story}) who hopes to achieve different goals by using the system and are sorted by the various roles encountered (comp.~\autoref{fig:useCaseOverview}).
+
+\paragraph{Garbage collector}
 \begin{enumerate}[label={\textbf{FR-\protect\twodigits{\theenumi}}},leftmargin=*]
 	\item As a garbage collector, I can report the number of thrown away bottles, so that the amount of non-claimed deposits can be calculated.
 	\item As a garbage collector, I can report the identifier of a thrown away bottle, so that the responsible consumer can be punished.
 \end{enumerate}
 
-\subsubsection{Retailer}
+\paragraph{Retailer}
 \begin{enumerate}[resume, label={\textbf{FR-\protect\twodigits{\theenumi}}},leftmargin=*]
 	\item As a retailer, I can report that a consumer has purchased reusable bottles, so that he becomes eligible to receive rewards.
 	\item As a retailer, I can report how many reusable bottles a consumer has bought, so that his share of rewards can be calculated. 
-	\item As a retailer, I can report which one-way bottles a consumer has bought, so that the ownership of each bottle can be tracked.
+	\item As a retailer, I can report which one-way bottles a consumer has bought, so that the ownership of each bottle is recorded.
 	\item As a retailer, I can look up the penalty that a specific consumer must pay, so that this amount can be added onto the deposit of each bottle during purchase.
 \end{enumerate}
 
@@ -114,12 +114,12 @@ p_c = \frac{b - (b \mod t)}{t} \times v
 %	\item As a tack-back point, I can put in a claim to be reimbursed for making advance refunds, so that I do not experience a loss by offering this service.
 %\end{enumerate}
 	
-\subsubsection{Consumer}
+\paragraph{Consumer}
 \begin{enumerate}[resume, label={\textbf{FR-\protect\twodigits{\theenumi}}},leftmargin=*]  
-	\item As a consumer, I can claim a reward for having purchased reusable bottles, so that I will be motivated to so in the future even though one-way packaging is lighter and more durable when compared to glass. 
+	\item As a consumer, I can claim a reward for having purchased reusable bottles, so that I will be motivated to so in the future even though one-way packaging is lighter (and more durable) when compared to most reusable bottles. 
 \end{enumerate}
 
-\subsubsection{Environmental agency}
+\paragraph{Environmental agency}
 \begin{enumerate}[resume, label={\textbf{FR-\protect\twodigits{\theenumi}}},leftmargin=*]  
 	\item As an environmental agency, I can claim a donation, so that my cause will be better supported through the funding secured.
 \end{enumerate}
@@ -127,6 +127,10 @@ p_c = \frac{b - (b \mod t)}{t} \times v
 \subsection{Derived Preconditions}
 
 \subsection{Non-Functional Requirements}
+
+%In tandem, the first set of functional requirements is formulated accordingly:
+
+%This revised deposit-refund system is portrayed in \autoref{fig:depositCycleFuture} on \autopageref{fig:depositCycleFuture}.
 
 %\subsection{Blockchain Value Add}
 	
