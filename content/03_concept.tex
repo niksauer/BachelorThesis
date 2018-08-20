@@ -29,7 +29,7 @@ To translate these measures into reality, it will be necessary to alter the curr
   \item a penalty is added onto future deposits of consumers who repeatedly pollute
 \end{itemize}
 
-Practically, this will require garbage collection to report how many and which specific one-way bottles have been thrown away. Otherwise, it will not be possible to calculate the amount of non-claimed deposits and identify which consumer was responsible for the bottle at last. The latter infers that bottles must be uniquely identifiable. On the other hand, such a system can only be realized if retailers forward the information that a consumer has bought reusable bottles and has thereby become eligible to receive rewards. In order to establish proper ownership, they must also report which one-way bottles a consumer has purchased. Naturally, it should be prevented that anybody can report these figures, pretend to be an environmental agency or claim someone else's rewards. This core functionality, together with the existing minimum level of service, can be expressed in terms of the different interactions a certain user may have with the system, known as a use case diagram and given by \autoref{fig:useCaseOverview}.
+Practically, this will require garbage collection to report how many and which specific one-way bottles have been thrown away. Otherwise, it will not be possible to calculate the amount of non-claimed deposits and identify which consumer was responsible for the bottle at last. The latter infers that bottles must be uniquely identifiable. On the other hand, such a system can only be realized if retailers forward the information that a consumer has bought reusable bottles and has thereby become eligible to receive rewards. Furthermore, to establish proper ownership, they must also report which one-way bottles a consumer has purchased. Lastly, it should be prevented that anybody can report these figures, pretend to be an environmental agency or claim someone else's rewards. This core functionality, together with the existing minimum level of service, can be expressed in terms of the different interactions a certain user may have with the system, known as a use case diagram and given by \autoref{fig:useCaseOverview}.
 
 \begin{figure}[hbt]
   \includegraphics[width=\textwidth]{images/concept/use_case_overview}
@@ -39,7 +39,7 @@ Practically, this will require garbage collection to report how many and which s
 
 \FloatBarrier
 
-From this it becomes apparent that a revised approach will essentially incorporate an accounting layer to enable the punishment and rewarding of consumers. Basic protocols of interaction (i.e.~buying and returning a bottle) should only be modified to the minimum extent needed.
+From this overview, it becomes apparent that a revised approach will essentially incorporate an accounting layer to enable the punishment and rewarding of consumers. Basic protocols of interaction (i.e.~buying and returning a bottle) should only be modified to the minimum extent needed.
 
 \subsection{Proposed Rules}
 \label{sec:rules}
@@ -93,27 +93,30 @@ p_c = \frac{b - (b \mod t)}{t} \times v
 
 % start of functional requirements
 \subsection{Derived Functional Requirements}
-In accordance to \ref{sec:incentivizedOverview} and \ref{sec:rules}, the following functional requirements are defined as the bare minimum of features any implementation must provide in order to be used as the accounting backend of an incentivized deposit-refund system. These requirements are expressed from the perspective of an end-user who hopes to achieve different goals by using the system and are sorted by the various roles encountered (comp.~\autoref{fig:useCaseOverview}).
+In accordance to \ref{sec:incentivizedOverview} and \ref{sec:rules}, the following functional requirements are defined as the bare minimum of features any implementation must provide in order to be used as the accounting backend of an incentivized deposit-refund system. These requirements are expressed from the perspective of an end-user who hopes to achieve different goals by using the system and are grouped by the various roles encountered (comp.~\autoref{fig:useCaseOverview}).
+
+Of course, consumers and environmental agencies will also expect a method to claim the promised rewards and donations respectively, so that two additional requirements are formulated subsequently.
 
 \paragraph{Garbage collector}
 \begin{enumerate}[label={\textbf{FR-\protect\twodigits{\theenumi}}},leftmargin=*]
-	\item As a garbage collector, I can report the number of thrown away bottles, so that the amount of non-claimed deposits can be calculated.
-	\item As a garbage collector, I can report the identifier of a thrown away bottle, so that the responsible consumer can be punished.
+	\item As a garbage collector, I can report the number of thrown away bottles, so that the amount of non-claimed deposits can be calculated. \label{itm:reportNumber}
+	\item As a garbage collector, I can report the identifier of a thrown away bottle, so that the responsible consumer can be punished. \label{itm:reportIdentifier}
 \end{enumerate}
 
 \paragraph{Retailer}
 \begin{enumerate}[resume, label={\textbf{FR-\protect\twodigits{\theenumi}}},leftmargin=*]
 	\item As a retailer, I can report that a consumer has purchased reusable bottles, so that he becomes eligible to receive rewards.
-	\item As a retailer, I can report how many reusable bottles a consumer has bought, so that his share of rewards can be calculated. 
-	\item As a retailer, I can report which one-way bottles a consumer has bought, so that the ownership of each bottle is recorded.
-	\item As a retailer, I can look up the penalty that a specific consumer must pay, so that this amount can be added onto the deposit of each bottle during purchase.
+	\item As a retailer, I can report how many reusable bottles a consumer has bought, so that his share of rewards can be calculated. \label{itm:reportReusables}
+	\item As a retailer, I can report which one-way bottles a consumer has bought, so that the ownership of each bottle is recorded. \label{itm:reportOneWays}
+	\item As a retailer, I can look up the penalty that a specific consumer must pay, so that this amount can be added onto the deposit of each bottle during purchase. \label{itm:lookUpPenalty}
 \end{enumerate}
 
-%\subsubsection{Take-back point}
-%\begin{enumerate}[resume, label={\textbf{FR-\protect\twodigits{\theenumi}}},leftmargin=*]
+\paragraph{Take-back point}
+\begin{enumerate}[resume, label={\textbf{FR-\protect\twodigits{\theenumi}}},leftmargin=*]
 %	\item As a tack-back point, I can put in a claim to be reimbursed for making advance refunds, so that I do not experience a loss by offering this service.
-%\end{enumerate}
-	
+	\item As a tack-back point, I can report which one-way bottles a consumer has returned, so that the penalty, if raised, can be refunded or seized accordingly. \label{itm:reportOneWayReturn}
+\end{enumerate}
+
 \paragraph{Consumer}
 \begin{enumerate}[resume, label={\textbf{FR-\protect\twodigits{\theenumi}}},leftmargin=*]  
 	\item As a consumer, I can claim a reward for having purchased reusable bottles, so that I will be motivated to so in the future even though one-way packaging is lighter (and more durable) when compared to most reusable bottles. 
@@ -128,12 +131,18 @@ In accordance to \ref{sec:incentivizedOverview} and \ref{sec:rules}, the followi
 While an incentivized deposit-refund system may be effective, it does assume a variety of conditions that must be in place for it to function properly. As previously hinted, they can be described as the:
 
 \begin{description}[format={\storedescriptionlabel}]
-	\item[Obligation to report thrown away bottles]
+	\item[Obligation to report thrown away one-way bottles]
 	\hfill \\
-	In addition to reporting the total number of thrown away bottles, garbage collection must also be obliged to communicate the individual identifiers. This assumes that one-way bottles are marked with a label that is unique across all bottles in circulation. Finally, and to automate the whole process, special object recognition machinery will be required along the sorting belt of any given recycling centre.
+	In addition to reporting the total number of thrown away bottles (see~\ref{itm:reportNumber}), garbage collection must also be obliged to communicate the individual identifiers (see~\ref{itm:reportIdentifier}). This assumes that one-way bottles are marked with a label that is unique across all bottles in circulation. Finally, and to automate the whole process, special object recognition machinery will be required along the sorting belt of any given refuse disposal site.
 	\item[Obligation to report bottle purchase]
 	\hfill \\
-	Retailers and initial distributors alike must report how many and which particular one-way bottles a consumer has purchased. The same (i.e. quantity) goes for buying reusable bottles although this happens through opt-in since the system should not force people to accept rewards. In any case, it will be necessary to have consumers present a unique means of identification as they complete the purchase.
+	Retailers and initial distributors alike must report which particular one-way bottles a consumer has purchased (see~\ref{itm:reportOneWays}). The same (i.e. quantity) goes for buying reusable bottles (see~\ref{itm:reportReusables}) although this only happens through opt-in as people should not be forced to accept rewards. In both cases, it will be necessary to have consumers present a unique means of identification as they complete the purchase.
+	\item[Obligation to levy penalty]
+	\hfill \\
+	Assuming that the consumer qualifies for a penalty, retailers must be impelled to impose this amount upon purchase which itself requires an extension to cash registers so that the amount can be queried dynamically (see~\ref{itm:lookUpPenalty}), given that the consumer has been identified priorly.
+	\item[Obligation to report one-way bottle return]
+	\hfill \\
+	Similar to reporting a purchase, tack-back points have to report which consumer had been responsible for returning a particular one-way bottle (see~\ref{itm:reportOneWayReturn}). Since the return process can either be automated or executed manually (comp.~\autoref{fig:clearingProcess}), different mechanisms to identify the consumer will be needed.  
 \end{description}
 
 These prevailing conditions could be enforced by amending the system's legal basis (see~\ref{sec:legalBasis}) and then integrating the relevant clauses into the contracts that \ac{DPG} maintains with each participant (see~\ref{sec:DPGAdministration}). However, the exact realization including that of the measures needed as explained above is out of scope (comp.~\ref{sec:goalsScope}) and thus, assumed to be satisfied for the remainder of this paper. 
