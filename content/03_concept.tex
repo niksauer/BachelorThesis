@@ -60,7 +60,7 @@ r_c = \frac{b}{b_{total}} \times f_c
 
 where $b_{total}$ denotes the total number of reusable bottles sold within that period and $f_c$ resembles the consumer fund
 
-	\item non-claimed rewards are withheld for self-financing
+	\item non-claimed rewards are withheld % for self-financing
   	\item the agency fund ($f_a$) is evenly distributed, so that each's donation ($d$) will be $d = f_a/n$, where $n$ refers to the number of approved agencies
   	\item non-claimed donations remain available for all agencies in the next period
 \end{itemize}
@@ -79,7 +79,7 @@ p_c = \frac{b - (b \mod t)}{t} \times v
 
   	\item the penalty is refunded, if the consumer returns the bottle on his own
   	\item the penalty is seized, if the bottle is thrown away or returned by someone else
-  	\item seized penalties are also used for self-financing
+%  	\item seized penalties are also used for self-financing
 \end{itemize}
 
 % functional requirements formatter
@@ -130,42 +130,59 @@ Of course, consumers and environmental agencies will also expect a method to cla
 \subsection{Derived Preconditions}
 While an incentivized deposit-refund system may be effective, it does assume a variety of conditions that must be in place for it to function properly. As previously hinted, they can be described as the:
 
-\begin{description}[format={\storedescriptionlabel}]
+\begin{description}
 	\item[Obligation to report thrown away one-way bottles]
 	\hfill \\
-	In addition to reporting the total number of thrown away bottles (see~\ref{itm:reportNumber}), garbage collection must also be obliged to communicate the individual identifiers (see~\ref{itm:reportIdentifier}). This assumes that one-way bottles are marked with a label that is unique across all bottles in circulation. Finally, and to automate the whole process, special object recognition machinery will be required along the sorting belt of any given refuse disposal site.
+	In addition to reporting the total number of thrown away bottles (\ref{itm:reportNumber}), garbage collection must also be obliged to communicate the individual identifiers (\ref{itm:reportIdentifier}). This assumes that one-way bottles are marked with a label that is unique across all bottles in circulation. Finally, and to automate the whole process, special object recognition machinery will be required along the sorting belt of any given refuse disposal site.
 	\item[Obligation to report bottle purchase]
 	\hfill \\
-	Retailers and initial distributors alike must report which particular one-way bottles a consumer has purchased (see~\ref{itm:reportOneWays}). The same (i.e. quantity) goes for buying reusable bottles (see~\ref{itm:reportReusables}) although this only happens through opt-in as people should not be forced to accept rewards. In both cases, it will be necessary to have consumers present a unique means of identification as they complete the purchase.
+	Retailers and initial distributors alike must report which particular one-way bottles a consumer has purchased (\ref{itm:reportOneWays}). The same (i.e. quantity) goes for buying reusable bottles (\ref{itm:reportReusables}) although this only happens through opt-in as people should not be forced to accept rewards. In both cases, it will be necessary to have consumers present a unique means of identification as they complete the purchase.
 	\item[Obligation to levy penalty]
 	\hfill \\
-	Assuming that the consumer qualifies for a penalty, retailers must be impelled to impose this amount upon purchase which itself requires an extension to cash registers so that the amount can be queried dynamically (see~\ref{itm:lookUpPenalty}), given that the consumer has been identified priorly.
+	Assuming that the consumer qualifies for a penalty, retailers must be impelled to impose this amount upon purchase which itself requires an extension to cash registers so that the amount can be queried dynamically (\ref{itm:lookUpPenalty}), given that the consumer has been identified priorly.
 	\item[Obligation to report one-way bottle return]
 	\hfill \\
-	Similar to reporting a purchase, tack-back points have to report which consumer had been responsible for returning a particular one-way bottle (see~\ref{itm:reportOneWayReturn}). Since the return process can either be automated or executed manually (comp.~\autoref{fig:clearingProcess}), different mechanisms to identify the consumer will be needed.  
+	Similar to reporting a purchase, tack-back points have to report which consumer had been responsible for returning a particular one-way bottle (\ref{itm:reportOneWayReturn}). Since the return process can either be automated or executed manually (comp.~\autoref{fig:clearingProcess}), different mechanisms to identify the consumer will be needed.  
 \end{description}
 
 These prevailing conditions could be enforced by amending the system's legal basis (see~\ref{sec:legalBasis}) and then integrating the relevant clauses into the contracts that \ac{DPG} maintains with each participant (see~\ref{sec:DPGAdministration}). However, the exact realization including that of the measures needed as explained above is out of scope (comp.~\ref{sec:goalsScope}) and thus, assumed to be satisfied for the remainder of this paper. 
 
 \subsection{Non-Functional Requirements}
+Whereas functional quality stresses conformance with the design specifications, structural quality addresses non-functional requirements like security and maintainability \cite[p.~2]{Martinez-Ortiz:2016:QMW:3011141.3011203}. Together, both can be used to constitute the evaluation framework for measuring a system's quality, better known as \ac{QoS}. \citeauthor{Liu:2004:QCP:1013367.1013379} argue that it is not practical to come up with a standard model of attributes because \ac{QoS} is a broad, context-dependent concept \cite[p.~67]{Liu:2004:QCP:1013367.1013379}. Therefore, the following list of desired structural properties is based on those already encompassed in the current deposit-refund system or those which are absolutely necessary to implement an incentivized version. All other traits will be left open for discussion in the end.
 
-
+\begin{description}
+	\item[Access Security]
+	\hfill \\
+	The system shall distinguish between authorized and non-authorized users. More specifically, the individual features outlined above shall only be accessible to their designated user.
+	\item[Availability]
+	\hfill \\
+	The system shall be available for use between the hours of 6:00 am and 24:00 pm which is justified by the fact that most sales and returns will happen within this timeframe. Exceptions must therefore be maintained in a local backlog of unsent reports and transmitted at the next possible point in time. The same is true for claiming rewards and donations.
+	\item[Cost]
+	\hfill \\
+	The system shall be no more costly in operation than it currently is. Total membership and bottle registration fees may be taken as a baseline (see~\ref{sec:DPGRoles}).
+	\item[Reliability, Scalability \& Efficiency]
+	\hfill \\
+	The system shall be able to handle all user requests and by such shall be scalable to support unlimited growth in the number of actors. Further, any request must be executed by the end of the day to ensure the timely application of penalties, as well as to have a proper statement ready by the end of the month.
+	\item[Integrity]
+	\hfill \\
+	All monetary amounts (i.e.~rewards and donations) must be calculated accurately before being rounded down to two decimal places. The latter ensures that no more funds are distributed than are available. Additionally, only integer figures may be reported and must be recorded as is.
+\end{description}
 
 %This revised deposit-refund system is portrayed in \autoref{fig:depositCycleFuture} on \autopageref{fig:depositCycleFuture}.
 
-%\subsection{Blockchain Value Add}
-	
+%	- number of clicks (user interaction), latency normalized to 1 second, execution price, execution duration, availability, reliability, privacy, reputation, usability, maintainability
+
 %- Usability (Rechenzeit, Storage, Dauer, Kosten)
 %- Design Ansätze > Backlog, Wartezeit (Vergleich mit Internetspeed damals), Transaktionsminimierung
 %- Public oder Private Blockchain?
 %- Abrechnung pro Monat, da ansonsten kein Prozentsatz ermittelt werden kann
-%- funktional > User Stories
 %- nicht-funktional > schnelle Antwortzeiten, günstige Transaktionen, Skalierbarkeit 
 	
-
 \pagebreak
 
 \section{Architecture}
+
+\subsection{Blockchain Value Add}
 
 \subsection{Deployment}
 \begin{description}
