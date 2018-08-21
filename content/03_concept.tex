@@ -4,6 +4,7 @@
 \label{chp:concept}
 
 \section{Incentivized Deposit-Refund System}
+\label{sec:incentivizedSystem}
 
 \subsection{Overview}
 \label{sec:incentivizedOverview}
@@ -92,7 +93,7 @@ p_c = \frac{b - (b \mod t)}{t} \times v
 \setlist[FR]{label=FR-\arabic*:}
 
 % start of functional requirements
-\subsection{Derived Functional Requirements}
+\subsection{Functional Requirements}
 In accordance to \ref{sec:incentivizedOverview} and \ref{sec:rules}, the following functional requirements are defined as the bare minimum of features any implementation must provide in order to be used as the accounting backend of an incentivized deposit-refund system. These requirements are expressed from the perspective of an end-user who hopes to achieve different goals by using the system and are grouped by the various roles encountered (comp.~\autoref{fig:useCaseOverview}).
 
 Of course, consumers and environmental agencies will also expect a method to claim the promised rewards and donations respectively, so that two additional requirements are formulated subsequently.
@@ -127,22 +128,22 @@ Of course, consumers and environmental agencies will also expect a method to cla
 	\item As an environmental agency, I can claim a donation, so that my cause will be better supported through the funding secured.
 \end{enumerate}
 	
-\subsection{Derived Preconditions}
+\subsection{Preconditions}
 While an incentivized deposit-refund system may be effective, it does assume a variety of conditions that must be in place for it to function properly. As previously hinted, they can be described as the:
 
 \begin{description}
 	\item[Obligation to report thrown away one-way bottles]
 	\hfill \\
-	In addition to reporting the total number of thrown away bottles (\ref{itm:reportNumber}), garbage collection must also be obliged to communicate the individual identifiers (\ref{itm:reportIdentifier}). This assumes that one-way bottles are marked with a label that is unique across all bottles in circulation. Finally, and to automate the whole process, special object recognition machinery will be required along the sorting belt of any given refuse disposal site.
+	In addition to reporting the total number of thrown away bottles\hide{(\ref{itm:reportNumber})}, garbage collection must also be obliged to communicate the individual identifiers\hide{(\ref{itm:reportIdentifier})}. This assumes that one-way bottles are marked with a label that is unique across all bottles in circulation. Finally, and to automate the whole process, special object recognition machinery will be required along the sorting belt of any given refuse disposal site.
 	\item[Obligation to report bottle purchase]
 	\hfill \\
-	Retailers and initial distributors alike must report which particular one-way bottles a consumer has purchased (\ref{itm:reportOneWays}). The same (i.e. quantity) goes for buying reusable bottles (\ref{itm:reportReusables}) although this only happens through opt-in as people should not be forced to accept rewards. In both cases, it will be necessary to have consumers present a unique means of identification as they complete the purchase.
+	Retailers and initial distributors alike must report which particular one-way bottles a consumer has purchased\hide{(\ref{itm:reportOneWays})}. The same (i.e. quantity) goes for buying reusable bottles \hide{(\ref{itm:reportReusables})} although this only happens through opt-in as people should not be forced to accept rewards. In both cases, it will be necessary to have consumers present a unique means of identification as they complete the purchase.
 	\item[Obligation to levy penalty]
 	\hfill \\
-	Assuming that the consumer qualifies for a penalty, retailers must be impelled to impose this amount upon purchase which itself requires an extension to cash registers so that the amount can be queried dynamically (\ref{itm:lookUpPenalty}), given that the consumer has been identified priorly.
+	Assuming that the consumer qualifies for a penalty, retailers must be impelled to impose this amount upon purchase which itself requires an extension to cash registers so that the amount can be queried dynamically\hide{(\ref{itm:lookUpPenalty})}, given that the consumer has been identified priorly.
 	\item[Obligation to report one-way bottle return]
 	\hfill \\
-	Similar to reporting a purchase, tack-back points have to report which consumer had been responsible for returning a particular one-way bottle (\ref{itm:reportOneWayReturn}). Since the return process can either be automated or executed manually (comp.~\autoref{fig:clearingProcess}), different mechanisms to identify the consumer will be needed.  
+	Similar to reporting a purchase, tack-back points have to report which consumer had been responsible for returning a particular one-way bottle\hide{(\ref{itm:reportOneWayReturn})}. Since the return process can either be automated or executed manually (comp.~\autoref{fig:clearingProcess}), different mechanisms to identify the consumer will be needed.  
 \end{description}
 
 These prevailing conditions could be enforced by amending the system's legal basis (see~\ref{sec:legalBasis}) and then integrating the relevant clauses into the contracts that \ac{DPG} maintains with each participant (see~\ref{sec:DPGAdministration}). However, the exact realization including that of the measures needed as explained above is out of scope (comp.~\ref{sec:goalsScope}) and thus, assumed to be satisfied for the remainder of this paper. 
@@ -153,19 +154,19 @@ Whereas functional quality stresses conformance with the design specifications, 
 \begin{description}
 	\item[Access Security]
 	\hfill \\
-	The system shall distinguish between authorized and non-authorized users. More specifically, the individual features outlined above shall only be accessible to their designated user.
+	The system shall distinguish between authorized and non-authorized users. More specifically, the individual features outlined above shall only be accessible to their designated user (\textbf{NFR-01}\label{itm:accessSecurity}).
 	\item[Availability]
 	\hfill \\
-	The system shall be available for use between the hours of 6:00 am and 24:00 pm which is justified by the fact that most sales and returns will happen within this timeframe. Exceptions must therefore be maintained in a local backlog of unsent reports and transmitted at the next possible point in time. The same is true for claiming rewards and donations.
+	The system shall be available for use between the hours of 6:00 am and 24:00 pm (\textbf{NFR-02}\label{itm:operatingTimes}) which is justified by the fact that most sales and returns will happen within this timeframe. Exceptions must therefore be maintained in a local backlog of unsent reports and transmitted at the next possible point in time. The same is true for claiming rewards and donations.
 	\item[Cost]
 	\hfill \\
-	The system shall be no more costly in operation than it currently is. Total membership and bottle registration fees may be taken as a baseline (see~\ref{sec:DPGRoles}).
+	The system shall be no more costly in operation than it currently is (\textbf{NFR-03}\label{itm:operatingCost}). Total membership and bottle registration fees may be taken as a baseline (see~\ref{sec:DPGRoles}).
 	\item[Reliability, Scalability \& Efficiency]
 	\hfill \\
-	The system shall be able to handle all user requests and by such shall be scalable to support unlimited growth in the number of actors. Further, any request must be executed by the end of the day to ensure the timely application of penalties, as well as to have a proper statement ready by the end of the month.
+	The system shall be able to handle all user requests and by such shall be scalable to support unlimited growth in the number of actors (\textbf{NFR-04}\label{itm:unlimitedGrowth}). Further, any request must be executed by the end of the day (\textbf{NFR-05}\label{itm:responseTime}) to ensure the timely application of penalties, as well as to have a proper statement ready by the end of the month.
 	\item[Integrity]
 	\hfill \\
-	All monetary amounts (i.e.~rewards and donations) must be calculated accurately before being rounded down to two decimal places. The latter ensures that no more funds are distributed than are available. Additionally, only integer figures may be reported and must be recorded as is.
+	All monetary amounts (i.e.~rewards and donations) must be calculated accurately before being rounded down to two decimal places (\textbf{NFR-06}\label{itm:calculcations}). The latter ensures that no more funds are distributed than are available. Additionally, only integer figures may be reported and must be recorded as is (\textbf{NFR-07}\label{itm:onlyInteger}).
 \end{description}
 
 %This revised deposit-refund system is portrayed in \autoref{fig:depositCycleFuture} on \autopageref{fig:depositCycleFuture}.
@@ -181,10 +182,27 @@ Whereas functional quality stresses conformance with the design specifications, 
 \pagebreak
 
 \section{Architecture}
+\subsection{Smart-Contract as a Clearing House}
+The biggest roadblock to implementing an incentivized deposit-refund system (see~\ref{sec:incentivizedSystem}) is given by the fact that \ac{DPG} has decided against using a central clearing mechanism to settle refund claims of tack-back points (comp.~\nameref{sec:DPGAdministration} on \autopageref{sec:DPGAdministration}). Instead, refund claimants must invoice each of the initial distributors for which a bottle was taken back and present data proving the number of accepted bottles (comp.~\nameref{sec:depositRefundCycle} on \autopageref{sec:depositRefundCycle}). This design choice is easily explained: a deposit is to be charged by the distributor and each subsequent retailer (comp.~\nameref{sec:legalBasis} in \ref{sec:legalBasis}). Obviously, transferring the deposit to an escrow account afterwards would not lead to any noticeable benefits compared to direct a settlement. Still, such a change in course will represent the major enabler to an incentivized deposit-refund system as is depicted in \autoref{fig:depositCycleFuture}.
+
+\begin{figure}[hbt]
+	  \includegraphics[width=\textwidth]{images/concept/deposit_cycle_future_one_way}
+	  \caption[Future deposit-refund cycle]{Future deposit-refund cycle \footnotemark}
+	  \label{fig:depositCycleFuture}
+\end{figure}
+
+\footnotetext{An extended version detailing the three differently balanced accounting states (comp.~\ref{sec:depositRefundCycle}) can be found in the \autoref{app:concept} on \autopageref{fig:depositCycleFutureExtended}.}
+
+\FloatBarrier
+
+Leveraging Ethereum's decentralized application platform and built-in cryptocurrency (see~\ref{sec:ethereumOverview}), \ac{DPG} could provide participants of the deposit-refund cycle with an alternative but always available method for settling refund claims. More importantly, the incentivized structure discussed beforehand can be fully realized. In this system, a smart-contract deployed on behalf of \ac{DPG} will act as the central clearing house.
+
+
+ 
 
 \subsection{Blockchain Value Add}
 
-\subsection{Deployment}
+\subsection{Choice of Blockchain Type}
 \begin{description}
 	\item[Public]
 	\hfill \\

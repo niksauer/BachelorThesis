@@ -58,7 +58,7 @@ These objectives were supported by introducing the:
         
 		\end{axis}
 	\end{tikzpicture}
-  	\caption{Aggregated quote of reusable beverage packaging (in \%) between 1991 and 2013 \cite[p.~1]{BMU2015} \hide{\cite{statista2015Mehrweg}}}
+  	\caption[Quote of reusable beverage packaging (in \%) between 1991 and 2013]{Quote of reusable beverage packaging (in \%) between 1991 and 2013 \cite[p.~1]{BMU2015} \hide{\cite{statista2015Mehrweg}}}
   	\label{fig:reusableQuoteDevelopment}
 \end{figure}
 \FloatBarrier
@@ -91,7 +91,7 @@ The German packaging ordinance underwent several revisions, including a change o
 \begin{figure}[hbt]
 	\centering
 	\includegraphics{images/theoretical_framework/one_way_packaged_beverages_deposit_criteria}
-	\caption{Criteria to be considered for deposits (valid until Jan 1\textsuperscript{st}, 2019) \cite[p.~9]{Hartlep2011Recycling}}
+	\caption[Criteria to be considered for deposits (valid until Jan 1\textsuperscript{st}, 2019)]{Criteria to be considered for deposits (valid until Jan 1\textsuperscript{st}, 2019) \cite[p.~9]{Hartlep2011Recycling}}
 	\label{fig:depositCriteria}
 \end{figure}
 
@@ -136,7 +136,7 @@ Each buyer of a returnable bottle must directly pay the designated deposit to th
 \begin{figure}[hbt]
   \centering
   \includegraphics{images/theoretical_framework/deposit_cycle_current_short}
-  \caption{Deposit-refund cycle \cite[p.~14]{Hartlep2011Recycling}}
+  \caption[Deposit-refund cycle]{Deposit-refund cycle \cite[p.~14]{Hartlep2011Recycling}}
   \label{fig:depositRefundCycle}
 \end{figure}
 
@@ -145,13 +145,13 @@ Since take-back points refund consumers independent of a bottle’s purchasing l
 \begin{figure}[hbt]
 	\centering
   	\includegraphics{images/theoretical_framework/bottle_return_current}
-  	\caption{Clearing process for manual and automated bottle returns \cite[p.~18]{Hartlep2011Recycling}}
+  	\caption[Clearing process for manual and automated bottle returns]{Clearing process for manual and automated bottle returns \cite[p.~18]{Hartlep2011Recycling}}
   	\label{fig:clearingProcess}
 \end{figure}
 
 Refund invoices must also include data representing the number of bottles for which a refund was issued. This data originates from the return process in which each bottle is eventually captured. Capture refers to both validating the universal security mark printed on a bottle’s label as well as extracting the \ac{EAN} by scanning its barcode. By outfitting reverse vending machines with a network connection, looking up the \ac{EAN} in question becomes possible, thus ensuring that a deposit for the bottle has been collected beforehand\hide{\cite[pp.~2]{Wincor Nixdorf 2010}}. For each valid bottle, a signed record is then produced and stored on the machine\hide{\cite[p.~18]{Hartlep2011Recycling}}. This data must be retrieved and transmitted within one week\hide{\cite[p.~90]{DPG/Roland Berger 2010}}. Likewise, retailers receive a similar dataset when relying on a counting center\hide{\cite[p.~18]{Hartlep2011Recycling}}. Finally, any transmitted data is anonymised by removing the return location and summing up the refunds for each \ac{EAN} captured\hide{\cite[pp.~90]{DPG/Roland Berger 2010}}. Initial distributors must pay the invoice within ten business days or five-teen calendar days at the lastet \hide{\cite[p.~40]{DPG/Roland Berger 2010}} \cite[p.~18-19]{Hartlep2011Recycling}.
 
-An extended diagrammatical overview of this cycle can be found in the \autoref{app:theoreticalFramework} on \autopageref{fig:depositCycleCurrent}. It includes the various scenarios encountered nowadays which lead to differently balanced accounting states, as indicated previously. Also, the process of buying a returnable bottle from the perspective of a whole-seller or any other special entity such as a caterer is reflected in both figures since these parties are ultimately responsible for returning the one-way bottle as long as it has not been further distributed and by such, should be regarded as a consumer.
+An extended diagrammatical overview of this cycle can be found in the \autoref{app:theoreticalFramework} on \autopageref{fig:depositCycleCurrentExtended}. It includes the various scenarios encountered nowadays which lead to differently balanced accounting states, as indicated previously. Also, the process of buying a returnable bottle from the perspective of a whole-seller or any other special entity such as a caterer is reflected in both figures since these parties are ultimately responsible for returning the one-way bottle as long as it has not been further distributed and by such, should be regarded as a consumer.
 
 \todo[inline, color=orange]{explain situation surrounding deposits on reusable bottles?}
 
@@ -373,6 +373,7 @@ ure market strategies.
 
 \section{Ethereum}
 \subsection{Overview}
+\label{sec:ethereumOverview}
 In line with the web3's vision of a serverless internet (comp.~\ref{dAppHistory}), Ethereum was designed to abstract the details of a blockchain to provide a deterministic and secure programming environment for decentralized applications in which developers  are no longer required to bootstrap the underlying mechanisms \cite[p.~27]{Antonopoulos.2018}. By such, it is practically regarded as an open-source, globally decentralized computing infrastructure that executes programs, known as smart-contracts, for which the current state and transitions leading to this state are stored in a blockchain alongside a cryptocurrency called Ether. However, it must be emphasised that Ether is primarily intended as a utility currency \footnote{Amusingly, Vitalik Buterin, co-founder of Ethereum, would like to use Bitcoin Cash for day-to-day transactions \cite{forbes2018}.} to meter and constrain resource usage during execution which stands in stark contrast with Bitcoin's sole purpose of being a digital payment network \cite[p.~23]{Antonopoulos.2018} \cite[p.~1]{bitcoin}.
 
 Compared to a general purpose computer, the main differences are that \cite[p.~28]{Antonopoulos.2018}:
