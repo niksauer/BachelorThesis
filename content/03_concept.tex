@@ -223,6 +223,9 @@ For all this to work, the very first deposit charged for a one-way bottle must b
 \subsection{Design Rationale}
 The architecture detailed in \ref{sec:centralClearingHouse} has numerous implications as to how that particular implementation of an incentivized deposit-refund system must be used, the most obvious one being that the only permitted means of identification is an Ethereum address. Nonetheless, modelling the entire system as a series of interactions with a smart-contract is a deliberate design choice because, by definition, it prescribes all users to be authenticated with each request. This is due to the fact that only the private-key owning entity can sign transactions for that particular address (comp.~\ref{sec:accounts}) which allows for effortless authorization simply by maintaining a list of approved addresses. More importantly, consumers will not be required to register with yet another service just to leave their bank account details on a centralized server that is definitely more vulnerable to attacks than the decentralized ownership model embodied by public-key cryptography \footnote{A secure, non-constantly connected storage medium offers the greatest degree of protection against private-key theft. Devices, known as hardware wallets (e.g.~Ledger Nano S, Trezor), have been specifically designed for this purpose.}.
 
+\todo[inline]{highlight general blockchain value add}
+\todo[inline]{explain need for withdrawal pattern}
+
 %Other design choices thamade should be explained in the following:
 %\subsubsection{Blockchain Value Add}
 %\subsubsection{Withdrawal Pattern}
