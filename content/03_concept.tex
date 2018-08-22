@@ -85,14 +85,11 @@ p_c = \frac{b - (b \mod t)}{t} \times v
 %  	\item seized penalties are also used for self-financing
 \end{itemize}
 
-% functional requirements formatter
+% (non-)functional requirements formatter
 \def\twodigits#1{%
 %  \ifnum#1<100 0\fi
   \ifnum#1<10 0\fi
   \number#1}
-
-\newlist{FR}{enumerate}{1}
-\setlist[FR]{label=FR-\arabic*:}
 
 % start of functional requirements
 \subsection{Functional Requirements}
@@ -101,33 +98,33 @@ In accordance to \ref{sec:incentivizedOverview} and \ref{sec:rules}, the followi
 Of course, consumers and environmental agencies will also expect a method to claim the promised rewards and donations respectively, so that two additional requirements are formulated subsequently.
 
 \paragraph{Garbage collector}
-\begin{enumerate}[label={\textbf{FR-\protect\twodigits{\theenumi}}},leftmargin=*]
-	\item As a garbage collector, I can report the number of thrown away bottles, so that the amount of non-claimed deposits can be calculated. \label{itm:reportNumber}
-	\item As a garbage collector, I can report the identifier of a thrown away bottle, so that the responsible consumer can be punished. \label{itm:reportIdentifier}
+\begin{enumerate}[font=\sffamily,label={\textbf{FR-\protect\twodigits{\theenumi}}},leftmargin=1.4cm, ref=FR-\protect\twodigits{\theenumi}]
+	\item As a garbage collector, I can report the number of thrown away one-way bottles, so that the amount of non-claimed deposits can be calculated. \label{itm:reportNumber}
+	\item As a garbage collector, I can report the identifier of a thrown away one-way bottle, so that the responsible consumer can be punished. \label{itm:reportIdentifier}
 \end{enumerate}
 
 \paragraph{Retailer}
-\begin{enumerate}[resume, label={\textbf{FR-\protect\twodigits{\theenumi}}},leftmargin=*]
-	\item As a retailer, I can report that a consumer has purchased reusable bottles, so that he becomes eligible to receive rewards.
-	\item As a retailer, I can report how many reusable bottles a consumer has bought, so that his share of rewards can be calculated. \label{itm:reportReusables}
+\begin{enumerate}[resume, font=\sffamily, label={\textbf{FR-\protect\twodigits{\theenumi}}},leftmargin=1.4cm, ref=FR-\protect\twodigits{\theenumi}]
+	\item As a retailer, I can report that a consumer has purchased reusable bottles, so that he becomes eligible to receive rewards. \label{itm:reportReusablePurchase}
+	\item As a retailer, I can report how many reusable bottles a consumer has bought, so that his share of rewards can be calculated. \label{itm:reportReusableNumber}
 	\item As a retailer, I can report which one-way bottles a consumer has bought, so that the ownership of each bottle is recorded. \label{itm:reportOneWays}
 	\item As a retailer, I can look up the penalty that a specific consumer must pay, so that this amount can be added onto the deposit of each bottle during purchase. \label{itm:lookUpPenalty}
 \end{enumerate}
 
 \paragraph{Take-back point}
-\begin{enumerate}[resume, label={\textbf{FR-\protect\twodigits{\theenumi}}},leftmargin=*]
+\begin{enumerate}[resume, font=\sffamily, label={\textbf{FR-\protect\twodigits{\theenumi}}},leftmargin=1.4cm, ref=FR-\protect\twodigits{\theenumi}]
 %	\item As a tack-back point, I can put in a claim to be reimbursed for making advance refunds, so that I do not experience a loss by offering this service.
 	\item As a tack-back point, I can report which one-way bottles a consumer has returned, so that the penalty, if raised, can be refunded or seized accordingly. \label{itm:reportOneWayReturn}
 \end{enumerate}
 
 \paragraph{Consumer}
-\begin{enumerate}[resume, label={\textbf{FR-\protect\twodigits{\theenumi}}},leftmargin=*]  
-	\item As a consumer, I can claim a reward for having purchased reusable bottles, so that I will be motivated to so in the future even though one-way packaging is lighter (and more durable) when compared to most reusable bottles. 
+\begin{enumerate}[resume, font=\sffamily, label={\textbf{FR-\protect\twodigits{\theenumi}}},leftmargin=1.4cm, ref=FR-\protect\twodigits{\theenumi}]  
+	\item As a consumer, I can claim a reward for having purchased reusable bottles, so that I will be motivated to so in the future even though one-way packaging is lighter (and more durable) when compared to most reusable bottles. \label{itm:claimReward}
 \end{enumerate}
 
 \paragraph{Environmental agency}
-\begin{enumerate}[resume, label={\textbf{FR-\protect\twodigits{\theenumi}}},leftmargin=*]  
-	\item As an environmental agency, I can claim a donation, so that my cause will be better supported through the funding secured.
+\begin{enumerate}[resume, font=\sffamily, label={\textbf{FR-\protect\twodigits{\theenumi}}},leftmargin=1.4cm, ref=FR-\protect\twodigits{\theenumi}]  
+	\item As an environmental agency, I can claim a donation, so that my cause will be better supported through the funding secured. \label{itm:claimDonation}
 \end{enumerate}
 	
 \subsection{Preconditions}
@@ -140,7 +137,7 @@ While an incentivized deposit-refund system may be effective, it does assume a v
 	In addition to reporting the total number of thrown away bottles\hide{(\ref{itm:reportNumber})}, garbage collection must also be obliged to communicate the individual identifiers\hide{(\ref{itm:reportIdentifier})}. This assumes that one-way bottles are marked with a label that is unique across all bottles in circulation. Finally, and to automate the whole process, special object recognition machinery will be required along the sorting belt of any given refuse disposal site.
 	\item[Obligation to report bottle purchase]
 	\hfill \\
-	Retailers and initial distributors alike must report which particular one-way bottles a consumer has purchased\hide{(\ref{itm:reportOneWays})}. The same (i.e. quantity) goes for buying reusable bottles \hide{(\ref{itm:reportReusables})} although this only happens through opt-in as people should not be forced to accept rewards. In both cases, it will be necessary to have consumers present a unique means of identification as they complete the purchase.
+	Retailers and initial distributors alike must report which particular one-way bottles a consumer has purchased\hide{(\ref{itm:reportOneWays})}. The same (i.e. quantity) goes for buying reusable bottles \hide{(\ref{itm:reportReusableNumber})} although this only happens through opt-in as people should not be forced to accept rewards. In both cases, it will be necessary to have consumers present a unique means of identification as they complete the purchase.
 	\item[Obligation to levy penalty]
 	\hfill \\
 	Assuming that the consumer qualifies for a penalty, retailers must be impelled to impose this amount upon purchase which itself requires an extension to cash registers so that the amount can be queried dynamically\hide{(\ref{itm:lookUpPenalty})}, given that the consumer has been identified priorly.
@@ -154,23 +151,36 @@ These prevailing conditions could be enforced by amending the system's legal bas
 \subsection{Non-Functional Requirements}
 Whereas functional quality stresses conformance with the design specifications, structural quality addresses non-functional requirements like security and maintainability \cite[p.~2]{Martinez-Ortiz:2016:QMW:3011141.3011203}. Together, both can be used to constitute the evaluation framework for measuring a system's quality, better known as \ac{QoS}. \citeauthor{Liu:2004:QCP:1013367.1013379} argue that it is not practical to come up with a standard model of attributes because \ac{QoS} is a broad, context-dependent concept \cite[p.~67]{Liu:2004:QCP:1013367.1013379}. Therefore, the following list of desired structural properties is based on those already encompassed in the current deposit-refund system or those which are absolutely necessary to implement an incentivized version. All other traits will be left open for discussion in the end.
 
-\begin{description}
-	\item[Access Security]
-	\hfill \\
-	The system shall distinguish between authorized and non-authorized users. More specifically, the individual features outlined above shall only be accessible to their designated user\hide{(\textbf{NFR-01}\label{itm:accessSecurity})}.
-	\item[Availability]
-	\hfill \\
-	The system shall be available for use between the hours of 6:00 am and 24:00 pm \hide{(\textbf{NFR-02}\label{itm:operatingTimes})} which is justified by the fact that most sales and returns will happen within this timeframe. Exceptions must therefore be maintained in a local backlog of unsent reports and transmitted at the next possible point in time. The same is true for claiming rewards and donations.
-	\item[Cost]
-	\hfill \\
-	The system shall be no more costly in operation than it currently is\hide{(\textbf{NFR-03}\label{itm:operatingCost})}. Total membership and bottle registration fees may be taken as a baseline (see~\ref{sec:DPGRoles}).
-	\item[Reliability, Scalability \& Efficiency]
-	\hfill \\
-	The system shall be able to handle all user requests and by such shall be scalable to support unlimited growth in the number of actors, reports and claims\hide{(\textbf{NFR-04}\label{itm:unlimitedGrowth})}. Further, any request must be executed by the end of the day \hide{(\textbf{NFR-05}\label{itm:responseTime})} to ensure the timely application of penalties, as well as to have a proper statement ready by the end of the month.
-	\item[Integrity]
-	\hfill \\
-	All monetary amounts (i.e.~rewards and donations) must be calculated accurately before being rounded down to two decimal places\hide{(\textbf{NFR-06}\label{itm:calculcations})}. The latter ensures that no more funds are distributed than are available. Additionally, only integer figures may be reported and must be recorded as is\hide{(\textbf{NFR-07}\label{itm:onlyInteger})}.
-\end{description}
+\paragraph{Access Security}
+\begin{enumerate}[font=\sffamily, label={\textbf{NFR-\protect\twodigits{\theenumi}}},leftmargin=1.7cm, ref=NFR-\protect\twodigits{\theenumi}]  
+	\item The system shall distinguish between authorized and non-authorized users. More specifically, the individual features outlined above shall only be accessible to their designated user.\label{itm:accessSecurity}
+\end{enumerate}
+
+\paragraph{Availability}
+\begin{enumerate}[resume, font=\sffamily, label={\textbf{NFR-\protect\twodigits{\theenumi}}},leftmargin=1.7cm, ref=NFR-\protect\twodigits{\theenumi}]  
+	\item The system shall be available for use between the hours of 6:00 am and 24:00 pm which is justified by the fact that most sales and returns will happen within this timeframe. Exceptions must therefore be maintained in a local backlog of unsent reports and transmitted at the next possible point in time. The same is true for claiming rewards and donations.\label{itm:operatingTimes}
+\end{enumerate}
+
+\paragraph{Cost}
+\begin{enumerate}[resume, font=\sffamily, label={\textbf{NFR-\protect\twodigits{\theenumi}}},leftmargin=1.7cm, ref=NFR-\protect\twodigits{\theenumi}]  
+	\item The system shall be no more costly in operation than it currently is. Total membership and bottle registration fees may be taken as a baseline (see~\ref{sec:DPGRoles}).\label{itm:operatingCost}
+\end{enumerate}
+
+\paragraph{Reliability \& Scalability}
+\begin{enumerate}[resume, font=\sffamily, label={\textbf{NFR-\protect\twodigits{\theenumi}}},leftmargin=1.7cm, ref=NFR-\protect\twodigits{\theenumi}]  
+	\item The system shall be able to handle all user requests and by such shall be scalable to support unlimited growth in the number of actors, reports and claims.\label{itm:unlimitedGrowth}
+\end{enumerate}
+
+\paragraph{Efficiency}
+\begin{enumerate}[resume, font=\sffamily, label={\textbf{NFR-\protect\twodigits{\theenumi}}},leftmargin=1.7cm, ref=NFR-\protect\twodigits{\theenumi}]  
+	\item The system shall execute any request by the end of the day to ensure the timely application of penalties, as well as to have a proper statement ready by the end of the month.\label{itm:responseTime}
+\end{enumerate}
+
+\paragraph{Integrity}
+\begin{enumerate}[resume, font=\sffamily, label={\textbf{NFR-\protect\twodigits{\theenumi}}},leftmargin=1.7cm, ref=NFR-\protect\twodigits{\theenumi}]  
+	\item All monetary amounts (i.e.~rewards and donations) must be calculated accurately before being rounded down to two decimal places. The latter ensures that no more funds are distributed than are available. Additionally, only integer figures may be reported and must be recorded as is.\label{itm:calculcations}
+\end{enumerate}
+
 	
 \pagebreak
 
@@ -191,7 +201,7 @@ The biggest roadblock to implementing an incentivized deposit-refund system (see
 
 Leveraging Ethereum's decentralized application platform and built-in cryptocurrency (see~\ref{sec:ethereumOverview}), \ac{DPG} could provide participants of the deposit-refund cycle with a fully autonomous method for settling refund claims by deploying a smart-contract that will act as a central clearing house and simultaneously allow for the incentivized structure put forward. A semantic change to the regulatory underpinnings will not be required. 
 
-For all this to work, the very first deposit charged for a one-way bottle must be converted into Ether and sent to the smart-contract (step 1a of \autoref{fig:depositCycleFuture}). At the same time, a non-fungible token (see~\ref{sec:fungibility}) representing the newly introduced bottle must be created using the bottle's unique identifier and associated (step 1b of \autoref{fig:depositCycleFuture}) with the address of the purchaser's \ac{EOA} (see~\ref{sec:accounts}). Keeping in mind the actor's various obligations (see~\ref{sec:preconditions}), the remainder of the system will be implemented as following: 
+For all this to work, the very first deposit charged for a one-way bottle must be converted into Ether and sent to the smart-contract (step 1a of \autoref{fig:depositCycleFuture}) \label{itm:basicRequirement}. At the same time, a non-fungible token (see~\ref{sec:fungibility}) representing the newly introduced bottle must be created using the bottle's unique identifier and associated (step 1b of \autoref{fig:depositCycleFuture}) with the address of the purchaser's \ac{EOA} (see~\ref{sec:accounts}). Keeping in mind the actor's various obligations (see~\ref{sec:preconditions}), the remainder of the system will be implemented as following: 
 
 \begin{itemize}
 	\item [(2)] Like today, the deposit of a one-way bottle is still directly paid to the retailer upon each subsequent sale but as already indicated, not again transmitted to the smart-contract. However, should the consumer qualify for a penalty (see~\ref{sec:rules}), this penalty (converted to Ether) is sent to the smart-contract along with the purchase report itself. Furthermore, each report causes the token to be re-associated with the new consumer. In case that the previous owner had to pay a penalty \footnote{Even though unlikely, this indicates that a retailer has lost or thrown away one-way bottles.}, that amount will be credited to him for later withdrawal as he is not responsible for the bottle anymore.
@@ -201,13 +211,32 @@ For all this to work, the very first deposit charged for a one-way bottle must b
 	\item [(5)] Environmental agencies can simply claim their donation by signing a transaction and addressing it to this smart-contract, though, for it to work, the encapsulated message must contain the appropriate function signature (see~\ref{sec:accounts}). Determining that a caller is indeed an environmental agency happens by looking up his approval status. Likewise, eligible consumers (i.e.~those that have been reported to have purchased reusable bottles) can claim their reward in the same fashion with the difference being that permission does not have to be checked since the reward amount is not statically calculated (comp.~\autoref{eq:rewardCalculation}) and by such would simply result in a zero value.
 \end{itemize}
 
-\subsection{Components}
+\subsection{Component Design}
+Striving for a component-based design represents one of the most important best practices in software engineering because it facilitates developers in maintaining a complex system by decomposing it into parts that are easier to conceive, understand and program. At the same time, the process of dismantling a system should not happen arbitrarily but rather attempt to take the application's domain structure into account to reduce the likelihood of having to remedy large parts afterwards. Accordingly, \autoref{fig:classDiagramConcept} showcases the individual components that have been identified as being essential to realizing the high-level architecture presented beforehand.
 
 \begin{figure}[hbt]
 	  \includegraphics[width=\textwidth]{images/concept/class_diagram_concept_short}
 	  \caption{Class design model}
 	  \label{fig:classDiagramConcept}
 \end{figure}
+
+The classes (ie.~contracts [see~\ref{sec:accounts}]) encountered within this loosely typed model can be categorized by the role they take in abstracting the system:
+
+\begin{description}
+	\item[Accounting]
+	\hfill \\
+	As mentioned in \ref{sec:incentivizedOverview}, some kind of an accounting layer will be needed to adequately reward reusable bottle consumers. Here, a smart-contract called \texttt{DPGCore} will take upon this task and provide actors with \ref{itm:reportNumber}, \ref{itm:reportReusablePurchase} and \ref{itm:reportReusableNumber}. Since all reported figures are tied to a specific timeframe (i.e.~the current month) and rewards can only be claimed for the past period (comp.~\ref{sec:rules}), \texttt{DPGCore} maintains a reference to two distinct \texttt{Periods} which each track the total number of bottles that have been thrown away in that specific period, as well as the number of reusable bottles a particular \texttt{Consumer} has purchased. The connection to both properties allows \ref{itm:claimReward} and \ref{itm:claimDonation} to be implemented within the same contract. Finally, it makes available two additional functions that for one, enable the settlement process outlined above and two, offer the ability to lock down a deposit that has been transmitted by an initial distributor (comp.~\ref{itm:basicRequirement}). 
+	
+	By taking a closer look at the conceptual model presented, one can make out the fact that it will not be possible to directly put in a claim to be reimbursed, report a thrown away bottle or lock up a deposit because the methods are marked as protected. Consequently, they can only be exposed through inheritance. This behaviour is intended considering that the penalty can be regarded as an extension to an incentivized deposit-refund system, a fact that is already partly implied by the name itself. Further, this design choice will break up the monolith and simplify deployment should it be decided that a penalty will not be needed in production, in which case the subclass \texttt{DPGBasic} can be used out of the box.
+	\item[Access Control]
+	\hfill \\
+	To relieve \texttt{DPGCore} of the duty to additionally have to track which addresses resemble approved environmental agencies or garbage collectors, \texttt{DPGActorManager} has been established as a separate contract. Still, it is advised that the same or some other key pair in possession of \ac{DPG} is used to deploy this smart-contract, as only the owner (i.e.~the deployer) will be able to add or remove additional \texttt{Actors}. Communication between \texttt{DPGCore} and \texttt{DPGActorManager} will happen by exchanging messages (see~\ref{sec:accounts}). Together, this will ensure \ref{itm:accessSecurity} in regard to false donation claims or thrown away bottle reports.
+
+	\item[Penalty]
+	\hfill \\
+\end{description}
+
+
 
 \subsection{Conversion of Deposits}
 % deposits must always be converted to Ether but can be directly refunded as the retailer either already received this amount during a purchase resulting in a perfectly balanced accounting state or will definitely be reimbursed for making an advance payment by proving the number of accepted bottles
