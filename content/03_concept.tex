@@ -53,7 +53,7 @@ Having given a high-level introduction to an incentivized deposit-refund system,
   	\item 50\% of non-claimed deposits are reserved for rewards (\textit{consumer fund})
   	\item rewards and donations can be claimed once in each period
   	\item a period's duration is set at 4 weeks
-  	\item a consumer's reward ($r_c$) is based on the amount of reusable bottles ($b$) he has purchased within the previous period, thus can be calculated as:
+  	\item a consumer's reward ($r_c$) is based on the relative amount of reusable bottles ($b$) he has purchased within the previous period, thus can be calculated as:
 
 \begin{equation}
 r_c = \frac{b}{b_{total}} \times f_c
@@ -166,7 +166,7 @@ Whereas functional quality stresses conformance with the design specifications, 
 	The system shall be no more costly in operation than it currently is\hide{(\textbf{NFR-03}\label{itm:operatingCost})}. Total membership and bottle registration fees may be taken as a baseline (see~\ref{sec:DPGRoles}).
 	\item[Reliability, Scalability \& Efficiency]
 	\hfill \\
-	The system shall be able to handle all user requests and by such shall be scalable to support unlimited growth in the number of actors\hide{(\textbf{NFR-04}\label{itm:unlimitedGrowth})}. Further, any request must be executed by the end of the day \hide{(\textbf{NFR-05}\label{itm:responseTime})} to ensure the timely application of penalties, as well as to have a proper statement ready by the end of the month.
+	The system shall be able to handle all user requests and by such shall be scalable to support unlimited growth in the number of actors, reports and claims\hide{(\textbf{NFR-04}\label{itm:unlimitedGrowth})}. Further, any request must be executed by the end of the day \hide{(\textbf{NFR-05}\label{itm:responseTime})} to ensure the timely application of penalties, as well as to have a proper statement ready by the end of the month.
 	\item[Integrity]
 	\hfill \\
 	All monetary amounts (i.e.~rewards and donations) must be calculated accurately before being rounded down to two decimal places\hide{(\textbf{NFR-06}\label{itm:calculcations})}. The latter ensures that no more funds are distributed than are available. Additionally, only integer figures may be reported and must be recorded as is\hide{(\textbf{NFR-07}\label{itm:onlyInteger})}.
@@ -194,62 +194,42 @@ Leveraging Ethereum's decentralized application platform and built-in cryptocurr
 For all this to work, the very first deposit charged for a one-way bottle must be converted into Ether and sent to the smart-contract (step 1a of \autoref{fig:depositCycleFuture}). At the same time, a non-fungible token (see~\ref{sec:fungibility}) representing the newly introduced bottle must be created using the bottle's unique identifier and associated (step 1b of \autoref{fig:depositCycleFuture}) with the address of the purchaser's \ac{EOA} (see~\ref{sec:accounts}). Keeping in mind the actor's various obligations (see~\ref{sec:preconditions}), the remainder of the system will be implemented as following: 
 
 \begin{itemize}
-	\item [(2)] Like today, the deposit of a one-way bottle is still directly paid to the retailer upon each subsequent sale and as indicated above, not again transmitted to the smart-contract. However, should the consumer qualify for a penalty (see~\ref{sec:rules}), this penalty (converted to Ether) is sent to the smart-contract along with the purchase report itself. Furthermore, each report causes the token to be re-associated with the new consumer. In case that the previous owner had to pay a penalty \footnote{Even though unlikely, this indicates that a retailer has lost or thrown away one-way bottles.}, that amount will be credited to him for later withdrawal as he is not responsible for the bottle anymore.
+	\item [(2)] Like today, the deposit of a one-way bottle is still directly paid to the retailer upon each subsequent sale but as already indicated, not again transmitted to the smart-contract. However, should the consumer qualify for a penalty (see~\ref{sec:rules}), this penalty (converted to Ether) is sent to the smart-contract along with the purchase report itself. Furthermore, each report causes the token to be re-associated with the new consumer. In case that the previous owner had to pay a penalty \footnote{Even though unlikely, this indicates that a retailer has lost or thrown away one-way bottles.}, that amount will be credited to him for later withdrawal as he is not responsible for the bottle anymore.
 	\item [(3a)] By returning a one-way bottle, the accompanying report triggers the smart-contract to compare the consumer's identity with that recorded for the bottle (i.e.~that associated with the token). Should these match, the penalty will be credited for later withdrawal. Otherwise, the penalty is withheld (comp.~\ref{sec:rules}). Irrespective of the outcome, the token is destroyed meaning that the bottle's identifier may be reused in the future. Additionally, tack-back points must physically refund the consumer (comp.~\ref{itm:levyDepositObligation} on \autopageref{itm:levyDepositObligation})
 	\item [(3b)] Should the consumer decide to throw away a one-way bottle, this information is (likely) to be reported by garbage collection sooner or later and triggers an increase in the responsible consumer's record of thrown away bottles which is used to calculate his penalty (comp.~\autoref{eq:penaltyCalculcation}). Assuming that a penalty had been paid for this bottle, it is withheld (comp. \ref{sec:rules}). Lastly, the token is burned and the number of bottles which have been thrown away in the current period is incremented, as is required to correctly calculate \autoref{eq:rewardCalculation}.
 	\item [(4)] Since tack-back points still directly refund consumers, settlement for these advance payments is needed. This happens by transmitting the same signed dataset which is used today and produced either by a reverse vending machine or a commissioned counting center (see~\ref{sec:depositRefundCycle}). The smart-contract can then verify the payload's signature, after which a message with equivalent value in Ether will be sent to the refund claimant's (i.e. the caller's) address. 
 	\item [(5)] Environmental agencies can simply claim their donation by signing a transaction and addressing it to this smart-contract, though, for it to work, the encapsulated message must contain the appropriate function signature (see~\ref{sec:accounts}). Determining that a caller is indeed an environmental agency happens by looking up his approval status. Likewise, eligible consumers (i.e.~those that have been reported to have purchased reusable bottles) can claim their reward in the same fashion with the difference being that permission does not have to be checked since the reward amount is not statically calculated (comp.~\autoref{eq:rewardCalculation}) and by such would simply result in a zero value.
 \end{itemize}
 
-\subsection{Design Rationale}
-The architecture detailed in \ref{sec:centralClearingHouse} has numerous implications as to how that particular implementation of an incentivized deposit-refund system must be used, the most obvious one being that the only permitted means of identification is an Ethereum address. Nonetheless, modelling the entire system as a series of interactions with a smart-contract is a deliberate design choice because, by definition, it prescribes all users to be authenticated with each request. This is due to the fact that only the private key-owning entity can sign transactions for that particular address (comp.~\ref{sec:accounts}) which allows for effortless authorization simply by maintaining a list of approved addresses. More importantly, consumers will not be required to register with yet another service just to leave their credit card details on a centralized server that is definitely more vulnerable to attacks than the decentralized ownership model embodied by public-key cryptography \footnote{A secure, non-constantly connected storage medium offers the greatest degree of protection against private-key thefts. Devices, known as hardware wallets (e.g.~Ledger Nano S, Trezor), have been specifically designed for this purpose.}.
+\subsection{Components}
 
-%Other design choices thamade should be explained in the following:
-
-
-\begin{description}
-	\item[Penalties]
-	\hfill \\
-	\item[Withdrawal Pattern]
-	\hfill \\	
-\end{description}
-
-
-% rewards and donations will be credited in Ether and are to be exchanged for fiat
-% withdrawal pattern due to recommended Ethereum design guideleines
-% penalties must always be withdrawed as the reverse vending machine would have to otherwise look up the penalty and convert it to fiat or this amount would have to be noted for each return to be submitted in a later claim both of which are impractical
-% deposits must always be converted to Ether but can be directly refunded as the retailer either already received this amount during a purchase resulting in a perfectly balanced accounting state or will definitely be reimbursed for making an advance payment by proving the number of accepted bottles
-
-
-
-
-%	- number of clicks (user interaction), latency normalized to 1 second, execution price, execution duration, availability, reliability, privacy, reputation, usability, maintainability
-
-%- Usability (Rechenzeit, Storage, Dauer, Kosten)
-%- Design Ansätze > Backlog, Wartezeit (Vergleich mit Internetspeed damals), Transaktionsminimierung
-%- Public oder Private Blockchain?
-%- Abrechnung pro Monat, da ansonsten kein Prozentsatz ermittelt werden kann
-%- nicht-funktional > schnelle Antwortzeiten, günstige Transaktionen, Skalierbarkeit 
-
-%- A/B schema > storage restriction
-%- accounting relevancy > via modifiers
-%- access control > via DPG 
-%- floating point calculation
-%- non-fungible token
-% - modulirization
-% - fraud 
- 
-
-\subsection{Blockchain Value Add}
+\begin{figure}[hbt]
+	  \includegraphics[width=\textwidth]{images/concept/class_diagram_concept_short}
+	  \caption{Class design model}
+	  \label{fig:classDiagramConcept}
+\end{figure}
 
 \subsection{Conversion of Deposits}
+% deposits must always be converted to Ether but can be directly refunded as the retailer either already received this amount during a purchase resulting in a perfectly balanced accounting state or will definitely be reimbursed for making an advance payment by proving the number of accepted bottles
+% rewards and donations will be credited in Ether and are to be exchanged for fiat
 \begin{description}
 	\item[Public]
 	\hfill \\
 	
 	\item[Private]
 	\hfill \\
-	
 \end{description}
 
-%\subsection{Modularisation}
+\subsection{Design Rationale}
+The architecture detailed in \ref{sec:centralClearingHouse} has numerous implications as to how that particular implementation of an incentivized deposit-refund system must be used, the most obvious one being that the only permitted means of identification is an Ethereum address. Nonetheless, modelling the entire system as a series of interactions with a smart-contract is a deliberate design choice because, by definition, it prescribes all users to be authenticated with each request. This is due to the fact that only the private-key owning entity can sign transactions for that particular address (comp.~\ref{sec:accounts}) which allows for effortless authorization simply by maintaining a list of approved addresses. More importantly, consumers will not be required to register with yet another service just to leave their bank account details on a centralized server that is definitely more vulnerable to attacks than the decentralized ownership model embodied by public-key cryptography \footnote{A secure, non-constantly connected storage medium offers the greatest degree of protection against private-key theft. Devices, known as hardware wallets (e.g.~Ledger Nano S, Trezor), have been specifically designed for this purpose.}.
+
+%Other design choices thamade should be explained in the following:
+%\subsubsection{Blockchain Value Add}
+%\subsubsection{Withdrawal Pattern}
+% withdrawal pattern due to recommended Ethereum design guideleines
+% penalties must always be withdrawed as the reverse vending machine would have to otherwise look up the penalty and convert it to fiat or this amount would have to be noted for each return to be submitted in a later claim both of which are impractical
+
+
+
+%- Design Ansätze > Backlog, Wartezeit (Vergleich mit Internetspeed damals), Transaktionsminimierung
+%- Abrechnung pro Monat, da ansonsten kein Prozentsatz ermittelt werden kann
