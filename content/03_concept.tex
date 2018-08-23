@@ -93,6 +93,7 @@ p_c = \frac{b - (b \mod t)}{t} \times v
 
 % start of functional requirements
 \subsection{Functional Requirements}
+\label{sec:FRs}
 In accordance to \ref{sec:incentivizedOverview} and \ref{sec:rules}, the following functional requirements are defined as the bare minimum of features any implementation must provide in order to be used as the accounting backend of an incentivized deposit-refund system. These requirements are expressed from the perspective of an end-user who hopes to achieve different goals by using the system and are grouped by the various roles encountered (comp.~\autoref{fig:useCaseOverview}).
 
 Of course, consumers and environmental agencies will also expect a method to claim the promised rewards and donations respectively, so that two additional requirements are formulated subsequently.
@@ -149,6 +150,7 @@ While an incentivized deposit-refund system may be effective, it does assume a v
 These prevailing conditions could be enforced by amending the system's legal basis (see~\ref{sec:legalBasis}) and then integrating the relevant clauses into the contracts that \ac{DPG} maintains with each participant (see~\ref{sec:DPGAdministration}). However, the exact realization including that of the measures needed as explained above is out of scope (comp.~\ref{sec:goalsScope}) and thus, assumed to be satisfied for the remainder of this paper. 
 
 \subsection{Non-Functional Requirements}
+\label{sec:NFRs}
 Whereas functional quality stresses conformance with the design specifications, structural quality addresses non-functional requirements like security and maintainability \cite[p.~2]{Martinez-Ortiz:2016:QMW:3011141.3011203}. Together, both can be used to constitute the evaluation framework for measuring a system's quality, better known as \ac{QoS}. \citeauthor{Liu:2004:QCP:1013367.1013379} argue that it is not practical to come up with a standard model of attributes because \ac{QoS} is a broad, context-dependent concept \cite[p.~67]{Liu:2004:QCP:1013367.1013379}. Therefore, the following list of desired structural properties is based on those already encompassed in the current deposit-refund system or those which are absolutely necessary to implement an incentivized version. All other traits will be left open for discussion in the end.
 
 \paragraph{Access Security}
@@ -158,7 +160,7 @@ Whereas functional quality stresses conformance with the design specifications, 
 
 \paragraph{Availability}
 \begin{enumerate}[resume, font=\sffamily, label={\textbf{NFR-\protect\twodigits{\theenumi}}},leftmargin=1.7cm, ref=NFR-\protect\twodigits{\theenumi}]  
-	\item The system shall be available for use between the hours of 6:00 am and 24:00 pm which is justified by the fact that most sales and returns will happen within this timeframe. Exceptions must therefore be maintained in a local backlog of unsent reports and transmitted at the next possible point in time. The same is true for claiming rewards and donations.\label{itm:operatingTimes}
+	\item The system shall be available for use between the hours of 6:00 am and 24:00 pm which is justified by the fact that most sales and returns will happen within this timeframe. Clients must therefore therefore maintain a backlog of unsent reports and transmit these exceptions at the next possible point in time.\label{itm:operatingTimes}
 \end{enumerate}
 
 \paragraph{Cost}
@@ -166,9 +168,9 @@ Whereas functional quality stresses conformance with the design specifications, 
 	\item The system shall be no more costly in operation than it currently is. Total membership and bottle registration fees may be taken as a baseline (see~\ref{sec:DPGRoles}).\label{itm:operatingCost}
 \end{enumerate}
 
-\paragraph{Reliability \& Scalability}
+\paragraph{Scalability}
 \begin{enumerate}[resume, font=\sffamily, label={\textbf{NFR-\protect\twodigits{\theenumi}}},leftmargin=1.7cm, ref=NFR-\protect\twodigits{\theenumi}]  
-	\item The system shall be able to handle all user requests and by such shall be scalable to support unlimited growth in the number of actors, reports and claims.\label{itm:unlimitedGrowth}
+	\item The system shall be able to handle all user requests and by such, shall be scalable to support unlimited growth in the number of actors, reports and claims.\label{itm:unlimitedGrowth}
 \end{enumerate}
 
 \paragraph{Efficiency}
@@ -201,7 +203,7 @@ The biggest roadblock to implementing an incentivized deposit-refund system (see
 
 Leveraging Ethereum's decentralized application platform and built-in cryptocurrency (see~\ref{sec:ethereumOverview}), \ac{DPG} could provide participants of the deposit-refund cycle with a fully autonomous method for settling refund claims by deploying a smart-contract that will act as a central clearing house and simultaneously allow for the incentivized structure put forward. A semantic change to the regulatory underpinnings will not be required. 
 
-For all this to work, the very first deposit charged for a one-way bottle must be converted to Ether and sent to the smart-contract (step 1a of \autoref{fig:depositCycleFuture})\label{itm:basicRequirement}. At the same time, a non-fungible token (see~\ref{sec:fungibility}) representing the newly introduced bottle must be created using the bottle's unique identifier and associated (step 1b of \autoref{fig:depositCycleFuture}) with the address of the purchaser's \ac{EOA} (see~\ref{sec:accounts}). Keeping in mind the actor's various obligations (see~\ref{sec:preconditions}), the remainder of the system will be implemented as following: 
+For all this to work, the very first deposit charged for a one-way bottle must be converted to Ether and sent to the smart-contract (step 1a of \autoref{fig:depositCycleFuture})\label{itm:basicRequirement}. At the same time, a non-fungible token (see~\ref{sec:fungibility}) representing the newly introduced bottle must be created using the bottle's unique identifier and associated (step 1b of \autoref{fig:depositCycleFuture}) with the address of the purchaser's \ac{EOA} (see~\ref{sec:accounts}). This means that the only permitted means of identification is an Ethereum address. Keeping in mind the actor's various obligations (see~\ref{sec:preconditions}), the remainder of the system will be implemented as following: 
 
 \begin{itemize}
 	\item [(2)] Like today, the deposit of a one-way bottle is still directly paid to the retailer upon each subsequent sale but as already indicated, not again transmitted to the smart-contract. However, should the consumer qualify for a penalty (see~\ref{sec:rules}), this penalty (converted to Ether) is sent to the smart-contract along with the purchase report itself. Furthermore, each report causes the token to be re-associated with the new consumer. In case that the previous owner had to pay a penalty \footnote{Even though unlikely, this indicates that a retailer has lost or thrown away one-way bottles.}, that amount will be credited to him for later withdrawal as he is not responsible for the bottle anymore.
@@ -220,12 +222,12 @@ Striving for a component-based design represents one of the most important best 
 	  \label{fig:classDiagramConcept}
 \end{figure}
 
-The classes (i.e.~contracts \cite[p.~75]{solidityDocs}) encountered within this loosely typed model can be categorized by the role they take in abstracting the system:
+The classes (i.e.~contracts \cite[p.~75]{solidityDocs}) encountered within this (loosely typed) conceptual model can be categorized by the role they take in abstracting the system:
 
 \begin{description}[format={\storedescriptionlabel}]
 	\item[Accounting\label{itm:accounting}]
 	\hfill \\
-	As mentioned in \ref{sec:incentivizedOverview}, some kind of an accounting layer will be needed to reward reusable bottle consumers. Here, a smart-contract called \texttt{DPGCore} will take upon this task and provide actors with \ref{itm:reportNumber}, \ref{itm:reportReusablePurchase} and \ref{itm:reportReusableNumber}. Since all reported figures are tied to a specific timeframe (i.e.~the current period) and rewards can only be claimed for the past period (comp.~\ref{sec:rules}), \texttt{DPGCore} maintains a reference to two distinct \texttt{Periods} which each track the total number of bottles that have been thrown away in that specific period, as well as the number of reusable bottles a particular \texttt{Consumer} has purchased. The connection to both properties allows \ref{itm:claimReward} and \ref{itm:claimDonation} to be implemented within the same contract. Finally, it makes available two additional functions that for one, enable the settlement process outlined above and two, offer the ability to lock down a deposit that has been transmitted by an initial distributor (comp.~\ref{itm:basicRequirement}). 
+	As mentioned in \autoref{sec:incentivizedOverview}, some kind of an accounting layer will be needed to reward reusable bottle consumers. Here, a smart-contract called \texttt{DPGCore} will take upon this task and provide actors with \ref{itm:reportNumber}, \ref{itm:reportReusablePurchase} and \ref{itm:reportReusableNumber}. Since all reported figures are tied to a specific timeframe (i.e.~the current period) and rewards can only be claimed for the past period (comp.~\ref{sec:rules}), \texttt{DPGCore} maintains a reference to two distinct \texttt{Periods} which each track the total number of bottles that have been thrown away in that specific period, as well as the number of reusable bottles a particular \texttt{Consumer} has purchased. The connection to both properties allows \ref{itm:claimReward} and \ref{itm:claimDonation} to be implemented within the same contract. Finally, it makes available two additional functions that for one, enable the settlement process outlined above and two, offer the ability to lock down a deposit that has been transmitted by an initial distributor (comp.~\ref{itm:basicRequirement}). 
 	
 	By taking a closer look at the conceptual model presented, one can make out the fact that it will not be possible to directly put in a claim to be reimbursed, report a thrown away bottle or lock up a deposit because the methods are marked as protected. Consequently, they can only be exposed through inheritance. This behaviour is intended considering that the penalty can be regarded as an extension to an incentivized deposit-refund system \footnote{As the name implies, incentivization primarily refers to rewarding reusable bottle purchases.} and by such, requires the APIs to be extended with additional arguments that capture the individual bottle identifiers. Further, this design choice will break up the monolith and simplify deployment should it be decided that a penalty is not needed for production, in which case the subclass \texttt{DPGBasic} can be used out of the box.
 	\item[Access Control]
@@ -248,21 +250,20 @@ The classes (i.e.~contracts \cite[p.~75]{solidityDocs}) encountered within this 
 	One consequence of separating the penalty's logic from \texttt{DPGCore} (comp.~\ref{itm:accounting} on \autopageref{itm:accounting}) is the need for an additional data structure that tracks how many one-way bottles a particular consumer has thrown away. This structure is given by \texttt{ConsumerStatistic}. Only now, \texttt{DPGPenalty} will be able to implement \ref{itm:reportIdentifier}, \ref{itm:reportOneWays}, \ref{itm:lookUpPenalty} and \ref{itm:reportOneWayReturn}, during which some of the functionality inherited from \texttt{DPGCore} will be re-encapsulated to add the bottle identifier as a function argument. In line with \ref{itm:operatingCost}, it will be possible to specify multiple bottles at once. Transaction cost (see~\ref{sec:gas}) reductions like these should be utilized whenever possible.
 \end{description}
 
-In summary, the components outlined above will lead to five custom build artifacts of which either two or three will be deployed \footnote{When a contract inherits from another, only a single contract is created on the blockchain as the code of all base contracts is copied into it \cite[p.~88]{solidityDocs}. Moreover, data structures like the \texttt{Actor} or \texttt{Period} do not constitute their own contract but will be rather realized as simple C-like structs.}. Yet, only two of those are designed for direct user interaction:
+%In summary, the components outlined above will lead to five custom build artifacts of which three at most will be deployed \footnote{When a contract inherits from another, only a single contract is created on the blockchain as the code of all base contracts is copied into it \cite[p.~88]{solidityDocs}. Moreover, data structures like the \texttt{Actor} or \texttt{Period} do not constitute their own contract but will be rather realized as simple C-like structs.}. Yet, only two of those are designed for direct user interaction because \texttt{DPGToken} is managed completely autonomously.
 
-\begin{itemize}
-  \item \ac{DPG} can add/remove agencies and garbage collectors via \texttt{DPGActorManager}
-  \item Actors and consumers can report to/withdraw from either \texttt{DPGBasic} or \texttt{DPGPenalty}
-\end{itemize}
-
+%\begin{itemize}
+%  \item \ac{DPG} can add/remove agencies and garbage collectors via \texttt{DPGActorManager}
+%  \item actors and consumers can report to/withdraw from either \texttt{DPGBasic} or \texttt{DPGPenalty}
+%\end{itemize}
 
 \subsection{Conversion of Deposits}
-To this point, it has been assumed that each deposit will be converted to (i.e.~exchanged for) Ether of equal value. Considering Ethereum's volatile nature and that of almost any cryptocurrency, this procedure poses a serious concern when thinking about the reward or settlement process. In the worst case, the fluctuation could diminish all of the locked down funds, requiring \ac{DPG} to either reject reimbursement claims or go into debt themselves. Two possible solutions can be thought of depending on the type of blockchain used in production:
+To this point, it has been assumed that each deposit will be exchanged for Ether of equal value. Considering Ethereum's volatile nature and that of almost any cryptocurrency, this procedure poses a serious concern when thinking about the reward or settlement process. In the worst case, the fluctuation could diminish all of the locked down funds, requiring \ac{DPG} to either reject reimbursement claims or go into debt themselves. Two possible solutions can be thought of depending on the type of blockchain used during production:
 
 \begin{description}
 	\item[Public]
 	\hfill \\
-	When using Ethereum's public permission-less blockchain, fluctuations become inevitable. However, projects known as stablecoins (e.g.~Tether, MakerDAO, Digix) attempt to create a currency of constant value. Many of these are backed by a collateral, pegged to traditional fiat currencies or assets (e.g.~1 gram of gold) and most importantly, traded as fungible (see~\ref{sec:fungibility}) Ethereum tokens. Despite each project having its own drawbacks, such a token could be utilized to better safeguard the funds. The protocol would work as follows: 
+	When using Ethereum's public permission-less blockchain, fluctuations are inevitable. However, projects known as stablecoins (e.g.~Tether, MakerDAO, Digix) attempt to create a currency of constant value. Many of these are backed by a collateral, pegged to traditional fiat currencies or assets (e.g.~1 gram of gold) and most importantly, traded as fungible (see~\ref{sec:fungibility}) Ethereum tokens. Despite each project having its own drawbacks, such a stablecoin could be utilized to better safeguard the funds. The protocol would work as follows: 
 	
 	\begin{enumerate}
   		\item acquire adequate amount of stablecoin tokens upon receiving a deposit
@@ -273,7 +274,7 @@ To this point, it has been assumed that each deposit will be converted to (i.e.~
 	
 	\item[Permissioned]
 	\hfill \\
-	A more predictable approach involves permissioned blockchains, commonly referred to as private deployments. These are operated by an authorized set of miners who use Ether at constant value. Ergo, the solution can be used as is, though assumes that:
+	A more predictable approach involves permissioned blockchains, commonly referred to as private deployments. These are operated by a known, authorized set of miners who use Ether at constant value. Ergo, the solution can be used as is, though assumes that:
 
 	\begin{itemize}
   		\item \ac{DPG} operates a public fixed-price exchange to buy/sell internal Ether
@@ -291,13 +292,31 @@ To this point, it has been assumed that each deposit will be converted to (i.e.~
 \end{description}
 
 \subsection{Design Rationale}
-The architecture detailed in \ref{sec:centralClearingHouse} has numerous implications as to how that particular implementation of an incentivized deposit-refund system must be used, the most obvious one being that the only permitted means of identification is an Ethereum address. Nonetheless, modelling the entire system as a series of interactions with a smart-contract is a deliberate design choice because, by definition, it prescribes all users to be authenticated with each request. This is due to the fact that only the private-key owning entity can sign transactions for that particular address (comp.~\ref{sec:accounts}) which allows for effortless authorization simply by maintaining a list of approved addresses. More importantly, consumers will not be required to register with yet another service just to leave their bank account details on a centralized server that is definitely more vulnerable to attacks than the decentralized ownership model embodied by public-key cryptography \footnote{A secure, non-constantly connected storage medium offers the greatest degree of protection against private-key theft. Devices, known as hardware wallets (e.g.~Ledger Nano S, Trezor), have been specifically designed for this purpose.}.
+\subsubsection{Accountless}
+%The architecture detailed so far has numerous implications as to how that particular implementation of an incentivized deposit-refund system will be used, the most obvious one being that the only permitted means of identification is an Ethereum address. Nonetheless, x
+Modelling the entire system as a series of interactions with a smart-contract is a deliberate design choice because, by definition, it prescribes all users to be authenticated with each request. This is due to the fact that only the private-key owning entity can sign transactions for that particular address (comp.~\ref{sec:accounts}) which allows for effortless authorization simply by maintaining a list of approved addresses. More importantly, consumers will not be required to register with yet another service just to leave their bank account details on a centralized server that is definitely more vulnerable to attacks than the decentralized ownership model embodied by public-key cryptography \footnote{A secure, non-constantly connected storage medium offers the greatest degree of protection against private-key theft. Devices, known as hardware wallets (e.g.~Ledger Nano S, Trezor), have been specifically designed for this purpose.}. 
 
-\todo[inline]{highlight general blockchain value add}
-\todo[inline]{explain need for withdrawal pattern}
+\subsubsection{Public Blockchain Value-Add}
+From here, the general strengths of a public blockchain deployment should be highlighted with respect to the non-functional requirements set for an incentivized deposit-refund system in \autoref{sec:NFRs}.
 
-%Other design choices thamade should be explained in the following:
-%\subsubsection{Blockchain Value Add}
-%\subsubsection{Withdrawal Pattern}
-% withdrawal pattern due to recommended Ethereum design guideleines
-% penalties must always be withdrawed as the reverse vending machine would have to otherwise look up the penalty and convert it to fiat or this amount would have to be noted for each return to be submitted in a later claim both of which are impractical
+\begin{description}
+	\item[Availability (\ref{itm:operatingTimes})]
+	\hfill \\
+	The application will most certainly experience 100\% availability because the likelihood of all 17.6k miners (comp.~\ref{sec:ethereumPopularity}) going offline is extremely low. As such, it will not be necessary that clients maintain a backlog of unsent reports. Furthermore, the transaction pool itself will act as a backlog, should Ethereum experience an overly high demand in which it is unable to directly process a request.
+	\item[Cost (\ref{itm:operatingCost})]
+	\hfill \\
+	Assuming a constant gas price and distribution of request types, the operating costs will always be proportional to the application's traffic (i.e.~number of contract invocations) as only the actual computation expended by a miner will be billed (comp.~\ref{sec:gas}). In this sense, the one-time fee paid for deployment is negligible.
+%	\item[Reliability (\ref{itm:unlimitedGrowth})]
+%	\hfill \\
+%	Assuming an error-free contract code, any well-formed request will be handled 100\% of the time as the system will always be available.
+	\item[Efficiency (\ref{itm:responseTime})]
+	\hfill \\
+	Presuming that a miner will not randomly leave out transactions and always prefer transactions with a higher gas price, any request will execute by the end of the day, if its gas price has been set high enough. 
+	\item[Integrity (\ref{itm:calculcations})]
+	\hfill \\
+	Provided that the contract code is error-free, any report will be recorded as is because all transactions are atomic. Further, all input arguments are strongly typed so that, if required, only integers will be accepted.
+\end{description}
+
+\subsubsection{Withdrawal Pattern}
+There are two particular reasons as to why refunded penalties are credited for later withdrawal instead of being sent to the owner directly or paid out as part of the bottle return process. First, the withdrawal pattern generally represents an Ethereum best practice because it avoids re-entrancy attacks. This is also one of the reasons why rewards and donations have to be withdrawn. Secondly, it would be very impractical to incorporate this step into the bottle return process as reverse vending machines would otherwise have to look up the penalty and convert it to fiat. Alternatively, the amount could be refunded directly, although this would require tack-back points to keep an additional record and submit that record as part of a refund claim, necessitating even more changes to the current infrastructure.
+
