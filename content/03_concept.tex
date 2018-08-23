@@ -245,10 +245,10 @@ The classes (i.e.~contracts \cite[p.~75]{solidityDocs}) encountered within this 
 	
 	By default, the \texttt{ERC721Token} contract does not allow users to mint new or burn existing tokens. Therefore, subclassing must be used to expose these protected methods. At the same time, a barrier will be needed to prevent arbitrary usage. Generally, it can be argued that tokens shall only be managed by the application as a result of having received a report. To guarantee this behaviour, all function calls within \texttt{DPGToken} will be restricted to \texttt{DPGPenalty}, hereby creating a fully autonomous debt-tracking entity, meaning that no human will be able to transfer their tokens in an attempt to get rid of the return responsibility.
 	
-	One consequence of separating the penalty's logic from \texttt{DPGCore} (comp.~\ref{itm:accounting} on \autopageref{itm:accounting}) is the need for an additional data structure that tracks how many one-way bottles a particular consumer has thrown away in total. This structure is given by \texttt{ConsumerStatistic}. Only now, \texttt{DPGPenalty} will be able to implement \ref{itm:reportIdentifier}, \ref{itm:reportOneWays}, \ref{itm:lookUpPenalty} and \ref{itm:reportOneWayReturn}, during which some of the functionality inherited from \texttt{DPGCore} is to be re-encapsulated.
+	One consequence of separating the penalty's logic from \texttt{DPGCore} (comp.~\ref{itm:accounting} on \autopageref{itm:accounting}) is the need for an additional data structure that tracks how many one-way bottles a particular consumer has thrown away. This structure is given by \texttt{ConsumerStatistic}. Only now, \texttt{DPGPenalty} will be able to implement \ref{itm:reportIdentifier}, \ref{itm:reportOneWays}, \ref{itm:lookUpPenalty} and \ref{itm:reportOneWayReturn}, during which some of the functionality inherited from \texttt{DPGCore} will be re-encapsulated to add the bottle identifier as a function argument. In line with \ref{itm:operatingCost}, it will be possible to specify multiple bottles at once. Transaction cost (see~\ref{sec:gas}) reductions like these should be utilized whenever possible.
 \end{description}
 
-In summary, the components outlined above will lead to five custom build artifacts of which either two or three \footnote{When a contract inherits from another, only a single contract is created on the blockchain as the code of all base contracts is copied into it \cite[p.~88]{solidityDocs}. Moreover, data structures like the \texttt{Actor} or \texttt{Period} do not constitute their own contract but will be rather realized as simple C-like structs.} will be deployed. Yet, only two of those are designed for direct user interaction:
+In summary, the components outlined above will lead to five custom build artifacts of which either two or three will be deployed \footnote{When a contract inherits from another, only a single contract is created on the blockchain as the code of all base contracts is copied into it \cite[p.~88]{solidityDocs}. Moreover, data structures like the \texttt{Actor} or \texttt{Period} do not constitute their own contract but will be rather realized as simple C-like structs.}. Yet, only two of those are designed for direct user interaction:
 
 \begin{itemize}
   \item \ac{DPG} can add/remove agencies and garbage collectors via \texttt{DPGActorManager}
@@ -257,14 +257,37 @@ In summary, the components outlined above will lead to five custom build artifac
 
 
 \subsection{Conversion of Deposits}
-% deposits must always be converted to Ether but can be directly refunded as the retailer either already received this amount during a purchase resulting in a perfectly balanced accounting state or will definitely be reimbursed for making an advance payment by proving the number of accepted bottles
-% rewards and donations will be credited in Ether and are to be exchanged for fiat
+To this point, it has been assumed that each deposit will be converted to (i.e.~exchanged for) Ether of equal value. Considering Ethereum's volatile nature and that of almost any cryptocurrency, this procedure poses a serious concern when thinking about the reward or settlement process. In the worst case, the fluctuation could diminish all of the locked down funds, requiring \ac{DPG} to either reject reimbursement claims or go into debt themselves. Two possible solutions can be thought of depending on the type of blockchain used in production:
+
 \begin{description}
 	\item[Public]
 	\hfill \\
+	When using Ethereum's public permission-less blockchain, fluctuations become inevitable. However, projects known as stablecoins (e.g.~Tether, MakerDAO, Digix) attempt to create a currency of constant value. Many of these are backed by a collateral, pegged to traditional fiat currencies or assets (e.g.~1 gram of gold) and most importantly, traded as fungible (see~\ref{sec:fungibility}) Ethereum tokens. Despite each project having its own drawbacks, such a token could be utilized to better safeguard the funds. The protocol would work as follows: 
 	
-	\item[Private]
+	\begin{enumerate}
+  		\item acquire adequate amount of stablecoin tokens upon receiving a deposit
+  		\item reimburse refund claimant with stablecoin tokens
+	\end{enumerate}
+
+	Of course, this would happen completely automatically and could be achieved through a separate proxy contract that interacts with a decentralized exchange before returning control to the actual contract method called. 
+	
+	\item[Permissioned]
 	\hfill \\
+	A more predictable approach involves permissioned blockchains, commonly referred to as private deployments. These are operated by an authorized set of miners who use Ether at constant value. Ergo, the solution can be used as is, though assumes that:
+
+	\begin{itemize}
+  		\item \ac{DPG} operates a public fixed-price exchange to buy/sell internal Ether
+  		\item actors and consumers can freely transact and create accounts
+	\end{itemize}
+	
+	The system would then be used with the following percularities:
+		
+	\begin{itemize}
+  		\item initial distributors convert deposit to adequate amount of internal Ether 
+  		\item agencies, consumers and claimants exchange their internal Ether when needed
+	\end{itemize}
+	
+	Now, one may suggest that a similar approach could be taken in a public blockchain environment, if a second token representing a constant deposit value is used. The problem, however, is that tokens cannot be sent along as a regular function argument. This is due to the fact that tokens are merely a recoding in application state which means that a particular contract has used its storage to remember how many tokens any given address possesses. At the same time, this is also completely true for Ether itself with the exception being that miners automatically deduct one's balance should they encounter that a transaction has specified a non-zero amount of Ether.
 \end{description}
 
 \subsection{Design Rationale}
@@ -278,8 +301,3 @@ The architecture detailed in \ref{sec:centralClearingHouse} has numerous implica
 %\subsubsection{Withdrawal Pattern}
 % withdrawal pattern due to recommended Ethereum design guideleines
 % penalties must always be withdrawed as the reverse vending machine would have to otherwise look up the penalty and convert it to fiat or this amount would have to be noted for each return to be submitted in a later claim both of which are impractical
-
-
-
-%- Design Ansätze > Backlog, Wartezeit (Vergleich mit Internetspeed damals), Transaktionsminimierung
-%- Abrechnung pro Monat, da ansonsten kein Prozentsatz ermittelt werden kann
