@@ -13,8 +13,6 @@ The following chapter will attempt to highlight the most important implementatio
 
 Also, it must be noted that all programming has been done in Solidity, a statically typed, high-level language that was influenced by C++, Python and JavaScript \cite[p.~5]{solidityDocs}. Alternatives have not been considered, because Solidity represents Ethereum's most popular language \cite[p.~21]{Antonopoulos.2018}.
 
-\pagebreak
-
 \section{Accounting}
 
 \subsection{A/B Scheme}
@@ -58,7 +56,7 @@ function getAccountingPeriod() internal view returns (Period storage) {
  
  Alternatively, one could also directly maintain two storage pointers that reference the data structures in a logical manner. These would then only have to be swapped after 4 weeks. The advantage of this approach is that no helper function is required for retrieval, though it might obscure how the application works and therefore, contradicts with a \ac{dApp}'s goal of establishing trust (comp.~\ref{sec:derivedDefinition}). Still, both possibilities have been confirmed to work equally.
 
-\subsubsection{Period Reset}
+\subsection{Period Reset}
 Traditionally, resetting a period would be achieved by assigning it a new instance. Sadly, this method is not feasable because the \texttt{Period} data structure uses a mapping to assign each (consumer) address a \texttt{Consumer} data structure as can be seen in \autoref{lst:periodDataStructure}. 
 
 \begin{lstlisting}[language=Solidity, caption=Period data structure, label=lst:periodDataStructure]
@@ -82,7 +80,31 @@ struct Consumer {
 
 A simple workaround is given by \autoref{lst:consumerDataStructure}. Here, an additional property called \texttt{lastResetPeriodIndex} is associated with each consumer to remember the period (index) in which the consumer's attributes were last reset. Should this index be smaller than the contract's \texttt{currentPeriodIndex}, a reset must occur before any attribute may be updated. Logically, the \texttt{lastResetPeriodIndex} must then be set to the \texttt{currentPeriodIndex} to prevent the consumer from being reset each time.
 
-\subsubsection{Period Advancement}
+\subsection{Period Advancement}
+Solidity function modifiers can be used to automatically check a condition prior to executing the function \cite[p.~79]{solidityDocs}. This application implements a modifier called \texttt{periodDependent} to ensure that reports always attribute to the most current period and don't change the results of the past one. By such, it may be regarded as the switch in the A/B scheme outlined before.
+
+Practically, this means that the application will check whether the current period's duration has exceeded the \texttt{PERIOD\_LENGTH} and if so, switches periods before returning control to the method called which is symbolized by an underscore \cite[p.~81]{solidityDocs}. \autoref{lst:periodDependentModifier} displays this logic, where \texttt{now} is an alias for the current block timestamp \footnote{Timestamps can be influenced by miners and are only guaranteed to be somewhere between the timestamps of two consecutive blocks of the canonical chain \cite[p.~65]{solidityDocs}}, \texttt{setNextPeriod()} the function used to actually switch periods and \texttt{currentPeriodStart} self-explanatory. All timestamps are given in unix epoch format \cite[p.~29]{solidityDocs}. 
+
+\begin{lstlisting}[language=Solidity, caption=Function modifier to advance period, label=lst:periodDependentModifier]
+modifier periodDependent() {	
+	if (now < currentPeriodStart.add(PERIOD_LENGTH)) {
+	    _;
+	} else {
+	    setNextPeriod();
+	    _;
+	}
+}
+\end{lstlisting}
+
+\FloatBarrier
+
+Finally, \autoref{lst:reportReusables} demonstrates how this modifier is applied to the function used for reporting that a consumer has bought reusable bottles.
+
+\begin{lstlisting}[language=Solidity, caption=Function signature to report reusable bottle purchase, label=lst:reportReusables]
+function reportReusableBottlePurchase(address _address, uint _bottleCount) public periodDependent
+\end{lstlisting}
+
+%On the other hand, the logic for advancing or switching periods is a bit more complicated if the \texttt{currentPeriodIndex} should reflect how long the application has existed for. Also, assume the following case:  
 
 %\noindent\begin{minipage}[b]{.38\textwidth}
 %\begin{lstlisting}[language=Solidity, caption=Consumer data structure, label=lst:consumerDataStructure]
@@ -104,16 +126,22 @@ A simple workaround is given by \autoref{lst:consumerDataStructure}. Here, an ad
 %\end{lstlisting}
 %\end{minipage}
 
-
-%- access control > via DPG 
-\subsection{Floating Point Calculations}
-\subsection{Deposits \& Voluntary Donations}
+\pagebreak
 
 \section{Access Control}
 \subsection{Ownable}
+
 \subsection{External Interface}
+
+\pagebreak
 
 \section{Penalty}
 \subsection{ERC-721 Token Standard}
 \subsection{OpenZeppelin Framework}
 \subsection{Token Transfer Restriction}
+
+\pagebreak
+
+\section{Miscellaneous}
+\subsection{Floating Point Calculations}
+\subsection{Deposits \& Voluntary Donations}
