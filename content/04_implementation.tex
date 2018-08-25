@@ -20,13 +20,13 @@ Also, it must be noted that all programming has been done in Solidity, a statica
 In this context, accounting refers to the task of tracking how many reusable bottles a particular consumer has bought in a given timeframe, while also noting down the total number of one-way bottles that have been thrown away in that same timeframe (comp.~\ref{itm:accounting} on \autopageref{itm:accounting}). 
 
 \subsection{A/B Scheme}
-\Cref{sec:rules} states that the timeframe should be set to 4 weeks which has been done so literally by utilizing one of the six available time unit suffixes \cite[p.~68]{solidityDocs}:
+\Cref{sec:rules} states that the timeframe should be set to 4 weeks which has literally been done so by utilizing one of the six time unit suffixes available \cite[p.~68]{solidityDocs}:
 
 \begin{lstlisting}[caption=Definition of period length, label=lst:periodDataStructure]
 uint public constant PERIOD_LENGTH = 4 weeks;
 \end{lstlisting}
 
-As previously explained, it will only be necessary to keep an account of the two most recent periods (comp.~\ref{itm:accounting} on \autopageref{itm:accounting}). By such, the application can be thought of as alternating between two data structures, of which one represents the current period used for incoming reports, while the other is stored to determine a consumer's reward. Of course, this will require a reset of the older (i.e.~the reward) period upon switching after 4 weeks. \autoref{fig:accountingTimeline} aims to illustrate this behavior as time progresses. 
+As previously explained, it will only be necessary to keep an account of the two most recent periods (comp.~\ref{itm:accounting} on \autopageref{itm:accounting}). By such, the application can be thought of as alternating between two data structures of which one represents the current period used for incoming reports, while the other is stored to determine a consumer's reward. Of course, this will require a reset of the older period as soon as a switch takes place. \autoref{fig:accountingTimeline} aims to illustrate this behavior as time progresses. 
 
 \begin{figure}[hbt]
 	  \includegraphics[width=\textwidth]{images/implementation/timeline}
@@ -36,7 +36,7 @@ As previously explained, it will only be necessary to keep an account of the two
 
 \FloatBarrier
 
-Internally, switching is realized by using a third variable called \texttt{currentPeriodName} that tracks which of the two data structures should be used for new reports. For this task, an enumeration called \texttt{PeriodName} is defined to conveniently limit its range to the two possible cases. Accordingly, the opposite of the current value will then represent the past period. This technique is detailed in \autoref{lst:periodSetup}. 
+Internally, switching is realized by using a third variable called \texttt{currentPeriodName} that tracks which of the two data structures (i.e.~A or B) should be used for new reports. For clarity, an enumeration called \texttt{PeriodName} is defined with the same possibilities. Accordingly, the opposite of the current value will then represent the past period. This technique is detailed in \autoref{lst:periodSetup}. 
 
 \begin{lstlisting}[language=Solidity, caption=Declaration of periods and definition of current period tracker, label=lst:periodSetup]
 enum PeriodName { A, B}
@@ -46,7 +46,7 @@ Period private periodA;
 Period private periodB;
 \end{lstlisting}
 
-In order to avoid repeated logic, two additional helper functions are used to actually retrieve one of the two periods.  \autoref{lst:periodHelperFunction} showcases how this is done in respect to the current period. Again, the inverse logic will yield the past period. 
+In order to avoid repetition, two additional helper functions are implemented to provide other methods with a constant access interface.  \autoref{lst:periodHelperFunction} showcases how this is done in respect to the current period. Again, the inverse logic will yield the past period. 
 
 \begin{lstlisting}[language=Solidity, caption=Helper function to retrieve current period, label=lst:periodHelperFunction]
 function getAccountingPeriod() internal view returns (Period storage) {
@@ -54,10 +54,10 @@ function getAccountingPeriod() internal view returns (Period storage) {
 }
 \end{lstlisting}
  
- At this point, it should be noted that a function declared as \texttt{view} promises to not modify the contract's state \cite[p.~82]{solidityDocs} \footnote{\todo[inline]{explain advantage of \texttt{view} functions}}. This commitment can be clearly seen above. Furthermore, the function's return type is marked as \texttt{storage}, meaning that it will return a reference to the period (stored in the contract's storage [see~\ref{sec:accounts}]), not a copy of it. Hereby, persistence is greatly simplified as changes do not have to be written back manually.
+Here, the function's return type is marked as \texttt{storage}, meaning that it will return a reference to the period (stored in the contract's storage [see~\ref{sec:accounts}]), not a copy of it. This greatly simplifies persistence as changes do not have to be written back manually. Alternatively, one could also directly maintain two storage pointers that reference the data structures in a logical manner. The advantage of that approach is that no helper function will be required for retrieval, though it might obscure how the application works and therefore, contradicts with a \ac{dApp}'s goal of establishing trust (comp.~\ref{sec:derivedDefinition}). Still, both possibilities have been confirmed to work equally.
  
- Alternatively, one could also directly maintain two storage pointers that reference the data structures in a logical manner. These would then only have to be swapped after 4 weeks. The advantage of this approach is that no helper function is required for retrieval, though it might obscure how the application works and therefore, contradicts with a \ac{dApp}'s goal of establishing trust (comp.~\ref{sec:derivedDefinition}). Still, both possibilities have been confirmed to work equally.
-
+ At this point, it should be noted that a function declared as \texttt{view} promises to not modify the contract's state \footnote{\texttt{Pure} functions additionally disallow access of state \cite[p.~82]{solidityDocs}.} \cite[p.~82]{solidityDocs}. This commitment can be clearly seen in \autoref{lst:periodHelperFunction} but is also enforced by the \ac{EVM} itself \cite[p.~83]{solidityDocs}. Practically, this allows nodes to perform synchronous read-only operations that are free of charge \cite{transactionCall}. On the contrary, calling such a function by means of transactions will still cost gas because the transaction must be stored in the blockchain even if it does not modify that particular contract storage \cite{constantGas}. 
+ 
 \subsection{Period Reset}
 Traditionally, resetting a period would be achieved by assigning it a new instance. Sadly, this method is not feasable because the \texttt{Period} data structure uses a mapping to assign each (consumer) address a \texttt{Consumer} data structure as can be seen in \autoref{lst:periodDataStructure}. 
 
@@ -70,7 +70,7 @@ struct Period {
 }
 \end{lstlisting}
 
-Like often, this limitation can be traced back to gas (see~\ref{sec:gas}). Considering that mappings are virtually initialized such that every possible key exists and is mapped to a value whose byte-representation is all zeros \cite[p.~62]{solidityDocs}, this behavior is explained by the fact that one cannot provide enough gas to pay for the $2^{256}$ reset operations a miner would have to perform without exceeding the block's \texttt{GASLIMIT} (see~\autoref{ftn:gasLimit}). Therefore, \texttt{delete} has no effect on whole mappings \cite[p.~63]{solidityDocs}.
+Like often, this limitation can be traced back to gas (see~\ref{sec:gas}). Considering that mappings are virtually initialized such that every possible key exists and is mapped to a value whose byte-representation is all zeros \cite[p.~62]{solidityDocs}, this behavior is explained by the fact that one cannot provide enough gas to pay for the $2^{256}$ operations needed for a reset without exceeding the block's \texttt{GASLIMIT} (see~\autoref{ftn:gasLimit}). Therefore, \texttt{delete} has no effect on whole mappings \cite[p.~63]{solidityDocs}.
 
 \begin{lstlisting}[language=Solidity, caption=Consumer data structure, label=lst:consumerDataStructure]
 struct Consumer {
@@ -80,7 +80,7 @@ struct Consumer {
 }
 \end{lstlisting}
 
-A simple workaround is given by \autoref{lst:consumerDataStructure}. Here, an additional property called \texttt{lastResetPeriodIndex} is associated with each consumer to remember the period (index) in which the consumer's attributes were last reset. Should this index be smaller than the contract's \texttt{currentPeriodIndex}, a reset must occur before any attribute may be updated. Logically, the \texttt{lastResetPeriodIndex} must then be set to the \texttt{currentPeriodIndex} to prevent the consumer from being reset each time.
+A simple workaround is given by \autoref{lst:consumerDataStructure} in which an additional property called \texttt{lastResetPeriodIndex} is associated with each consumer to remember the period (index) in which the consumer's attributes were last reset. Should this index be smaller than the contract's \texttt{currentPeriodIndex}, a reset must occur before any attribute may be updated. Logically, the \texttt{lastResetPeriodIndex} must then be set to the \texttt{currentPeriodIndex} to prevent the consumer from being reset each time.
 
 \subsection{Period Advancement}
 Solidity function modifiers can be used to automatically check a condition prior to executing the function \cite[p.~79]{solidityDocs}. This application implements a modifier called \texttt{periodDependent} to ensure that reports always attribute to the most current period and don't change the results of the past one. By such, it may be regarded as the switch in the A/B scheme outlined before.
@@ -100,7 +100,7 @@ modifier periodDependent() {
 
 \FloatBarrier
 
-Finally, \autoref{lst:reportReusables} demonstrates how this modifier is applied to the function used for reporting that a consumer has bought reusable bottles.
+Finally, \autoref{lst:reportReusables} demonstrates how this modifier is applied to functions.
 
 \begin{lstlisting}[language=Solidity, caption=Function signature to report reusable bottle purchase, label=lst:reportReusables]
 function reportReusableBottlePurchase(address _address, uint _bottleCount) public periodDependent
@@ -134,7 +134,7 @@ function reportReusableBottlePurchase(address _address, uint _bottleCount) publi
 In its most basic form, access control can be realized by maintaining a list of authorized addresses. For an incentivized deposit-refund system, this list must at least cover all environmental agencies who should be able to claim a donation (comp.~\ref{itm:accessControl} on \autopageref{itm:accessControl}). 
 
 \subsection{Storage Layout}
-Even though access control could be realized through a simple list (i.e.~an array), gas consumption diminishes this approach's efficiency because the average cost of checking whether a given address is contained in the list is linear to the number of approved addresses. Moreover, this cost cannot be predicted in advance and may very well exceed the block's \texttt{GASLIMIT} causing the contract to be stalled \cite[p.~122]{solidityDocs}. Instead, a mapping is used to ensure \texttt{O(1)} lookups.
+Even though access control could be realized through a simple list (i.e.~an array), gas consumption diminishes this approach's efficiency because the average cost of checking whether a given address is contained in the list is linear to the number of approved addresses (i.e.~\texttt{O(n)}). Moreover, this cost cannot be predicted and may very well exceed the block's \texttt{GASLIMIT} causing the contract to be stalled \cite[p.~122]{solidityDocs}. Instead, a mapping is used to ensure \texttt{O(1)} lookups.
 
 \begin{lstlisting}[language=Solidity, caption=Declaration of approved agencies and actor data structure, label=lst:actorStorage]
 struct Actor {
@@ -146,7 +146,7 @@ mapping(address => Actor) private collectors;
 \end{lstlisting}
 
 \subsection{Ownable}
-As mentioned in \autoref{sec:componentDesign}, only \ac{DPG} should be able to add or remove approved parties. Again, this is easily realized through modifiers and even promoted as one of its premiere use cases \cite[p.~80]{solidityDocs}. But because this functionality will be needed quite often (comp.~\autoref{fig:classImplementationModel} on \autopageref{fig:classImplementationModel}), the project extracts the logic into a separate contract that can be inherited from. By \autoref{lst:ownable} it can be seen that only the address passed as part of the constructor will be able to call a function that is marked as \texttt{onlyOwner}. In all other cases, the call will revert and refund the remaining gas since the \texttt{require} statement cannot be fulfilled \cite[p.~75]{solidityDocs}. 
+As mentioned in \autoref{sec:componentDesign}, only \ac{DPG} should be able to add or remove approved parties. Again, this is easily realized through modifiers and even promoted as one of its premiere use cases \cite[p.~80]{solidityDocs}. Because this functionality will be needed quite often (comp.~\autoref{fig:classImplementationModel} on \autopageref{fig:classImplementationModel}), the project extracts the logic into a separate contract that can be inherited from. From \autoref{lst:ownable} it can be seen that only the address passed as part of the constructor will be able to call a function that is marked as \texttt{onlyOwner}. In all other cases, the call will revert and refund the remaining gas since the \texttt{require} statement cannot be fulfilled \cite[p.~75]{solidityDocs}. 
 
 \begin{lstlisting}[language=Solidity, caption=Ownable contract, label=lst:ownable]
 contract Ownable {
@@ -163,9 +163,9 @@ contract Ownable {
 }
 \end{lstlisting}
 
-Specifying which address should become the contract owner may happen either directly in the inheritance list or as part of the derived constructor, known as the modifier-invocation-style \cite[p.~89]{solidityDocs}. Both options are shown in \autoref{lst:ownableInheritance}, where \texttt{msg.sender} is the sender of the message (or transaction which encapsulated the message). Consequently, both will lead to the same desired result in which the deployer (i.e.~\ac{DPG}) becomes the owner. 
+Specifying which address should become the contract owner may happen either directly in the inheritance list or as part of the derived constructor, known as the modifier-invocation-style \cite[p.~89]{solidityDocs}. Both options are shown in \autoref{lst:ownableInheritance}, where \texttt{msg.sender} is the sender of the message (or transaction which encapsulated the message).
 
-\begin{lstlisting}[language=Solidity, caption=Inherting from Ownable, label=lst:ownableInheritance]
+\begin{lstlisting}[language=Solidity, caption=Inherting from Ownable contract, label=lst:ownableInheritance]
 // inheritance list
 contract DPGActorManager is Ownable(msg.sender) { }
 
@@ -175,8 +175,20 @@ contract DPGActorManager {
 }
 \end{lstlisting}
 
+Both lead to the same desired result in which the deployer (i.e.~\ac{DPG}) becomes the owner. 
+
 \subsection{External Interface}
-One result of extracting \texttt{DPGActorManager} is the need for an external contract interface that specifies which functions can be called by other contracts such as \texttt{DPGCore}. For this purpose, Solidity provides two types of visibilities: \texttt{external} and \texttt{public}, the difference being that \texttt{external} functions cannot be called internally \cite[p.~77]{solidityDocs}.
+One result of extracting functionality into a separate contract is the need for an external interface that specifies which functions can be called by other contracts. For this purpose, Solidity provides two types of visibilities: \texttt{external} and \texttt{public}, the difference being that \texttt{external} functions cannot be called internally \cite[p.~77]{solidityDocs}. What this implies, will be explained in the following \cite[p.~57, 69]{solidityDocs}:
+
+\begin{description}
+	\item[Internal Call (\texttt{f()})]
+	\hfill \\
+	Internal function calls are translated into simple \ac{EVM} jump instructions, meaning that the current memory is not cleared and by such, references can be passed very efficiently. This call type is only available for functions of same contract. 
+	\item[External Call (\texttt{this.f()})]
+	\hfill \\
+	External function calls are executed via a message call, meaning that all function arguments have to be copied to the \texttt{calldata} location which is a non-modifiable, non-persistent area used solely for function arguments. Further, it allows the caller to specify an amount of Wei and a new gas limit. 
+\end{description}
+
 
 \pagebreak
 
