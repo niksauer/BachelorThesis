@@ -4,20 +4,108 @@
 \label{chp:implementation}
 
 \section{Limitations}
+The following chapter will attempt to highlight the most important implementation details and explain which considerations have lead to the solution given in \cite{depositRefundGitHub} \footnote{The accompanying class implementation model can be found in the \autoref{app:implementation} on \autopageref{fig:classImplementationModel}.}. This product should by no means be regarded as final since two important aspects are uncovered:
+
 \begin{itemize}
   \item conversion of deposits (see~\ref{sec:depositConversion})
   \item signed receipts (see~\ref{itm:accessControl} on \autopageref{itm:accessControl})
 \end{itemize}
 
-%\section{Code Generation}
+Also, it must be noted that all programming has been done in Solidity, a statically typed, high-level language that was influenced by C++, Python and JavaScript \cite[p.~5]{solidityDocs}. Alternatives have not been considered, because Solidity represents Ethereum's most popular language \cite[p.~21]{Antonopoulos.2018}.
+
+\pagebreak
 
 \section{Accounting}
-%- accounting relevancy > via modifiers
-%- A/B schema > storage restriction
 
 \subsection{A/B Scheme}
+In this context, accounting refers to the task of tracking how many reusable bottles a particular consumer has bought in a given timeframe, while also noting down the total number of one-way bottles that have been thrown away in that same timeframe. Component design has delegated this task to \texttt{DPGCore} (comp.~\ref{itm:accounting} on \autopageref{itm:accounting}). 
+
+\Cref{sec:rules} states that the timeframe should be set to 4 weeks which has been done so literally by utilizing one of the six available time unit suffixes \cite[p.~68]{solidityDocs}:
+
+\begin{lstlisting}[caption=Definition of period length, label=lst:periodDataStructure]
+uint public constant PERIOD_LENGTH = 4 weeks;
+\end{lstlisting}
+
+As previously explained, it will only be necessary to keep an account of the two most recent periods (comp.~\ref{itm:accounting} on \autopageref{itm:accounting}). By such, the application can be thought of as alternating between two data structures, of which one represents the current period used for incoming reports, while the other is stored to determine a consumer's reward. Of course, this will require a reset of the older (i.e.~the reward) period upon switching after 4 weeks. \autoref{fig:accountingTimeline} aims to illustrate this behavior. 
+
+\begin{figure}[hbt]
+	  \includegraphics[width=\textwidth]{images/implementation/timeline}
+	  \caption{Accounting timeline}
+	  \label{fig:accountingTimeline}
+\end{figure}
+
+\FloatBarrier
+
+Internally, switching is realized by using a third variable called \texttt{currentPeriodName} that tracks which of the two data structures should be used for new reports. For this task, an enumeration called \texttt{PeriodName} is defined to conveniently limit its range to the two possible cases. Accordingly, the opposite of the current value will then represent the past period. This technique is detailed in \autoref{lst:periodSetup}. 
+
+\begin{lstlisting}[language=Solidity, caption=Declaration of periods and definition of current period tracker, label=lst:periodSetup]
+enum PeriodName { A, B}
+
+PeriodName private currentPeriodName = PeriodName.A;
+Period private periodA;
+Period private periodB;
+\end{lstlisting}
+
+In order to avoid repeated logic, two additional helper functions are used to actually retrieve one of the two periods.  \autoref{lst:periodHelperFunction} showcases how this is done in respect to the current period. Again, the inverse logic will yield the past period. 
+
+\begin{lstlisting}[language=Solidity, caption=Helper function to retrieve current period, label=lst:periodHelperFunction]
+function getAccountingPeriod() internal view returns (Period storage) {
+	return currentPeriod == PeriodName.A ? periodA : periodB;
+}
+\end{lstlisting}
+ 
+ At this point, it should be noted that a function declared as \texttt{view} promises to not modify the contract's state \cite[p.~82]{solidityDocs} \footnote{\todo[inline]{explain advantage of \texttt{view} functions}}. This commitment can be clearly seen above. Furthermore, the function's return type is marked as \texttt{storage}, meaning that it will return a reference to the period (stored in the contract's storage [see~\ref{sec:accounts}]), not a copy of it. Hereby, persistence is greatly simplified as changes do not have to be written back manually.
+ 
+ Alternatively, one could also directly maintain two storage pointers that reference the data structures in a logical manner. These would then only have to be swapped after 4 weeks. The advantage of this approach is that no helper function is required for retrieval, though it might obscure how the application works and therefore, contradicts with a \ac{dApp}'s goal of establishing trust (comp.~\ref{sec:derivedDefinition}). Still, both possibilities have been confirmed to work equally.
+
+\subsubsection{Period Reset}
+Traditionally, resetting a period would be achieved by assigning it a new instance. Sadly, this method is not feasable because the \texttt{Period} data structure uses a mapping to assign each (consumer) address a \texttt{Consumer} data structure as can be seen in \autoref{lst:periodDataStructure}. 
+
+\begin{lstlisting}[language=Solidity, caption=Period data structure, label=lst:periodDataStructure]
+struct Period {
+	uint index;
+	uint reusableBottlePurchases;
+	uint thrownAwayOneWayBottles;
+	mapping(address => Consumer) consumers;
+}
+\end{lstlisting}
+
+Like often, this limitation can be traced back to gas (see~\ref{sec:gas}). Considering that mappings are virtually initialized such that every possible key exists and is mapped to a value whose byte-representation is all zeros \cite[p.~62]{solidityDocs}, this behavior is explained by the fact that one cannot provide enough gas to pay for the $2^{256}$ reset operations a miner would have to perform without exceeding the block's \texttt{GASLIMIT} (see~\autoref{ftn:gasLimit}). Therefore, \texttt{delete} has no effect on whole mappings \cite[p.~63]{solidityDocs}.
+
+\begin{lstlisting}[language=Solidity, caption=Consumer data structure, label=lst:consumerDataStructure]
+struct Consumer {
+	uint reusableBottlesPurchases;
+	bool hasClaimedReward;
+	uint lastResetPeriodIndex;
+}
+\end{lstlisting}
+
+A simple workaround is given by \autoref{lst:consumerDataStructure}. Here, an additional property called \texttt{lastResetPeriodIndex} is associated with each consumer to remember the period (index) in which the consumer's attributes were last reset. Should this index be smaller than the contract's \texttt{currentPeriodIndex}, a reset must occur before any attribute may be updated. Logically, the \texttt{lastResetPeriodIndex} must then be set to the \texttt{currentPeriodIndex} to prevent the consumer from being reset each time.
+
+\subsubsection{Period Advancement}
+
+%\noindent\begin{minipage}[b]{.38\textwidth}
+%\begin{lstlisting}[language=Solidity, caption=Consumer data structure, label=lst:consumerDataStructure]
+%struct Consumer {
+%uint reusableBottles;
+%bool hasClaimedReward;
+%uint lastResetIndex;
+%}
+%\end{lstlisting}
+%\end{minipage}\hfill
+%\begin{minipage}[b]{.54\textwidth}
+%\begin{lstlisting}[language=Solidity, caption=Period data structure, label=lst:periodDataStructure]
+%struct Period {
+%uint index;
+%uint reusableBottlePurchases;
+%uint thrownAwayOneWayBottles;
+%mapping(address => Consumer) consumers;
+%}
+%\end{lstlisting}
+%\end{minipage}
+
+
 %- access control > via DPG 
-\subsection{Function Modifier}
 \subsection{Floating Point Calculations}
 \subsection{Deposits \& Voluntary Donations}
 

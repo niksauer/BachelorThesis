@@ -232,6 +232,7 @@ Optionally, a \ac{dApp} may rely on other decentralized components such as:
 \end{itemize}
 
 \subsubsection{Derived Definition}
+\label{sec:derivedDefinition}
 An application is considered to be a \acf{dApp} if it exhibits all of the characteristic features marked as a \textit{must}. Secondary or recommended traits are labelled as \textit{can} or \textit{should} respectively. 
 
 It must be noted that this definition will not differentiate between type~II and type~III \acp{dApp} because the former can be regarded as a dependency of the latter.
@@ -310,20 +311,20 @@ It must be noted that this definition will not differentiate between type~II and
 
 The definition presented within this section purposely does not make any assumptions about the user interface or a \ac{dApp}'s resiliency. Command-line interfaces qualify just as much as mobile native apps, whereas resiliency can be maximized by employing additional decentralized protocols. More importantly, the primary focus and goal of any \ac{dApp} developer should be to give users the confidence that a product works as promised by solely relying on open, decentralized peer-to-peer infrastructure services that can be inspected for functioning from end-to-end.
 
-\subsection{Infrastructure Model Comparison}
-
-%The resulting architecture, compared to that of a traditional web application, is detailed in \autoref{fig:dAppArchitecture}. 
+%\subsection{Infrastructure Model Comparison}
 %
-\begin{figure}[hbt]
-	\centering
-  	\includegraphics{images/theoretical_framework/dApp_architecture}
-  	\caption{Infrastructure model comparison between traditional web application and \ac{dApp}}
-  	\label{fig:dAppArchitecture}
-\end{figure}
-
-\todo[inline]{compare infrastructure model against traditional web apps to highlight open deployment}
-
-\FloatBarrier
+%%The resulting architecture, compared to that of a traditional web application, is detailed in \autoref{fig:dAppArchitecture}. 
+%%
+%\begin{figure}[hbt]
+%	\centering
+%  	\includegraphics{images/theoretical_framework/dApp_architecture}
+%  	\caption{Infrastructure model comparison between traditional web application and \ac{dApp}}
+%  	\label{fig:dAppArchitecture}
+%\end{figure}
+%
+%\todo[inline]{compare infrastructure model against traditional web apps to highlight open deployment}
+%
+%\FloatBarrier
 	
 \subsection{Tokens}
 \label{sec:tokens}
@@ -503,7 +504,7 @@ Ethereum, by definition, is a system that allows concurrency of operations but e
   \item Check that block number, difficulty and various other low-level Ethereum-specific parameters are valid
   \item Check that proof-of-work on block is valid
   \item Set $s[0] = \text{state of previous block}$ 
-  \item Set $tx = \text{block transaction list}$  (with $n$ transactions). For each $i$ in $0 \dots n-1$, set $s[i+1] = apply(s[i],\ tx[i])$. Return an error, if any iteration returns an error (comp.~\nameref{sec:stateTransition}) or total gas consumed exceeds the \texttt{GASLIMIT} \footnote{Similar to Bitcoin's block size, the \texttt{GASLIMIT} regulates the maximum number of transactions that can be included within a block \cite{blocksizeControversy} \cite[p.~8]{ethereumYellowPaper}. But instead of solely measuring storage space, it limits the amount of computation that a miner must apply.}.
+  \item Set $tx = \text{block transaction list}$  (with $n$ transactions). For each $i$ in $0 \dots n-1$, set $s[i+1] = apply(s[i],\ tx[i])$. Return an error, if any iteration returns an error (comp.~\nameref{sec:stateTransition}) or total gas consumed exceeds the \texttt{GASLIMIT} \footnote{Similar to Bitcoin's block size, the \texttt{GASLIMIT} regulates the maximum number of transactions that can be included within a block \cite{blocksizeControversy} \cite[p.~8]{ethereumYellowPaper}. But instead of solely measuring storage space, it limits the amount of computation that a miner must apply. \label{ftn:gasLimit}}.
   \item Set $s_{final} = s[n]$ with block reward paid to miner
   \item Verify that Merkle tree root of $s_{final}$ is equal to root provided in block header
 \end{enumerate}
