@@ -13,18 +13,20 @@ The following chapter will attempt to highlight the most important implementatio
 
 Also, it must be noted that all programming has been done in Solidity, a statically typed, high-level language that was influenced by C++, Python and JavaScript \cite[p.~5]{solidityDocs}. Alternatives have not been considered, because Solidity represents Ethereum's most popular language \cite[p.~21]{Antonopoulos.2018}.
 
-\section{Accounting}
+\pagebreak
+
+\section[Accounting]{Accounting \\ {\normalsize realized via \texttt{DPGCore}}}
+
+In this context, accounting refers to the task of tracking how many reusable bottles a particular consumer has bought in a given timeframe, while also noting down the total number of one-way bottles that have been thrown away in that same timeframe (comp.~\ref{itm:accounting} on \autopageref{itm:accounting}). 
 
 \subsection{A/B Scheme}
-In this context, accounting refers to the task of tracking how many reusable bottles a particular consumer has bought in a given timeframe, while also noting down the total number of one-way bottles that have been thrown away in that same timeframe. Component design has delegated this task to \texttt{DPGCore} (comp.~\ref{itm:accounting} on \autopageref{itm:accounting}). 
-
 \Cref{sec:rules} states that the timeframe should be set to 4 weeks which has been done so literally by utilizing one of the six available time unit suffixes \cite[p.~68]{solidityDocs}:
 
 \begin{lstlisting}[caption=Definition of period length, label=lst:periodDataStructure]
 uint public constant PERIOD_LENGTH = 4 weeks;
 \end{lstlisting}
 
-As previously explained, it will only be necessary to keep an account of the two most recent periods (comp.~\ref{itm:accounting} on \autopageref{itm:accounting}). By such, the application can be thought of as alternating between two data structures, of which one represents the current period used for incoming reports, while the other is stored to determine a consumer's reward. Of course, this will require a reset of the older (i.e.~the reward) period upon switching after 4 weeks. \autoref{fig:accountingTimeline} aims to illustrate this behavior. 
+As previously explained, it will only be necessary to keep an account of the two most recent periods (comp.~\ref{itm:accounting} on \autopageref{itm:accounting}). By such, the application can be thought of as alternating between two data structures, of which one represents the current period used for incoming reports, while the other is stored to determine a consumer's reward. Of course, this will require a reset of the older (i.e.~the reward) period upon switching after 4 weeks. \autoref{fig:accountingTimeline} aims to illustrate this behavior as time progresses. 
 
 \begin{figure}[hbt]
 	  \includegraphics[width=\textwidth]{images/implementation/timeline}
@@ -128,14 +130,57 @@ function reportReusableBottlePurchase(address _address, uint _bottleCount) publi
 
 \pagebreak
 
-\section{Access Control}
+\section[Access Control]{Access Control\\ {\normalsize realized via \texttt{DPGActorManager}}}
+In its most basic form, access control can be realized by maintaining a list of authorized addresses. For an incentivized deposit-refund system, this list must at least cover all environmental agencies who should be able to claim a donation (comp.~\ref{itm:accessControl} on \autopageref{itm:accessControl}). 
+
+\subsection{Storage Layout}
+Even though access control could be realized through a simple list (i.e.~an array), gas consumption diminishes this approach's efficiency because the average cost of checking whether a given address is contained in the list is linear to the number of approved addresses. Moreover, this cost cannot be predicted in advance and may very well exceed the block's \texttt{GASLIMIT} causing the contract to be stalled \cite[p.~122]{solidityDocs}. Instead, a mapping is used to ensure \texttt{O(1)} lookups.
+
+\begin{lstlisting}[language=Solidity, caption=Declaration of approved agencies and actor data structure, label=lst:actorStorage]
+struct Actor {
+	bool isApproved;
+	uint joined;
+}
+    
+mapping(address => Actor) private collectors;
+\end{lstlisting}
+
 \subsection{Ownable}
+As mentioned in \autoref{sec:componentDesign}, only \ac{DPG} should be able to add or remove approved parties. Again, this is easily realized through modifiers and even promoted as one of its premiere use cases \cite[p.~80]{solidityDocs}. But because this functionality will be needed quite often (comp.~\autoref{fig:classImplementationModel} on \autopageref{fig:classImplementationModel}), the project extracts the logic into a separate contract that can be inherited from. By \autoref{lst:ownable} it can be seen that only the address passed as part of the constructor will be able to call a function that is marked as \texttt{onlyOwner}. In all other cases, the call will revert and refund the remaining gas since the \texttt{require} statement cannot be fulfilled \cite[p.~75]{solidityDocs}. 
+
+\begin{lstlisting}[language=Solidity, caption=Ownable contract, label=lst:ownable]
+contract Ownable {
+    address public owner;
+
+    modifier onlyOwner() {
+        require(msg.sender == owner);
+        _;
+    }
+    
+    constructor(address _owner) public {
+        owner = _owner;
+    }
+}
+\end{lstlisting}
+
+Specifying which address should become the contract owner may happen either directly in the inheritance list or as part of the derived constructor, known as the modifier-invocation-style \cite[p.~89]{solidityDocs}. Both options are shown in \autoref{lst:ownableInheritance}, where \texttt{msg.sender} is the sender of the message (or transaction which encapsulated the message). Consequently, both will lead to the same desired result in which the deployer (i.e.~\ac{DPG}) becomes the owner. 
+
+\begin{lstlisting}[language=Solidity, caption=Inherting from Ownable, label=lst:ownableInheritance]
+// inheritance list
+contract DPGActorManager is Ownable(msg.sender) { }
+
+// modifier-invocation-style
+contract DPGActorManager { 
+	constructor() public Ownable(msg.sender) {}
+}
+\end{lstlisting}
 
 \subsection{External Interface}
+One result of extracting \texttt{DPGActorManager} is the need for an external contract interface that specifies which functions can be called by other contracts such as \texttt{DPGCore}. For this purpose, Solidity provides two types of visibilities: \texttt{external} and \texttt{public}, the difference being that \texttt{external} functions cannot be called internally \cite[p.~77]{solidityDocs}.
 
 \pagebreak
 
-\section{Penalty}
+\section[Penalty]{Penalty \\ {\normalsize realized via \texttt{DPGPenalty \& DPGToken}}}
 \subsection{ERC-721 Token Standard}
 \subsection{OpenZeppelin Framework}
 \subsection{Token Transfer Restriction}
