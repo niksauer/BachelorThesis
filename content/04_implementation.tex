@@ -163,7 +163,7 @@ contract Ownable {
 }
 \end{lstlisting}
 
-Specifying which address should become the contract owner may happen either directly in the inheritance list or as part of the derived constructor, known as the modifier-invocation-style \cite[p.~89]{solidityDocs}. Both options are shown in \autoref{lst:ownableInheritance}, where \texttt{msg.sender} is the sender of the message (or transaction which encapsulated the message).
+Specifying which address should become the contract owner may happen either directly in the inheritance list or as part of the derived constructor, known as the modifier-invocation-style. This is true for all constant base constructor arguments \cite[p.~89]{solidityDocs}. Both options are shown in \autoref{lst:ownableInheritance}, where \texttt{msg.sender} is the sender of the message (or transaction which encapsulated the message [comp.~\ref{sec:messagesTransactions}]). Consequently, both lead to the same desired result in which the deployer becomes the owner.
 
 \begin{lstlisting}[language=Solidity, caption=Inherting from Ownable contract, label=lst:ownableInheritance]
 // inheritance list
@@ -175,10 +175,8 @@ contract DPGActorManager {
 }
 \end{lstlisting}
 
-Both lead to the same desired result in which the deployer (i.e.~\ac{DPG}) becomes the owner. 
-
 \subsection{External Interface}
-One result of extracting functionality into a separate contract is the need for an external interface that specifies which functions can be called by other contracts. For this purpose, Solidity provides two types of visibilities: \texttt{external} and \texttt{public}, the difference being that \texttt{external} functions cannot be called internally \cite[p.~77]{solidityDocs}. What this implies, will be explained in the following \cite[p.~57, 69]{solidityDocs}:
+One result of extracting functionality into a separate contract is the need for an external interface that specifies which functions can be called by other contracts and via transactions. For this purpose, Solidity provides two types of visibilities: \texttt{external} and \texttt{public}, the difference being that \texttt{external} functions cannot be called internally \cite[p.~77]{solidityDocs}. What this implies, will be explained in the following \cite[pp.~57, 69]{solidityDocs}:
 
 \begin{description}
 	\item[Internal Call (\texttt{f()})]
@@ -186,13 +184,54 @@ One result of extracting functionality into a separate contract is the need for 
 	Internal function calls are translated into simple \ac{EVM} jump instructions, meaning that the current memory is not cleared and by such, references can be passed very efficiently. This call type is only available for functions of same contract. 
 	\item[External Call (\texttt{this.f()})]
 	\hfill \\
-	External function calls are executed via a message call, meaning that all function arguments have to be copied to the \texttt{calldata} location which is a non-modifiable, non-persistent area used solely for function arguments. Further, it allows the caller to specify an amount of Wei and a new gas limit. 
+	External function calls are executed via a message call. All function arguments are copied to the \texttt{calldata} location which is a non-modifiable, non-persistent area used solely for function arguments. Callers can specify the amount of Wei and gas. 
 \end{description}
 
+A general recommendation is to use \texttt{external} if that function is expected to only ever be called externally, meaning that it will not be needed by the contract itself \cite{externalPublic}. Moreover, \texttt{external} functions are sometimes more efficient when dealing with large arrays of data \cite[p.~77]{solidityDocs}. Last but not least, \texttt{external} functions have the potential to reduce upfront storage costs. Consider the following example:
+
+\begin{lstlisting}[language=Solidity, caption=Communication via inheritance, label=lst:actorManagerReference]
+import "./DPGActorManager.sol";
+
+contract DPGCore {
+	DPGActorManager internal actorManager;
+	
+	constructor(address _actorManager) public {
+        actorManager = DPGActorManager(_actorManager);
+        ...
+    }
+}
+\end{lstlisting}
+
+From \autoref{lst:actorManagerReference} it can be seen that \texttt{DPGCore} declares a variable called \texttt{actorManager} which is of type \texttt{DPGActorManager}. This variable will be defined during construction by taking the address of an already deployed \texttt{DPGActorManager} instance and casting it to this type. Behind the scenes, \texttt{DPGCore} will be forced to inherit all of the bytecode from \texttt{DPGActorManager}, resulting in a potentially large code its own \cite{interfaces}, even though none of the \texttt{private} or \texttt{internal} properties of \texttt{DPGActorManager} can be used. 
+
+On the other hand, interfaces will limit this inheritance to the critical \ac{ABI} which is the standard way to interact with contracts, both from outside the blockchain and for contract-to-contract interaction \cite[pp.~93, 133]{solidityDocs}, hereby resulting in a much smaller bytecode that is less likely to run into an out of gas exception during deployment \cite{interfaces}. \autoref{lst:actorManagerInterface} demonstrates this alternative approach. 
+
+\pagebreak
+
+\begin{lstlisting}[language=Solidity, caption=Communication via interfaces, label=lst:actorManagerInterface]
+interface IDPGActorManager {
+    function isApproved(address _address) external view returns (bool);
+    ...
+}
+
+contract DPGActorManager is IDPGActorManager { ... }
+
+contract DPGCore {
+	IDPGActorManager internal actorManager;
+	
+	constructor(address _actorManager) public {
+        actorManager = IDPGActorManager(_actorManager);
+        ...
+    }
+}
+\end{lstlisting}
+
+However, it must be noted that interfaces are limited to the aforementioned \texttt{external} functions and cannot define variables, structs or enums \cite[p.~92]{solidityDocs}. Still, this method of sharing a contract's interface will be preferred as it supports \ref{itm:operatingCost}.
 
 \pagebreak
 
 \section[Penalty]{Penalty \\ {\normalsize realized via \texttt{DPGPenalty \& DPGToken}}}
+
 \subsection{ERC-721 Token Standard}
 \subsection{OpenZeppelin Framework}
 \subsection{Token Transfer Restriction}
