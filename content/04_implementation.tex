@@ -83,7 +83,7 @@ struct Consumer {
 A simple workaround is given by \autoref{lst:consumerDataStructure} in which an additional property called \texttt{lastResetPeriodIndex} is associated with each consumer to remember the period (index) in which the consumer's attributes were last reset. Should this index be smaller than the contract's \texttt{currentPeriodIndex}, a reset must occur before any attribute may be updated. Logically, the \texttt{lastResetPeriodIndex} must then be set to the \texttt{currentPeriodIndex} to prevent the consumer from being reset each time.
 
 \subsection{Period Advancement}
-Solidity function modifiers can be used to automatically check a condition prior to executing the function \cite[p.~79]{solidityDocs}. This application implements a modifier called \texttt{periodDependent} to ensure that reports always attribute to the most current period and don't change the results of the past one. By such, it may be regarded as the switch in the A/B scheme outlined before.
+Solidity function modifiers can be used to automatically check a condition prior to executing the function \cite[p.~79]{solidityDocs}. This application implements a modifier called \texttt{periodDependent} to ensure that reports always attribute to the most current period and do not change the results of the past one. By such, it may be regarded as the switch in the A/B scheme outlined before.
 
 Practically, this means that the application will check whether the current period's duration has exceeded the \texttt{PERIOD\_LENGTH} and if so, switches periods before returning control to the method called which is symbolized by an underscore \cite[p.~81]{solidityDocs}. \autoref{lst:periodDependentModifier} displays this logic, where \texttt{now} is an alias for the current block timestamp \footnote{Timestamps can be influenced by miners and are only guaranteed to be somewhere between the timestamps of two consecutive blocks of the canonical chain \cite[p.~65]{solidityDocs}}, \texttt{setNextPeriod()} the function used to actually switch periods and \texttt{currentPeriodStart} self-explanatory. All timestamps are given in unix epoch format \cite[p.~29]{solidityDocs}. 
 
@@ -136,7 +136,7 @@ In its most basic form, access control can be realized by maintaining a list of 
 \subsection{Storage Layout}
 Even though access control could be realized through a simple list (i.e.~an array), gas consumption diminishes this approach's efficiency because the average cost of checking whether a given address is contained in the list is linear to the number of approved addresses (i.e.~\texttt{O(n)}). Moreover, this cost cannot be predicted and may very well exceed the block's \texttt{GASLIMIT} causing the contract to be stalled \cite[p.~122]{solidityDocs}. Instead, a mapping is used to ensure \texttt{O(1)} lookups.
 
-\begin{lstlisting}[language=Solidity, caption=Declaration of approved agencies and actor data structure, label=lst:actorStorage]
+\begin{lstlisting}[language=Solidity, caption=Declaration of approved agencies and Actor data structure, label=lst:actorStorage]
 struct Actor {
 	bool isApproved;
 	uint joined;
@@ -298,12 +298,15 @@ contract DPGPenalty is DPGCore {
 }
 \end{lstlisting}
 
-\pagebreak
+%\pagebreak
 
-\section{Miscellaneous}
-%This section sheds light on various other noteworthy aspects
-\subsection{Floating Point Calculations}
-\subsection{Deposits \& Voluntary Donations}
+%\section{Miscellaneous}
+%This section hopes to bring attention to various other aspects of developing in Ethereum. 
+
+%\subsection{Floating Point Calculations}
+%One of the greatest frustrations of developing in Ethereum has to do with its data types: Solidity does not support floating point numbers. Moreover, the provided fixed point alternative is not fully supported yet, so that they can be declared, but cannot be assigned to or from \cite[p.~49]{solidityDocs}. 
+%
+%\subsection{Deposits \& Voluntary Donations}
 
 
 

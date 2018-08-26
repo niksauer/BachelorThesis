@@ -2,3 +2,61 @@
 
 \chapter{Quality Assurance}
 \label{chp:qualityAssurance}
+
+\section{Test-Driven Development}
+Test-driven development hopes to help programmers clarify what a code segment is actually supposed to do by requiring the accompanying tests to be written beforehand. Moreover, code is developed incrementally, meaning that the next identified functionality is not implemented until the previous code passes all of its tests. Combined with an automated testing environment, this leads to the following benefits:
+
+\begin{itemize}
+  \item Tests showcase which segments have actually been executed (\textit{coverage})
+  \item Tests can be rerun to ensure that changes have not introduced new bugs (\textit{regression})
+  \item Tests pinpoint the root causes of problems (\textit{debugging})
+  \item Tests describe what the code should do (\textit{documentation})
+\end{itemize}
+
+Like always, testing can only show the presence of errors, not their absence. Therefore, static verification and validation techniques may not be overlooked.
+
+Given the scale of the project, it has been decided to mainly rely on requirements-based testing which is a semantic approach to test-case design where a set of tests is derived for each requirement. In a second step, scenario testing has been employed to develop test cases that cover realistic scenarios of use to which most people should be able to relate. By such, the testing methodology can be categorized as black-box testing. Also, performance testing has not been carried out in any way since it can be argued that the blockchain is the limiting factor.
+
+In total, 85 test cases have been devised, all of which are available at \cite{depositRefundGitHub}. \autoref{tab:testSuites} breaks down this number onto the individual test suits and notes which components and functional requirements are covered by each.
+
+%\begin{description}
+%	\item[Fast]
+%  	\hfill \\
+%  	Tests should be executed quickly, so that they can be run more often.
+%  	\item[Independent]
+%  	\hfill \\
+%  	Tests should be independent of each other, so that they can be run in any order.
+%  	\item[Repeatable]
+%  	\hfill \\  
+%	Tests should be repeatable in every environment independent of network status. 
+%  	\item[Self-Validating]
+%  	\hfill \\  
+%  	Tests should either pass or fail and not require external judgement.
+%	\item[Timely]
+%  	\hfill \\  
+%  	Tests should be written early to simplify development.
+%\end{description}
+
+\begin{table}[hbt]
+	\centering
+  	\begin{tabular}{l|l|c|l}
+	    Suite Name & Component Name & \# of Tests & Functional Requirement \\
+	    \hline
+	    Deposit Refund & Core, Actor & 7 & - \\
+	    Report Garbage & Basic, Actor & 12 & \ref{itm:reportNumber}, \ref{itm:reportIdentifier} \\
+	    Report Purchase & Basic, Actor & 19 & \ref{itm:reportReusablePurchase}, \ref{itm:reportReusableNumber} \\
+		Penalty & Penalty, Actor, Token & 29 & \ref{itm:reportOneWays}, \ref{itm:lookUpPenalty}, \ref{itm:reportOneWayReturn} \\ 
+		Claim Reward & Basic, Actor & 7 & \ref{itm:claimReward} \\
+		Claim Donation & Basic, Actor & 11 & \ref{itm:claimDonation} \\
+  	\end{tabular}
+  	\caption{Test suites}
+  	\label{tab:testSuites}
+\end{table}
+
+\FloatBarrier
+
+\section{Continuous Integration}
+
+\section{Truffle}
+
+
