@@ -165,7 +165,7 @@ contract Ownable {
 
 Specifying which address should become the contract owner may happen either directly in the inheritance list or as part of the derived constructor, known as the modifier-invocation-style. This is true for all constant base constructor arguments \cite[p.~89]{solidityDocs}. Both options are shown in \autoref{lst:ownableInheritance}, where \texttt{msg.sender} is the sender of the message (or transaction which encapsulated the message [comp.~\ref{sec:messagesTransactions}]). Consequently, both lead to the same desired result in which the deployer becomes the owner.
 
-\begin{lstlisting}[language=Solidity, caption=Inherting from Ownable contract, label=lst:ownableInheritance]
+\begin{lstlisting}[language=Solidity, caption=Inheriting from Ownable contract, label=lst:ownableInheritance]
 // inheritance list
 contract DPGActorManager is Ownable(msg.sender) { }
 
@@ -231,14 +231,74 @@ However, it must be noted that interfaces are limited to the aforementioned \tex
 \pagebreak
 
 \section[Penalty]{Penalty \\ {\normalsize realized via \texttt{DPGPenalty \& DPGToken}}}
-
+A consumer must face a penalty if the system repeatedly detects that he has thrown away his one-way bottles. Detection occurs after garbage collection reports the identifier of a bottle. Tracking who is responsible for a particular bottle happens by means of a non-fungible token which is associated with the consumer's identity upon purchase (comp.~\ref{itm:penalty} on \autopageref{itm:penalty}).
 
 \subsection{ERC-721 Token Standard}
+Non-fungible tokens are characterized by the fact that they cannot be substituted without incurring a difference in value, function or meaning. They represent unique tangible or intangible items (comp.~\ref{sec:fungibility}). In this case, such a token will represent a unique bottle that is indeed tangible. At the same time, this means that the very popular \texttt{\acs{ERC}-20} standard cannot be used because it was designed for fungibility \cite{erc20}. 
+
+Before an alternative standard is presented, it should be mentioned that all token standards are a minimum specification for an implementation. They do not prescribe an exact implementation and do not prevent developers from adding functionality on top. Token standards encourage interoperability by agreeing on a set of functional requirements \cite[pp.~198--199]{Antonopoulos.2018}. 
+
+\texttt{\acs{ERC}-721} is a proposal to standardize non-fungible tokens, also known as deeds. It places no limitation or expectation on the nature of the thing whose ownership should be tracked, only that it can be uniquely identified \cite[p.~197]{Antonopoulos.2018}. Internally, this identifier will be a 256-bit unsigned integer which provides more than enough space for growth. The complete contract interface specification is given in \cite{erc721}. Here, only the most important methods shall be highlighted for discussion:
+
+\begin{lstlisting}[language=Solidity, caption=ERC-721 contract interface specification, label=lst:erc721]
+interface ERC721 {
+    function balanceOf(address _owner) external view returns (uint256);
+    function ownerOf(uint256 _tokenId) external view returns (address);
+    function safeTransferFrom(address _from, address _to, uint256 _tokenId) external payable;
+    ...
+}
+\end{lstlisting}
+ 
+Compared to \texttt{\acs{ERC}-20}, two major differences can be found. First, a new \texttt{safeTransferFrom} method is introduced. This method checks if the receiving party is a smart-contract and if so, will call \texttt{onERC721Received}, expecting it to confirm the transfer by echoing the function signature. Secondly, metadata such as the name and symbol is absent. This metadata, together with a new method that should return an asset's URI, has been moved into a separate optional interface called \texttt{ERC721Metadata}. For enumeration purposes, another optional interface has been defined as  \texttt{ERC721Enumerable}.
+
 \subsection{OpenZeppelin Framework}
+Basic standards like \texttt{\acs{ERC}-20} and \texttt{\acs{ERC}-721} have emerged from experience with hundreds of applications and fit 99\% of the use-cases. Choosing a standard like this will not only gain the value of the systems designed to work with it, but also allow developers to reuse and extend battle-tested reference implementations \cite[pp.~199-200]{Antonopoulos.2018}. 
+
+OpenZeppelin provides \ac{dApp} developers with a library of smart-contracts that are tested and community-reviewed (comp.~\ref{itm:penalty} on \autopageref{itm:penalty}). This project utilizes two of its components:
+
+\begin{description}
+  \item[SafeMath.sol]
+  \hfill \\
+  Math operations with safety checks that revert on error
+  \item[ERC721Token.sol]
+  \hfill \\Implements all the required and some optional functionality of the ERC721 standard
+\end{description}
+ 
+Installation via \acs{NPM} is simple and quick, though it is recommended that the \texttt{--save-exact} flag is used to avoid breaking changes because the library does not follow semantic versioning.
+ 
 \subsection{Token Transfer Restriction}
+%\Cref{sec:componentDesign}
+%As decided by , 
+%
+%
+%To realize the application's vision of establishing a fully autonomous debt-tracking entity, two changes will be required in respect to the 
+
+
 
 \pagebreak
 
 \section{Miscellaneous}
 \subsection{Floating Point Calculations}
 \subsection{Deposits \& Voluntary Donations}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
