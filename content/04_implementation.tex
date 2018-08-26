@@ -90,10 +90,10 @@ Practically, this means that the application will check whether the current peri
 \begin{lstlisting}[language=Solidity, caption=Function modifier to advance period, label=lst:periodDependentModifier]
 modifier periodDependent() {	
 	if (now < currentPeriodStart.add(PERIOD_LENGTH)) {
-	    _;
+		_;
 	} else {
-	    setNextPeriod();
-	    _;
+		setNextPeriod();
+		_;
 	}
 }
 \end{lstlisting}
@@ -150,16 +150,16 @@ As mentioned in \autoref{sec:componentDesign}, only \ac{DPG} should be able to a
 
 \begin{lstlisting}[language=Solidity, caption=Ownable contract, label=lst:ownable]
 contract Ownable {
-    address public owner;
-
-    modifier onlyOwner() {
-        require(msg.sender == owner);
-        _;
-    }
-    
-    constructor(address _owner) public {
-        owner = _owner;
-    }
+	address public owner;
+	
+	modifier onlyOwner() {
+		require(msg.sender == owner);
+		_;
+	}
+	
+	constructor(address _owner) public {
+		owner = _owner;
+	}
 }
 \end{lstlisting}
 
@@ -181,37 +181,37 @@ One result of extracting functionality into a separate contract is the need for 
 \begin{description}
 	\item[Internal Call (\texttt{f()})]
 	\hfill \\
-	Internal function calls are translated into simple \ac{EVM} jump instructions, meaning that the current memory is not cleared and by such, references can be passed very efficiently. This call type is only available for functions of same contract. 
+	Internal function calls are translated into \ac{EVM} jump instructions. The current memory is not cleared and by such, allows references to be passed very efficiently. Only functions within the same contract can be called like this.
 	\item[External Call (\texttt{this.f()})]
 	\hfill \\
-	External function calls are executed via a message call. All function arguments are copied to the \texttt{calldata} location which is a non-modifiable, non-persistent area used solely for function arguments. Callers can specify the amount of Wei and gas. 
+	External function calls are executed via a message call. All function arguments have to be copied to the \texttt{calldata} location which is a non-modifiable, non-persistent area used solely for function arguments. Callers can specify the amount of Wei and gas. 
 \end{description}
 
 A general recommendation is to use \texttt{external} if that function is expected to only ever be called externally, meaning that it will not be needed by the contract itself \cite{externalPublic}. Moreover, \texttt{external} functions are sometimes more efficient when dealing with large arrays of data \cite[p.~77]{solidityDocs}. Last but not least, \texttt{external} functions have the potential to reduce upfront storage costs. Consider the following example:
 
-\begin{lstlisting}[language=Solidity, caption=Communication via inheritance, label=lst:actorManagerReference]
+\begin{lstlisting}[language=Solidity, caption=Sharing external contract interface via inheritance, label=lst:actorManagerReference]
 import "./DPGActorManager.sol";
 
 contract DPGCore {
 	DPGActorManager internal actorManager;
 	
 	constructor(address _actorManager) public {
-        actorManager = DPGActorManager(_actorManager);
-        ...
-    }
+		actorManager = DPGActorManager(_actorManager);
+		...
+	}
 }
 \end{lstlisting}
 
 From \autoref{lst:actorManagerReference} it can be seen that \texttt{DPGCore} declares a variable called \texttt{actorManager} which is of type \texttt{DPGActorManager}. This variable will be defined during construction by taking the address of an already deployed \texttt{DPGActorManager} instance and casting it to this type. Behind the scenes, \texttt{DPGCore} will be forced to inherit all of the bytecode from \texttt{DPGActorManager}, resulting in a potentially large code its own \cite{interfaces}, even though none of the \texttt{private} or \texttt{internal} properties of \texttt{DPGActorManager} can be used. 
 
-On the other hand, interfaces will limit this inheritance to the critical \ac{ABI} which is the standard way to interact with contracts, both from outside the blockchain and for contract-to-contract interaction \cite[pp.~93, 133]{solidityDocs}, hereby resulting in a much smaller bytecode that is less likely to run into an out of gas exception during deployment \cite{interfaces}. \autoref{lst:actorManagerInterface} demonstrates this alternative approach. 
+On the other hand, interfaces will limit this inheritance to the critical \ac{ABI} which is the standard way to interact with contracts, both from outside the blockchain and for contract-to-contract interaction \cite[pp.~93, 133]{solidityDocs}. The bytecode will be much smaller and less likely to run into an out of gas exception when being deployed \cite{interfaces}. \autoref{lst:actorManagerInterface} demonstrates this alternative approach. 
 
 \pagebreak
 
-\begin{lstlisting}[language=Solidity, caption=Communication via interfaces, label=lst:actorManagerInterface]
+\begin{lstlisting}[language=Solidity, caption=Sharing external contract interface via interfaces, label=lst:actorManagerInterface]
 interface IDPGActorManager {
-    function isApproved(address _address) external view returns (bool);
-    ...
+	function isApproved(address _address) external view returns (bool);
+	...
 }
 
 contract DPGActorManager is IDPGActorManager { ... }
@@ -220,9 +220,9 @@ contract DPGCore {
 	IDPGActorManager internal actorManager;
 	
 	constructor(address _actorManager) public {
-        actorManager = IDPGActorManager(_actorManager);
-        ...
-    }
+		actorManager = IDPGActorManager(_actorManager);
+		...
+	}
 }
 \end{lstlisting}
 
@@ -231,6 +231,7 @@ However, it must be noted that interfaces are limited to the aforementioned \tex
 \pagebreak
 
 \section[Penalty]{Penalty \\ {\normalsize realized via \texttt{DPGPenalty \& DPGToken}}}
+
 
 \subsection{ERC-721 Token Standard}
 \subsection{OpenZeppelin Framework}
