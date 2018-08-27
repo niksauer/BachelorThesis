@@ -15,7 +15,7 @@ Test-driven development hopes to help programmers clarify what a code segment is
 
 Like always, testing can only show the presence of errors, not their absence. Therefore, static verification and validation techniques may not be overlooked.
 
-Given the scale of the project, it has been decided to mainly rely on requirements-based testing which is a semantic approach to test-case design where a set of tests is derived for each requirement. In a second step, scenario testing has been employed to develop test cases that cover realistic scenarios of use to which most people should be able to relate. By such, the testing methodology can be categorized as black-box testing. Also, performance testing has not been carried out in any way since it can be argued that the blockchain is the limiting factor.
+Given the scale of the project, it has been decided to mainly rely on requirements-based testing which is a semantic approach to test-case design where a set of tests is derived for each requirement. In a second step, scenario testing has been employed to develop test cases that cover realistic scenarios of use to which most people should be able to relate. By such, the testing methodology can be categorized as black-box testing. Internal structures are disregarded. Also, performance testing has not been carried out in any way since it can be argued that the blockchain is the limiting factor.
 
 In total, 85 test cases have been devised, all of which are available at \cite{depositRefundGitHub}. \autoref{tab:testSuites} breaks down this number onto the individual test suits and notes which components and functional requirements are covered by each.
 
@@ -55,8 +55,55 @@ In total, 85 test cases have been devised, all of which are available at \cite{d
 
 \FloatBarrier
 
-\section{Continuous Integration}
+%\section{Truffle Suite}
+%%The Truffle Suite plays an important role in the test-driven development process. Two of its most important tools 
+%
+%\begin{description}
+%  \item[Truffle]
+%  \hfill \\
+%  Truffle is a development environment, testing framework and asset pipeline for blockchains using the \ac{EVM}.
+%  \item[Ganache]
+%  \hfill \\
+%  Formerly known as TestRPC, Ganache simulates an Ethereum blockchain that mines transactions as soon as they are received. 
+%\end{description}
+%
+%\subsection{Network Management \& Deployment}
+%In addition to basic compilation and linking, Truffle provides developers with a one-step process for deploying multiple smart-contracts to both public and private Ethereum networks. These networks can be specified within the \texttt{truffle-config.js} file given by \autoref{lst:truffleNetworks}. 
+%
+%\begin{lstlisting}[language=Solidity, caption=Truffle network management, label=lst:truffleNetworks]
+%module.exports = {
+%	networks: {
+%		development: {
+%			host: "127.0.0.1",
+%			port: 8545,
+%			network_id: "*" // match any network ID
+%		}
+%	},
+%};
+%\end{lstlisting}
+%
+%Since deploying to the public Ethereum main-chain involves real fees, Ganache has been used throughout development.
 
-\section{Truffle}
+
+
+%
+%
+%to manage a list of networks which will be used 
+
+%\subsection{Automated Contract Testing}
+%
+%
+%
+%%\begin{itemize}
+%%  \item smart-contract compilation, linking, deployment and binary management
+%%  \item automated contract testing
+%%  \item network management for deploying to any number of public \& private networks
+%%\end{itemize}
+%
+%%550k downloads \cite{ethereumNetworkState}
+%
+%\section{Continuous Testing}
+
+
 
 
