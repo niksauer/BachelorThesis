@@ -1,7 +1,7 @@
 %!TEX root = ../main.tex
 
-\chapter{Quality Assurance}
-\label{chp:qualityAssurance}
+\chapter{Testing}
+\label{chp:testing}
 
 \section{Test-Driven Development}
 Test-driven development hopes to help programmers clarify what a code segment is actually supposed to do by requiring the accompanying tests to be written beforehand. Moreover, code is developed incrementally, meaning that the next identified functionality is not implemented until the previous code passes all of its tests. Combined with an automated testing environment, this leads to the following benefits:
@@ -13,11 +13,10 @@ Test-driven development hopes to help programmers clarify what a code segment is
   \item Tests describe what the code should do (\textit{documentation})
 \end{itemize}
 
-Like always, testing can only show the presence of errors, not their absence. Therefore, static verification and validation techniques may not be overlooked.
+Given the scale of the project, it has been decided to mainly rely on requirements-based testing which is a semantic approach to test-case design where a set of tests is derived for each requirement. In a second step, scenario testing has been employed to develop test cases that cover realistic scenarios of use to which most people should be able to relate. By such, the testing methodology can be categorized as black-box testing. Like always, testing can only show the presence of errors, not their absence. 
 
-Given the scale of the project, it has been decided to mainly rely on requirements-based testing which is a semantic approach to test-case design where a set of tests is derived for each requirement. In a second step, scenario testing has been employed to develop test cases that cover realistic scenarios of use to which most people should be able to relate. By such, the testing methodology can be categorized as black-box testing. Internal structures are disregarded. Also, performance testing has not been carried out in any way since it can be argued that the blockchain is the limiting factor.
-
-In total, 85 test cases have been devised, all of which are available at \cite{depositRefundGitHub}. \autoref{tab:testSuites} breaks down this number onto the individual test suits and notes which components and functional requirements are covered by each.
+%Therefore, static verification and validation techniques may not be overlooked.
+%Also, performance testing has not been carried out in any way.
 
 %\begin{description}
 %	\item[Fast]
@@ -40,14 +39,14 @@ In total, 85 test cases have been devised, all of which are available at \cite{d
 \begin{table}[hbt]
 	\centering
   	\begin{tabular}{l|l|c|l}
-	    Suite Name & Component Name & \# of Tests & Functional Requirement \\
+	    Suite Name & Components & \# of Tests & Functional Requirements \\
 	    \hline
 	    Deposit Refund & Core, Actor & 7 & - \\
-	    Report Garbage & Basic, Actor & 12 & \ref{itm:reportNumber}, \ref{itm:reportIdentifier} \\
-	    Report Purchase & Basic, Actor & 19 & \ref{itm:reportReusablePurchase}, \ref{itm:reportReusableNumber} \\
+	    Report Garbage & Core, Actor & 12 & \ref{itm:reportNumber}, \ref{itm:reportIdentifier} \\
+	    Report Purchase & Core, Actor & 19 & \ref{itm:reportReusablePurchase}, \ref{itm:reportReusableNumber} \\
 		Penalty & Penalty, Actor, Token & 29 & \ref{itm:reportOneWays}, \ref{itm:lookUpPenalty}, \ref{itm:reportOneWayReturn} \\ 
-		Claim Reward & Basic, Actor & 7 & \ref{itm:claimReward} \\
-		Claim Donation & Basic, Actor & 11 & \ref{itm:claimDonation} \\
+		Claim Reward & Core, Actor & 7 & \ref{itm:claimReward} \\
+		Claim Donation & Core, Actor & 11 & \ref{itm:claimDonation} \\
   	\end{tabular}
   	\caption{Test suites}
   	\label{tab:testSuites}
@@ -55,55 +54,64 @@ In total, 85 test cases have been devised, all of which are available at \cite{d
 
 \FloatBarrier
 
-%\section{Truffle Suite}
-%%The Truffle Suite plays an important role in the test-driven development process. Two of its most important tools 
-%
-%\begin{description}
-%  \item[Truffle]
-%  \hfill \\
-%  Truffle is a development environment, testing framework and asset pipeline for blockchains using the \ac{EVM}.
-%  \item[Ganache]
-%  \hfill \\
-%  Formerly known as TestRPC, Ganache simulates an Ethereum blockchain that mines transactions as soon as they are received. 
-%\end{description}
-%
-%\subsection{Network Management \& Deployment}
-%In addition to basic compilation and linking, Truffle provides developers with a one-step process for deploying multiple smart-contracts to both public and private Ethereum networks. These networks can be specified within the \texttt{truffle-config.js} file given by \autoref{lst:truffleNetworks}. 
-%
-%\begin{lstlisting}[language=Solidity, caption=Truffle network management, label=lst:truffleNetworks]
-%module.exports = {
-%	networks: {
-%		development: {
-%			host: "127.0.0.1",
-%			port: 8545,
-%			network_id: "*" // match any network ID
-%		}
-%	},
-%};
-%\end{lstlisting}
-%
-%Since deploying to the public Ethereum main-chain involves real fees, Ganache has been used throughout development.
+In total, 85 test cases have been devised, all of which are available at \cite{depositRefundGitHub}. \autoref{tab:testSuites} breaks down this number onto the individual test suits, components and functional requirements.
 
+\pagebreak
 
+\section{Truffle Suite}
+The Truffle Suite plays an important role in the test-driven development process which will be demoed in the following section. For this, two tools must be introduced \cite{truffleSuite}:
 
-%
-%
-%to manage a list of networks which will be used 
+\begin{description}
+  \item[Truffle]
+  \hfill \\
+  Truffle is a development environment, testing framework and asset pipeline for blockchains using the \ac{EVM}.
+  \item[Ganache]
+  \hfill \\
+  Formerly known as TestRPC, Ganache simulates an Ethereum blockchain that, by default, mines transactions as soon as they are received. 
+\end{description}
 
-%\subsection{Automated Contract Testing}
-%
-%
-%
-%%\begin{itemize}
-%%  \item smart-contract compilation, linking, deployment and binary management
-%%  \item automated contract testing
-%%  \item network management for deploying to any number of public \& private networks
-%%\end{itemize}
-%
-%%550k downloads \cite{ethereumNetworkState}
-%
-%\section{Continuous Testing}
+\subsection{Network Management \& Deployment}
+In addition to basic compilation and linking, Truffle provides developers with a one-step process for deploying multiple smart-contracts to both public and private Ethereum networks. These networks can be specified within a \texttt{truffle.js} file, as is given below. 
 
+\begin{lstlisting}[language=JavaScript, caption=Truffle network management, label=lst:truffleNetworks]
+module.exports = {
+	networks: {
+		development: {
+			host: "127.0.0.1",
+			port: 8545,
+			network_id: "*" // match any network ID
+		}
+	},
+};
+\end{lstlisting}
+
+Since deploying to the public Ethereum main-chain involves real fees, Ganache has been used throughout development. At first sight, one may believe that the \texttt{host} specified in \autoref{lst:truffleNetworks} symbolizes this intention because it specifies a localhost IP address. However, the \texttt{host} only tells Truffle where an Ethereum client resides, not what kind of type it is. Furthermore, Ganache and all other command-line interfaces to Ethereum (e.g.~geth and parity) default to the same \texttt{port} number. The consequence is, that developers must either stop those clients or set Ganache to a different port in order to prevent accidental deployment. Sadly, this is not directly apparent from the documentation. 
+
+Before deployment finally becomes possible, it is necessary to create a migration script that is responsible for staging the deployment tasks. \autoref{lst:migrationScript} displays the script used in this project.
+
+\begin{lstlisting}[language=JavaScript, caption=Truffle migration script, label=lst:migrationScript]
+var DPGActorManager = artifacts.require("./DPGActorManager.sol");
+var DPGPenalty = artifacts.require("./DPGPenalty.sol");
+
+module.exports = async function(deployer, network, accounts) {
+	await deployer.deploy(DPGActorManager);
+	await deployer.deploy(DPGPenalty, DPGActorManager.address);
+};
+\end{lstlisting}
+
+As previously explained, \texttt{DPGCore} expects it to be passed the address of an already deployed \texttt{DPGActorManager} instance (comp.~\autoref{lst:actorManagerReference}). By virtue of subclassing, this requirement translates to \texttt{DPGPenalty} (comp.~\autoref{fig:classDiagramConcept}). Therefore, the script \texttt{await}s the deployer to finish that task before actually deploying the main contract. Remember, \texttt{DPGPenalty} autonomously deploys the \texttt{DPGToken} contract (comp.~\ref{lst:DPGTokenCreation}). Hence, it is not part of this migration.
+
+From here, one must simply start Ganache, optionally specify its port (\texttt{-p}) and use Truffle to deploy the contracts with a single command. This process is shown in \autoref{lst:deployment}.
+
+\begin{lstlisting}[language=bash, caption=Deploying to Ganache, label=lst:deployment]
+ganache-cli -p 7545 -e 200
+truffle migrate
+\end{lstlisting}
+
+\subsection{Automated Contract Testing}
+
+\section{Continuous Testing}
+%Part of the continuous everything movement (i.e.~integration, delivery), continues testing describes 
 
 
 
