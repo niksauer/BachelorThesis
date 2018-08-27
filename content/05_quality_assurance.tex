@@ -92,7 +92,7 @@ truffle migrate
 \end{lstlisting}
 
 \subsection{Automated Contract Testing}
-Having an automated testing environment is essential for test-driven development. At the same time, this stipulates that tests are written as an automated test, meaning that they will report whether they have passed or not. Other desirable attributes are given by the F.I.R.S.T. rule:
+Having an automated testing environment is essential for test-driven development. At the same time, this stipulates that tests are written as an automated test, meaning that they will report whether they have passed or not. Other desirable attributes are given by the F.I.R.S.T. rule \cite[p.~132]{firstUnitTests}:
 
 \begin{description}
 	\item[Fast]
@@ -150,7 +150,7 @@ contract("DPG Claim Reward Test", async (accounts) => {
 
 Notably, \autoref{lst:suiteSetup} also defines a so called \texttt{beforeEach} hook. As the name implies, this method will be executed before each test. By extracting common setup steps, the test becomes independent as it no longer relies on the setup that a previous test would have otherwise performed. Here, setup involves redeployment of both contracts, putting in a deposit for 10 bottles and adding \texttt{collectorA} as an approved garbage collector. The last argument of each contract method call may be provided as a JSON so that developers can specify \texttt{from} which of the \texttt{accounts} the transaction should be sent and what \texttt{value} in Wei will be transferred \cite[Interacting With Your Contracts]{truffleSuite}.
 
-Now, the actual test may be designed. Its logic is relatively simple and self-explanatory when taking a look at \autoref{lst:testDesign}. Two particular details should be noted however. First, a custom \texttt{timeTravel} method has been implemented (outside of this suit) to bidirectionally travel in time. This method sends an \texttt{evm\_increaseTime} message to the appropriate Ethereum client. In this case, Ganache will react to the message accordingly. Second, a known bug requires a call to the custom \texttt{mineBlock} method afterwards to force the changes into effect. Like before, this method sends an \texttt{evm\_mine} message to the client.
+Now, the actual test may be designed. Its logic is relatively simple and self-explanatory when taking a look at \autoref{lst:testDesign}. Two particular details should be noted however. First, a custom \texttt{timeTravel} method has been implemented (outside of this suit) to bidirectionally travel in time. This method sends an \texttt{evm\_increaseTime} message to the appropriate Ethereum client. In this case, Ganache will react to the message accordingly. Second, a known bug requires a call to the custom \texttt{mineBlock} method afterwards to force the changes into effect \cite{truffleAwait}. Like before, this method sends an \texttt{evm\_mine} message to the client.
 
 \pagebreak
 
@@ -171,11 +171,17 @@ it("should ...", async() => {
 });
 \end{lstlisting}
 
-Obviously, this test is self-validating because it will either fail with an error or succeed by returning true. Assuming that Ganache has already been started, the complete test suite may be run by \texttt{truffle test}. 
+Obviously, this test is self-validating because it will either fail with an error or succeed by returning true. Assuming that Ganache has already been started, the complete test suite may be run by \texttt{truffle test} \cite[Testing Your Contracts]{truffleSuite}. 
 
 \section{Continuous Testing}
-%Part of the continuous everything movement (i.e.~integration, delivery), continues testing describes 
+Continues testing describes the process of executing automated tests as part of the software delivery pipeline \cite{pipeline}. It should be considered a prerequisite for continuous delivery and integration \cite{continousTestingInterview}.
 
+Despite the limited nature of this project, a small pipeline has been set up with the help of \cite{testingSolidity} to showcase the maturity of Ethereum's developer ecosystem and demonstrate that enterprise-grade workflows can be realized. Leveraging GitHub's tight integration with TravisCI, a free continuous integration tool for public repositories \cite{travisCIGitHub}, the following actions were triggered upon each commit:
 
+\begin{itemize}
+  \item smart-contract compilation
+  \item test suite execution
+  \item code coverage report
+\end{itemize}
 
-
+This workflow has protected against unwanted regression when developing new features or refactoring code. Moreover, it has given the number of passing tests greater meaningfulness since those may have only covered 10\% of the total codebase.
