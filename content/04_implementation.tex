@@ -59,7 +59,7 @@ Here, the function's return type is marked as \texttt{storage}, meaning that it 
  At this point, it should be noted that a function declared as \texttt{view} promises to not modify the contract's state \footnote{\texttt{Pure} functions additionally disallow access of state \cite[p.~82]{solidityDocs}.} \cite[p.~82]{solidityDocs}. This commitment can be clearly seen in \autoref{lst:periodHelperFunction} but is also enforced by the \ac{EVM} itself \cite[p.~83]{solidityDocs}. Practically, this allows nodes to perform synchronous read-only operations that are free of charge \cite{transactionCall}. On the contrary, calling such a function by means of transactions will still cost gas because the transaction must be stored in the blockchain even if it does not modify that particular contract storage \cite{constantGas}. 
  
 \subsection{Period Reset}
-Traditionally, resetting a period would be achieved by assigning it a new instance. Sadly, this method is not feasable because the \texttt{Period} data structure uses a mapping to assign each (consumer) address a \texttt{Consumer} data structure as can be seen in \autoref{lst:periodDataStructure}. 
+Traditionally, resetting a period would be achieved by assigning it a new instance. Sadly, this method is not feasible because the \texttt{Period} data structure uses a mapping to assign each (consumer) address a \texttt{Consumer} data structure as can be seen in \autoref{lst:periodDataStructure}. 
 
 \begin{lstlisting}[language=Solidity, caption=Period data structure, label=lst:periodDataStructure]
 struct Period {
