@@ -1,0 +1,189 @@
+%!TEX root = ../main.tex
+
+\chapter{Testing}
+\label{chp:testing}
+
+\section{Test-Driven Development}
+\label{sec:TDD}
+Test-driven development hopes to help programmers clarify what a code segment is actually supposed to do by requiring the accompanying tests to be written beforehand. Moreover, code is developed incrementally, meaning that the next identified functionality is not implemented until the previous code passes all of its tests. Combined with an automated testing environment, this leads to the following benefits:
+
+\begin{itemize}
+  \item Tests showcase which segments have actually been executed (\textit{coverage})
+  \item Tests can be rerun to ensure that changes have not introduced new bugs (\textit{regression})
+  \item Tests pinpoint the root causes of problems (\textit{debugging})
+  \item Tests describe what the code should do (\textit{documentation})
+\end{itemize}
+
+Given the scale of the project, it has been decided to mainly rely on requirements-based testing which is a semantic approach to test-case design where a set of tests is derived for each requirement. In a second step, scenario testing has been employed to develop test cases that cover realistic scenarios of use to which most people should be able to relate. By such, the testing methodology can be categorized as black-box testing. Like always, testing can only show the presence of errors, not their absence. 
+
+%Therefore, static verification and validation techniques may not be overlooked.
+%Also, performance testing has not been carried out in any way.
+
+\begin{table}[hbt]
+	\centering
+  	\begin{tabular}{l|l|c|l}
+	    Suite Name & Components & \# of Tests & Functional Requirements \\
+	    \hline
+	    Deposit Refund & Core, Actor & 7 & - \\
+	    Report Garbage & Core, Actor & 12 & \ref{itm:reportNumber}, \ref{itm:reportIdentifier} \\
+	    Report Purchase & Core, Actor & 19 & \ref{itm:reportReusablePurchase}, \ref{itm:reportReusableNumber} \\
+		Penalty & Penalty, Actor, Token & 29 & \ref{itm:reportOneWays}, \ref{itm:lookUpPenalty}, \ref{itm:reportOneWayReturn} \\ 
+		Claim Reward & Core, Actor & 7 & \ref{itm:claimReward} \\
+		Claim Donation & Core, Actor & 11 & \ref{itm:claimDonation} \\
+  	\end{tabular}
+  	\caption{Test suites}
+  	\label{tab:testSuites}
+\end{table}
+
+\FloatBarrier
+
+In total, 85 test cases have been devised, all of which are available at \cite{depositRefundGitHub}. \autoref{tab:testSuites} breaks down this number onto the individual test suits, components and functional requirements.
+
+\pagebreak
+
+\section{Truffle Suite}
+The Truffle Suite plays an important role in the test-driven development process which will be demoed in the following section. First, two of its tools must be introduced:
+
+\begin{description}
+  \item[Truffle]
+  \hfill \\
+  Truffle is a development environment, testing framework and asset pipeline for blockchains using the \ac{EVM} \cite[Truffle Overview]{truffleSuite}.
+  \item[Ganache]
+  \hfill \\
+  Formerly known as TestRPC, Ganache simulates an Ethereum blockchain that, by default, mines transactions as soon as they are received \cite[Ganache Quickstart]{truffleSuite}. 
+\end{description}
+
+\subsection{Network Management \& Deployment}
+In addition to basic compilation and linking, Truffle provides developers with a one-step process for deploying multiple smart-contracts to both public and private Ethereum networks \cite[Truffle Overview]{truffleSuite}. These networks can be specified within a \texttt{truffle.js} file \cite[Configuration]{truffleSuite}, as is given below. 
+
+\begin{lstlisting}[language=JavaScript, caption=Truffle network management, label=lst:truffleNetworks]
+module.exports = {
+	networks: {
+		development: {
+			host: "127.0.0.1",
+			port: 8545,
+			network_id: "*" // match any network ID
+		}
+	},
+};
+\end{lstlisting}
+
+Since deploying to the public Ethereum main-chain involves real fees (comp.~\ref{sec:gas}), Ganache has been used throughout development. At first sight, one may believe that the \texttt{host} specified in \autoref{lst:truffleNetworks} symbolizes this intention because it specifies a localhost IP address. However, the \texttt{host} only tells Truffle where an Ethereum client resides \cite[Configuration]{truffleSuite}, not what kind of type it is. Furthermore, Ganache and most other Ethereum clients (e.g.~geth and parity) default to the same \texttt{port} to expose RPC services. The consequence is, that developers must either stop those clients or set Ganache to a different port in order to prevent accidental deployment \cite[Deploying To The Live Network]{truffleSuite}.
+
+Before deployment finally becomes possible, it is necessary to create a migration script that is responsible for staging the deployment tasks \cite[Running Migrations]{truffleSuite}. \autoref{lst:migrationScript} displays the script used in this project.
+
+\begin{lstlisting}[language=JavaScript, caption=Truffle migration script, label=lst:migrationScript]
+var DPGActorManager = artifacts.require("./DPGActorManager.sol");
+var DPGPenalty = artifacts.require("./DPGPenalty.sol");
+
+module.exports = async function(deployer, network, accounts) {
+	await deployer.deploy(DPGActorManager);
+	await deployer.deploy(DPGPenalty, DPGActorManager.address);
+};
+\end{lstlisting}
+
+As previously explained, \texttt{DPGCore} expects it to be passed the address of an already deployed \texttt{DPGActorManager} instance (comp.~\autoref{lst:actorManagerReference}). By virtue of subclassing, this requirement translates to \texttt{DPGPenalty} (comp.~\autoref{fig:classDiagramConcept}). Therefore, the script \texttt{await}s the deployer to finish that task before actually deploying the main contract. Remember, \texttt{DPGPenalty} autonomously deploys the \texttt{DPGToken} contract (comp.~\ref{lst:DPGTokenCreation}). Hence, it is not part of this migration.
+
+From here, one must simply start Ganache, optionally specify its port (\texttt{-p}) and use Truffle to deploy all contracts with a single command. This process is shown in \autoref{lst:deployment}.
+
+\begin{lstlisting}[language=bash, caption=Deploying to Ganache, label=lst:deployment]
+ganache-cli -p 7545
+truffle migrate
+\end{lstlisting}
+
+\subsection{Automated Contract Testing}
+Having an automated testing environment is essential for test-driven development. At the same time, this stipulates that tests are written as an automated test, meaning that they will report whether they have passed or not. Other desirable attributes are given by the F.I.R.S.T. rule \cite[p.~132]{firstUnitTests}:
+
+\begin{description}
+	\item[Fast]
+  	\hfill \\
+  	Tests should be executed quickly, so that they can be run more often.
+  	\item[Independent]
+  	\hfill \\
+  	Tests should be independent of each other, so that they can be run in any order.
+  	\item[Repeatable]
+  	\hfill \\  
+	Tests should be repeatable in every environment independent of network status. 
+  	\item[Self-Validating]
+  	\hfill \\  
+  	Tests should either pass or fail and not require external judgement.
+	\item[Timely]
+  	\hfill \\  
+  	Tests should be written early to simplify development.
+\end{description}
+
+Truffle comes standard with an automated testing framework that allows developers to write simple and manageable tests in either JavaScript or Solidity. It provides a clean-room environment while doing so to ensure that state will not be shared across test suites. Further, all tests running on Ganache will be able to utilize snapshotting which results in an up to 90\% speed improvement compared to redeploying contracts. Still, it is recommended to also run tests against an official Ethereum client as release comes closer \cite[Testing Your Contracts]{truffleSuite}. 
+
+Right in line with the requirements and scenario-based testing outlined in \autoref{sec:TDD}, this project has settled on JavaScript tests because they are meant for exercising contracts from the outside world \cite[Testing Your Contracts]{truffleSuite}. At its core, JavaScript tests are based on the popular Mocha testing framework \cite[Writing Tests in JavaScript]{truffleSuite}. 
+
+\subsubsection{Example}
+To demonstrate Truffle's capabilities in practice, the following scenario shall be tested:
+
+\begin{quotation}
+It should fail to send the reward to consumer A (even though consumer A purchased 3 reusable bottles in the past period) because the reward amount is not greater than 0 as no report of thrown away bottles was received in the past period.
+\end{quotation}
+
+This test will be part of the \texttt{DPG Claim Reward Test} suite (see~\autoref{tab:testSuites}). Suites are identified by the \texttt{contract} function which is a special abstraction of Mocha's \texttt{describe()} environment needed to provide aforementioned clean-room features. In order to send transactions from multiple \acp{EOA}, the \texttt{contract} function gets passed the \texttt{accounts} of the underlying Ethereum client \cite[Writing Tests in JavaScript]{truffleSuite}.
+
+First off, a test suite must import all of its required components. This is done by using the \texttt{artifacts.require()} method which requests Truffle to generate a JavaScript interface for the specified Solidity contract \cite[Writing Tests in JavaScript]{truffleSuite}. Both import and setup of a suite are demonstrated in \autoref{lst:suiteSetup}.
+
+\begin{lstlisting}[language=JavaScript, caption=Setup of test suite, label=lst:suiteSetup]
+const DPGBasic = artifacts.require("DPGBasic");
+const DPGActorManager = artifacts.require("DPGActorManager");
+
+contract("DPG Claim Reward Test", async (accounts) => {
+	let mainContract;
+	let actorManagerContract;
+	
+	// hooks
+	beforeEach("redeploy contract, setup deposits ...", async() => {
+		actorManagerContract = await DPGActorManager.new();
+		mainContract = await DPGBasic.new(actorManagerContract.address);
+
+		await mainContract.deposit(10, {from: retail, value: 10});
+		await actorManagerContract.addCollector(collectorA, {from: owner});
+	});
+	
+	...
+}
+\end{lstlisting}
+
+Notably, \autoref{lst:suiteSetup} also defines a so called \texttt{beforeEach} hook. As the name implies, this method will be executed before each test. By extracting common setup steps, the test becomes independent as it no longer relies on the setup that a previous test would have otherwise performed. Here, setup involves redeployment of both contracts, putting in a deposit for 10 bottles and adding \texttt{collectorA} as an approved garbage collector. The last argument of each contract method may be provided as a JSON so that developers can specify \texttt{from} which of the \texttt{accounts} the transaction should be sent and what \texttt{value} in Wei will be transferred \cite[Interacting With Your Contracts]{truffleSuite}.
+
+Now, the actual test may be designed. Its logic is relatively simple and self-explanatory when taking a look at \autoref{lst:testDesign}. Two particular details should be noted however. First, a custom \texttt{timeTravel} method has been implemented (outside of this suit) to bidirectionally travel in time by sending an \texttt{evm\_increaseTime} message to the Ethereum client. A known bug then requires a consequent \texttt{evm\_mine} message to force the change of system time into effect \cite{truffleAwait}.
+
+\pagebreak
+
+\begin{lstlisting}[language=JavaScript, caption=Example test case, label=lst:testDesign]
+it("should ...", async() => {
+    await mainContract.reportReusables(consumerA, 5, {from: retail});
+
+    await timeTravel(86400 * 28);
+    await mineBlock();
+
+    try {
+        await mainContract.claimReward({from: consumerA});
+    } catch (error) {
+        return true;
+    }
+
+    throw new Error("Did send the reward even though ...");
+});
+\end{lstlisting}
+
+Obviously, this test is self-validating because it will either fail with an error or succeed by returning true. Assuming that Ganache has already been started, the complete test suite can be run by entering \texttt{truffle test} \cite[Testing Your Contracts]{truffleSuite}. 
+
+\pagebreak
+
+\section{Continuous Testing}
+Continues testing describes the process of executing automated tests as part of the software delivery pipeline \cite{pipeline}. It should be considered a prerequisite for continuous delivery and integration \cite{continousTestingInterview}.
+
+Despite the limited nature of this project, a small pipeline has been set up with the help of \cite{testingSolidity} to showcase the maturity of Ethereum's developer ecosystem and demonstrate that enterprise-grade workflows can be realized. Leveraging GitHub's tight integration with TravisCI, a free continuous integration tool for public repositories \cite{travisCIGitHub}, the following actions were triggered upon each commit:
+
+\begin{itemize}
+  \item smart-contract compilation
+  \item test suite execution
+  \item code coverage report (available at \cite{coverageReport})
+\end{itemize}
+
+This workflow has protected against unwanted regression when developing new features or refactoring code. Moreover, it has given the number of passing tests greater meaningfulness since those may have only covered 10\% of the total codebase.
