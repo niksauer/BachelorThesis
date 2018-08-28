@@ -324,20 +324,32 @@ It must be noted that this definition will not differentiate between type~II and
 
 The definition presented within this section purposely does not make any assumptions about the user interface or a \ac{dApp}'s resiliency. Command-line interfaces qualify just as much as mobile native apps, whereas resiliency can be maximized by employing additional decentralized protocols. More importantly, the primary focus and goal of any \ac{dApp} developer should be to give users the confidence that a product works as promised by solely relying on open, decentralized peer-to-peer infrastructure services that can be inspected for functioning from end-to-end.
 
-%\subsection{Infrastructure Model Comparison}
+\subsection{Infrastructure Model Comparison}
+Essentially, smart-contracts can be compared to web services that are open to the public and perhaps even open-source \cite[p.~120]{solidityDocs}. Going further, it is proposed that the (ideal) architectures of the corresponding applications can be compared through \autoref{fig:dAppArchitecture} in which matching colors indicate equal functional purposes. For simplicity, all components of a centralized application are shown to run on the same server even though these will mostly likely be distributed too. Also, not all applications will require all of the components displayed therein.
+
+\begin{figure}[hbt]
+	\centering
+  	\includegraphics{images/theoretical_framework/dApp_architecture}
+  	\caption{Infrastructure model comparison of a \ac{dApp} and traditional web application}
+  	\label{fig:dAppArchitecture}
+\end{figure}
+
+\FloatBarrier
+
+Yet, a very important distinction must be made when comparing the two. Consider the following fictional example: 
+
+\begin{quotation}
+A trendy new non-governmental organization hopes to raise funds for charities and promises that 90\% of the collected donations will be directed towards the cause. What separates this organization from others is their effort to be as transparent as possible. Therefore, the source code of this web application was submitted to an open-source platform and now awaits inspection by community.
+\end{quotation}
+
+At this point, it should become evident that there is no practical way of verifying whether this code will really run in the background and thus, process incoming donations as promised. This is due to the centralized infrastructure model embodied by the web. Nowadays, most hosts sit behind the closed doors of a large-scale data center.
+
+By utilizing a smart-contract platform built on top of a public blockchain, users can be almost certain that an application works as advertised. The smart-contract is part of the blockchain and may therefore be downloaded and fingerprinted (i.e.~hashed) against the publicly advertised code repository. It is this exact property that has already solved the trust issue encountered by currencies and which in the future will eliminate those concerns raised by today's centralized non-inspectable applications. Of course, there is still the possibility of fraudulent inputs although this is largely suppressed if the user interface is provided as a website which like today can always be inspected. 
+
+
+%The Ethereum client’s design is to serve as a web browser, but include support for a “eth” Javascript API object, which specialized web pages viewed in the client will be able to use to interact with the Ethereum blockchain. From the point of view of the “traditional” web, these web pages are entirely static content, since the blockchain and other decentralized protocols will serve as a complete replacement for the server for the purpose of handling user-initiated requests. Eventually, decentralized protocols, hopefully themselves in some fashion using Ethereum, may be used to store the web pages themselves. \cite[p.~34]{EthereumWhitepaper}
 %
-%%The resulting architecture, compared to that of a traditional web application, is detailed in \autoref{fig:dAppArchitecture}. 
-%%
-%\begin{figure}[hbt]
-%	\centering
-%  	\includegraphics{images/theoretical_framework/dApp_architecture}
-%  	\caption{Infrastructure model comparison between traditional web application and \ac{dApp}}
-%  	\label{fig:dAppArchitecture}
-%\end{figure}
-%
-%\todo[inline]{compare infrastructure model against traditional web apps to highlight open deployment}
-%
-%\FloatBarrier
+%There are four concepts in web applications that have traditionally been in the domain of centralized control: identity, wealth, data, and computing (and bandwidth). \cite[p.24]{Raval.2016}
 	
 \subsection{Tokens}
 \label{sec:tokens}
