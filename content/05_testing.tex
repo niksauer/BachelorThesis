@@ -22,12 +22,12 @@ Given the scale of the project, it has been decided to mainly rely on requiremen
 \begin{table}[hbt]
 	\centering
   	\begin{tabular}{l|l|c|l}
-	    Suite Name & Components & \# of Tests & Functional Requirements \\
+	    Suite Name & Components & \# of Tests & Requirements \\
 	    \hline
 	    Deposit Refund & Core, Actor & 7 & - \\
 	    Report Garbage & Core, Actor & 12 & \ref{itm:reportNumber}, \ref{itm:reportIdentifier} \\
 	    Report Purchase & Core, Actor & 19 & \ref{itm:reportReusablePurchase}, \ref{itm:reportReusableNumber} \\
-		Penalty & Penalty, Actor, Token & 29 & \ref{itm:reportOneWays}, \ref{itm:lookUpPenalty}, \ref{itm:reportOneWayReturn} \\ 
+		Penalty & Penalty, Token, Actor & 29 & \ref{itm:reportOneWays}, \ref{itm:lookUpPenalty}, \ref{itm:reportOneWayReturn} \\ 
 		Claim Reward & Core, Actor & 7 & \ref{itm:claimReward} \\
 		Claim Donation & Core, Actor & 11 & \ref{itm:claimDonation} \\
   	\end{tabular}

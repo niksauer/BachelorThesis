@@ -330,7 +330,7 @@ Essentially, smart-contracts can be compared to web services that are open to th
 \begin{figure}[hbt]
 	\centering
   	\includegraphics{images/theoretical_framework/dApp_architecture}
-  	\caption{Infrastructure model comparison of a \ac{dApp} and traditional web application}
+  	\caption{Infrastructure model comparison of a centralized and decentralized application}
   	\label{fig:dAppArchitecture}
 \end{figure}
 
@@ -466,13 +466,13 @@ As previously indicated, a transaction is a signed data package that stores a me
   \item \textit{gas price} (required)
 \end{AutoMultiColItemize}
 
-On the other hand, messages are virtual objects that are never serialized \cite[p.~19]{ethereumWhitepaperGitHub}. This is due to the fact that all messages can be reconstructed by replying the transaction that triggered a contract's code to run and thus, produced the message in question \footnote{Messages are generated whenever a contract uses the \texttt{CALL} upcode \cite[p.~19]{ethereumWhitepaperGitHub}}. More, they only implicitly contain the sender's address and do not allow the gas price to be specified as is explained in the following section.
+On the other hand, messages are virtual objects that are never serialized \cite[p.~19]{ethereumWhitepaperGitHub}. This is due to the fact that all messages can be reconstructed by replying the transaction that triggered a contract's code to run and thus, produced the message in question \footnote{Messages are generated whenever a contract uses the \texttt{CALL} upcode \cite[p.~19]{ethereumWhitepaperGitHub}.}. More, they only implicitly contain the sender's address and do not allow the gas price to be specified as is explained in the following section.
 
 \subsubsection{Gas}
 \label{sec:gas}
 Whereas Bitcoin's scripting language is constrained to simple true/false evaluation of spending conditions, Ethereum's language is Turing-complete, meaning that it can execute code of arbitrary and unbounded complexity \cite[p.~25]{Antonopoulos.2018}. In turn, this leads to additional security and resource management problems as it cannot be predicted whether a program will terminate or run in infinite loops to effectively cause a Denial-of-Service. To combat this attacking scheme, Ethereum introduces a metering mechanism called \textit{gas} which accounts for every instruction performed and assigns each a predetermined cost in units of gas \footnote{The current fee schedule can be found in \cite[p.~25]{ethereumYellowPaper}.} relative to the degree of computation required or burden imposed from writing to a persistent data store \cite[pp.~32--33]{Antonopoulos.2018}. For simple transactions (i.e.~a payment), the amount needed has been fixed at 21k units \cite[p.~153]{Antonopoulos.2018}. 
 
-By requiring transactions to set an upper limit (\texttt{STARTGAS}), execution will deterministically terminate as soon as the gas consumed exceeds the gas supplied \cite[p.~33]{Antonopoulos.2018}. This gas allowance applies to both the transaction itself, as well as all sub-executions triggered through the encapsulated message \cite[p.~19]{ethereumWhitepaperGitHub}. Logically, the total amount to be consumed by invoking a particular method can only be estimated because contracts can evaluate different conditions leading to different execution paths. In any case, \acp{EOA} are only billed for the gas actually used \footnote{Assert-style exceptions consume all gas available \cite[p.~75]{solidityDocs}} \cite[p.~154]{Antonopoulos.2018}. 
+By requiring transactions to set an upper limit (\texttt{STARTGAS}), execution will deterministically terminate as soon as the gas consumed exceeds the gas supplied \cite[p.~33]{Antonopoulos.2018}. This gas allowance applies to both the transaction itself, as well as all sub-executions triggered through the encapsulated message \cite[p.~19]{ethereumWhitepaperGitHub}. Logically, the total amount to be consumed by invoking a particular method can only be estimated because contracts can evaluate different conditions leading to different execution paths. In any case, \acp{EOA} are only billed for the gas actually used \footnote{Assert-style exceptions consume all gas available \cite[p.~75]{solidityDocs}.} \cite[p.~154]{Antonopoulos.2018}. 
 
 Additionally, the \texttt{GASPRICE} field allows an originator to set the exchange rate for each unit of gas (measured in Wei per gas unit). Analogous to other cryptocurrencies, the higher the gas price \footnote{Often, the suggested gas price is calculated as the median across the last several blocks \cite[p.~153]{Antonopoulos.2018}. However, gas prices are predominantly determined by miners and can therefore fluctuate unexpectedly \cite[p.~54]{Antonopoulos.2018}.}, the faster the transaction is likely to confirm. Still, it may also be set to zero and the transaction might even get mined during periods of low demand \cite[p.~153]{Antonopoulos.2018}. 
 
