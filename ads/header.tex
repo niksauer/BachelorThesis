@@ -92,6 +92,8 @@
 \author{\autor}
 \date{\datum}
 
+%\usepackage[hyphens]{url}
+
 % PDF Einstellungen
 \usepackage[%
 	pdftitle={\titel},
@@ -115,7 +117,8 @@
 	menucolor=LinkColor,
 	urlcolor=LinkColor,
 	linktocpage=true, 		% Nicht der Text sondern die Seitenzahlen in Verzeichnissen klickbar
-	bookmarksnumbered=true 	% Überschriftsnummerierung im PDF Inhalt anzeigen.
+	bookmarksnumbered=true, 	% Überschriftsnummerierung im PDF Inhalt anzeigen.
+%	breaklinks=true
 }
 % Workaround um Fehler in Hyperref, muss hier stehen bleiben
 \usepackage{bookmark} %nur ein latex-Durchlauf für die Aktualisierung von Verzeichnissen nötig
@@ -142,6 +145,9 @@
 	style=\zitierstil,
 ]{biblatex}
 }
+
+\setcounter{biburllcpenalty}{7000}
+\setcounter{biburlucpenalty}{8000}
 
 \ladeliteratur{}
 
