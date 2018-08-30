@@ -85,6 +85,7 @@
 \FloatBarrier
 
 \chapter{Conclusion \& Discussion}
+\label{app:conclusion}
 
 To give an estimate on the system's operating cost, it will be necessary to determine the amount of gas that is going to be consumed by invoking a particular contract method (comp.~\ref{sec:gas}). Considering that this amount depends on the exact execution path taken, the following figures should only be referred to as an approximation.
 
@@ -134,7 +135,7 @@ Before a contract is deployed, developers will typically activate the compiler's
     	10,000 runs & 22,206 & 29,389 \\
     	100,000 runs & 22,206 & 29,389 \\
 	\end{tabular}
-	\caption[Average gas used to lock up deposits and reimburse advance refunds of one-way bottles]{Average gas used by \texttt{DPGBasic} to lock up deposits and reimburse advance refunds of one-way bottles (measured across 1,000 calls with linear increase in payload)}
+	\caption[Average gas used to lock up deposits and reimburse advance refunds of one-way bottles]{Average gas used by \texttt{DPGCore} to lock up deposits and reimburse advance refunds of one-way bottles (measured across 1,000 calls with linear increase in payload)}
 	\label{tab:depositRefundGas}
 \end{table}
 
@@ -150,15 +151,15 @@ Before a contract is deployed, developers will typically activate the compiler's
     	10,000 runs & 35,894 & 35,343 \\
     	100,000 runs & 35,894 & 35,343 \\
 	\end{tabular}
-	\caption[Average gas used to report thrown away one-way bottles and reusable bottle purchases]{Average gas used by \texttt{DPGBasic} to report thrown away one-way bottles and reusable bottle purchase (measured across 1,000 calls with linear increase in payload)}
+	\caption[Average gas used to report thrown away one-way bottles and reusable bottle purchases]{Average gas used by \texttt{DPGCore} to report thrown away one-way bottles and reusable bottle purchase (measured across 1,000 calls with linear increase in payload)}
 	\label{tab:reportGas}
 \end{table}
 
 \FloatBarrier
 
-The aforementioned optimization limit is seen throughout \Cref{tab:collectorGas,tab:depositRefundGas,tab:reportGas}, such that further analysis will settle on \texttt{-{}-runs=10000}. Optimizing for initial contract deployment does not make sense given the volume in requests that must be expected from a nationwide deposit-refund system. To be specific, the break-even point between 1 and 10,000 runs is reached after 280 thrown away one-way bottle reports \footnote{$ \Delta D \leq 280 \times \Delta R$ , where $\Delta D$ represents the savings in deployment costs achieved from setting \texttt{-{}-runs=1} and $\Delta F$ the amount of gas that must be paid more when compared to \texttt{-{}-runs=10000}.}. 
+The aforementioned optimization limit is seen throughout \Cref{tab:collectorGas,tab:depositRefundGas,tab:reportGas}, such that further analysis will settle on \texttt{-{}-runs=10000}. Optimizing for initial contract deployment does not make sense given the volume in requests that must be expected from a nationwide deposit-refund system. To be specific, the break-even point between 1 and 10,000 runs is reached after 280 thrown away one-way bottle reports \footnote{$ \Delta D \leq 280 \times \Delta R$ , where $\Delta D$ represents the savings in deployment costs achieved from setting \texttt{-{}-runs=1} and $\Delta F$ the difference in gas that must be paid more when compared to \texttt{-{}-runs=10000}.}. 
 
-Until now, all approximations can be regarded as being very close since the behavior of those components does not rely on the input arguments. They solely check for validity. Contrary, buying a one-way bottle can have the effect of generating a new token or transferring ownership of an existing (comp.~\ref{sec:centralClearingHouse}), both of which require a different amount of gas as shown by \autoref{tab:penaltyGas}.
+Until now, all approximations can be regarded as being very close since the behavior of those components does not rely on the input arguments. These arguments are solely checked for validity. Contrary, buying a one-way bottle via \texttt{DPGPenalty} can have the effect of generating a new token or transferring ownership of an existing one (comp.~\ref{sec:centralClearingHouse}). Both actions require a different amount of gas as is shown in \autoref{tab:penaltyGas}. Similarly, reporting a thrown away one-way bottle involves looking up its owner, whereas \texttt{DPGBasic} would simply increase the number of bottles that have been thrown away.
 
 \begin{table}[hbt]
 	\centering	
@@ -169,11 +170,46 @@ Until now, all approximations can be regarded as being very close since the beha
     	10 & 1,317,912 & 908,763 & 554,524 & 553,474 \\ 
     	50 & 6,489,924 & 4,444,711 & 2,724,810 & 2,719,545 \\
 	\end{tabular}
-	\caption[Average gas used to buy, transfer and return one-way bottles]{Average gas used by \texttt{DPGPenalty} to buy, transfer and return one-way bottles (measured across 500 calls) [\texttt{solc runs=10000}]}
+	\caption[Average gas used to buy, transfer and return one-way bottles]{Average gas used by \texttt{DPGPenalty} to buy, transfer and return one-way bottles (measured across 200 calls) [\texttt{solc runs=10000}]}
+	\label{tab:penaltyGas}
+\end{table}
+
+\begin{table}[hbt]
+	\centering	
+	\begin{tabular}{r|r}
+    	bottles & gas used \\
+    	\hline
+    	1 & 75,024 \\
+    	10 & 560,020 \\ 
+    	50 & 2,726,797 \\
+	\end{tabular}
+	\caption[Average gas used to buy, transfer and return one-way bottles]{Average gas used by \texttt{DPGPenalty} to report thrown away one-way bottles (measured across 200 calls) [\texttt{solc runs=10000}]}
 	\label{tab:penaltyGas}
 \end{table}
 
 \FloatBarrier
+
+%\begin{table}[hbt]
+%	\centering	
+%	\begin{tabular}{l|r|r}
+%    	& DPGBasic & DPGPenalty \\
+%    	\hline
+%    	deployment & 2,188,725 & 5,150,076 \\
+%    	\hline
+%    	lock up deposit (buy one-way bottles) & 22,206 & 113,166-154,196 \\ 
+%    	put in claim for reimbursement & 29,389 & 29,389 \\
+%    	report thrown away one-way bottles & 35,894 & 75,024 \\
+%    	report reusable bottle purchase & 35,343 & 35,343 \\
+%    	\hline
+%    	report one-way bottle return & - & 66,099-66,204 \\
+%	\end{tabular}
+%	\caption[Estimated operating cost at gas price of 5 Gwei and Ether exchange rate of \$275]{Estimated operating cost at gas price of 5 Gwei and Ether exchange rate of \$275 (comp.~\autoref{app:conclusion})}
+%	\label{tab:penaltyGas}
+%\end{table}
+%
+%\FloatBarrier
+
+The \texttt{DPG Gas Cost Test} suite used to aggregate these results is available at \cite{depositRefundGitHub}.
 
 \end{appendices}
 
