@@ -84,6 +84,97 @@
 
 \FloatBarrier
 
+\chapter{Conclusion \& Discussion}
+
+To give an estimate on the system's operating cost, it will be necessary to determine the amount of gas that is going to be consumed by invoking a particular contract method (comp.~\ref{sec:gas}). Considering that this amount depends on the exact execution path taken, the following figures should only be referred to as an approximation.
+
+Before a contract is deployed, developers will typically activate the compiler's optimization program. This program operates under a trade-off situation in which it can either optimize for initial contract deployment, meaning that the bytecode should shrink in size and thus, reduce deployment costs or alternatively, take the number of contract invocations into account and lower runtime costs. Because of that, the optimizer allows for a linear factor to balance between these two criteria which can be specified via the \texttt{-{}-runs} flag \cite[p.~125]{solidityDocs} \cite{compilerOptimization}. \autoref{tab:deploymentGas} demonstrates how this factor influences the gas consumption encountered during deployment. Also, it suggests that optimization possibilities converge beyond 10,000 runs.
+
+\begin{table}[hbt]
+	\centering	
+	\begin{tabular}{r|r|r|r}
+    	optimizer & DPGActorManager & DPGBasic & DPGPenalty \\
+    	\hline
+    	turned off & 776,085 & 2,241,200 & 6,595,615 \\
+    	1 runs & 406,863 & 1,513,218 & 4,019,966 \\ 
+    	200 runs & 411,842 & 1,549,970 & 4,110,315 \\
+    	1,000 runs & 502,558 & 1,630,162 & 4,161,714 \\ 
+    	10,000 runs & 518,586 & 1,670,139 & 4,631,490 \\
+    	100,000 runs & 518,586 & 1,670,075 & 4,680,173 \\
+	\end{tabular}
+	\caption{Gas used during deployment}
+	\label{tab:deploymentGas}
+\end{table}
+
+\begin{table}[hbt]
+	\centering	
+	\begin{tabular}{r|r|r}
+    	optimizer & add & remove \\
+    	\hline
+    	turned off & 69,017 & 19,043 \\
+    	1 runs & 69,356 & 19,383 \\ 
+    	200 runs & 69,293 & 19,319 \\
+    	1,000 runs & 69,018 & 19,045 \\ 
+    	10,000 runs & 69,014 & 19,041 \\
+    	100,000 runs & 69,014 & 19,041 \\
+	\end{tabular}
+	\caption[Average gas used to add and remove a garbage collector]{Average gas used by \texttt{DPGActorManager} to add and remove a garbage collector (measured across 1,000 calls)}
+	\label{tab:collectorGas}
+\end{table}
+
+\begin{table}[hbt]
+	\centering	
+	\begin{tabular}{r|r|r}
+    	optimizer & deposit & refund \\
+    	\hline
+    	turned off & 22,301 & 29,486 \\
+    	1 runs & 22,269 & 29,452 \\ 
+    	200 runs & 22,206 & 29,389 \\
+    	1,000 runs & 22,206 & 29,389 \\ 
+    	10,000 runs & 22,206 & 29,389 \\
+    	100,000 runs & 22,206 & 29,389 \\
+	\end{tabular}
+	\caption[Average gas used to lock up deposits and reimburse advance refunds of one-way bottles]{Average gas used by \texttt{DPGBasic} to lock up deposits and reimburse advance refunds of one-way bottles (measured across 1,000 calls with linear increase in payload)}
+	\label{tab:depositRefundGas}
+\end{table}
+
+\begin{table}[hbt]
+	\centering	
+	\begin{tabular}{r|r|r}
+    	optimizer & thrown aways & reusables \\
+    	\hline
+    	turned off & 36,340 & 35,614 \\
+    	1 runs & 36,298 & 35,613 \\ 
+    	200 runs & 36,101 & 35,550 \\
+    	1,000 runs & 35,894 & 35,343 \\ 
+    	10,000 runs & 35,894 & 35,343 \\
+    	100,000 runs & 35,894 & 35,343 \\
+	\end{tabular}
+	\caption[Average gas used to report thrown away one-way bottles and reusable bottle purchases]{Average gas used by \texttt{DPGBasic} to report thrown away one-way bottles and reusable bottle purchase (measured across 1,000 calls with linear increase in payload)}
+	\label{tab:reportGas}
+\end{table}
+
+\FloatBarrier
+
+The aforementioned optimization limit is seen throughout \Cref{tab:collectorGas,tab:depositRefundGas,tab:reportGas}, such that further analysis will settle on \texttt{-{}-runs=10000}. Optimizing for initial contract deployment does not make sense given the volume in requests that must be expected from a nationwide deposit-refund system. To be specific, the break-even point between 1 and 10,000 runs is reached after 280 thrown away one-way bottle reports \footnote{$ \Delta D \leq 280 \times \Delta R$ , where $\Delta D$ represents the savings in deployment costs achieved from setting \texttt{-{}-runs=1} and $\Delta F$ the amount of gas that must be paid more when compared to \texttt{-{}-runs=10000}.}. 
+
+Until now, all approximations can be regarded as being very close since the behavior of those components does not rely on the input arguments. They solely check for validity. Contrary, buying a one-way bottle can have the effect of generating a new token or transferring ownership of an existing (comp.~\ref{sec:centralClearingHouse}), both of which require a different amount of gas as shown by \autoref{tab:penaltyGas}.
+
+\begin{table}[hbt]
+	\centering	
+	\begin{tabular}{r|r|r|r|r}
+    	bottles & buy & transfer & self-return & foreign-return \\
+    	\hline
+    	1 & 154,196 & 113,166 & 66,204 & 66,099 \\
+    	10 & 1,317,912 & 908,763 & 554,524 & 553,474 \\ 
+    	50 & 6,489,924 & 4,444,711 & 2,724,810 & 2,719,545 \\
+	\end{tabular}
+	\caption[Average gas used to buy, transfer and return one-way bottles]{Average gas used by \texttt{DPGPenalty} to buy, transfer and return one-way bottles (measured across 500 calls) [\texttt{solc runs=10000}]}
+	\label{tab:penaltyGas}
+\end{table}
+
+\FloatBarrier
+
 \end{appendices}
 
 
