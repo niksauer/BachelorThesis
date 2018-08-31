@@ -209,6 +209,42 @@ Until now, all approximations can be regarded as being very close since the beha
 %
 %\FloatBarrier
 
+%\begin{table}[hbt]
+%	\centering	
+%	\begin{tabular}{l|r|r}
+%    	& DPGBasic & DPGPenalty \\
+%    	\hline
+%    	deployment & 0.0109436 & 0.0257504 \\
+%    	\hline
+%    	lock up deposit (buy one-way bottles) & 	0.000111 & 0.0005658-0.000771 \\ 
+%    	put in claim for reimbursement & 0.0001469 & 0.0001469 \\
+%    	report thrown away one-way bottles & 0.0001795 & 0.0003751 \\
+%    	report reusable bottle purchase & 0.0001767 & 0.0001767 \\
+%    	\hline
+%    	report one-way bottle return & - & 0.0003305-0.000331 \\
+%	\end{tabular}
+%	\caption[Estimated operating cost (in ETH)]{Estimated operating cost (in ETH) at gas price of 5 Gwei (comp.~\autoref{app:conclusion})}
+%	\label{tab:penaltyGas}
+%\end{table}
+%
+%\begin{table}[hbt]
+%	\centering	
+%	\begin{tabular}{l|r|r}
+%    	& DPGBasic & DPGPenalty \\
+%    	\hline
+%    	deployment & 3,06 & 7,21 \\
+%    	\hline
+%    	lock up deposit (buy one-way bottles) & 	0,03 & 0,16-0,26 \\ 
+%    	put in claim for reimbursement & 0,04 & 0,04 \\
+%    	report thrown away one-way bottles & 0,05 & 0,11 \\
+%    	report reusable bottle purchase & 0,05 & 0,05 \\
+%    	\hline
+%    	report one-way bottle return & - & 0,09 \\
+%	\end{tabular}
+%	\caption[Estimated operating cost (in USD)]{Estimated operating cost (in USD) at gas price of 5 Gwei and exchange rate of \$280 per Ether (comp.~\autoref{app:conclusion})}
+%	\label{tab:penaltyGas}
+%\end{table}
+
 The \texttt{DPG Gas Cost Test} suite used to aggregate these results is available at \cite{depositRefundGitHub}.
 
 \end{appendices}

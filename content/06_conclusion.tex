@@ -4,38 +4,51 @@
 \label{chp:conclusion}
 %- provide answer corresponding to problem statement > often open ended
 
-\begin{table}[hbt]
-	\centering	
-	\begin{tabular}{l|r|r}
-    	& DPGBasic & DPGPenalty \\
-    	\hline
-    	deployment & 0.0109436 & 0.0257504 \\
-    	\hline
-    	lock up deposit (buy one-way bottles) & 	0.000111 & 0.0005658-0.000771 \\ 
-    	put in claim for reimbursement & 0.0001469 & 0.0001469 \\
-    	report thrown away one-way bottles & 0.0001795 & 0.0003751 \\
-    	report reusable bottle purchase & 0.0001767 & 0.0001767 \\
-    	\hline
-    	report one-way bottle return & - & 0.0003305-0.000331 \\
-	\end{tabular}
-	\caption[Estimated operating cost (in ETH)]{Estimated operating cost (in ETH) at gas price of 5 Gwei (comp.~\autoref{app:conclusion})}
-	\label{tab:penaltyGas}
-\end{table}
+This research has examined whether a decentralized blockchain-based application platform like Ethereum is suitable for realizing the incentivized deposit-refund system presented earlier as part of this thesis. From a pure functional perspective, this is definitely the case although implementation generally requires a more rudimentary approach because the infrastructure imposes several uncommon but understandable constraints. None of these constraints affect the application functionality in any meaningful way. Still, they have been highlighted throughout development to convey the shift in thought that \ac{HPE} must embrace in order to become a \ac{dApp} developer. On the other hand, acceptance of the system is highly dependent on the structural quality exhibited which itself is influenced by the type of blockchain chosen for production. In this regard, especially two aspects should be emphasized: 
 
-\begin{table}[hbt]
+\begin{description}
+	\item[Scalability]
+	\hfill \\
+	
+
+	\item[Cost]
+	\hfill \\
+	
+	\begin{table}[hbt]
 	\centering	
 	\begin{tabular}{l|r|r}
     	& DPGBasic & DPGPenalty \\
     	\hline
-    	deployment & 3,06 & 7,21 \\
+    	deployment & 2,188,725 & 5,150,076 \\
     	\hline
-    	lock up deposit (buy one-way bottles) & 	0,03 & 0,16-0,26 \\ 
-    	put in claim for reimbursement & 0,04 & 0,04 \\
-    	report thrown away one-way bottles & 0,05 & 0,11 \\
-    	report reusable bottle purchase & 0,05 & 0,05 \\
+    	lock up deposit (buy one-way bottles) & 22,206 & 113,166-154,196 \\ 
+    	put in claim for reimbursement & 29,389 & 29,389 \\
+    	report thrown away one-way bottles & 35,894 & 75,024 \\
+    	report reusable bottle purchase & 35,343 & 35,343 \\
     	\hline
-    	report one-way bottle return & - & 0,09 \\
+    	report one-way bottle return & - & 66,099-66,204 \\
 	\end{tabular}
-	\caption[Estimated operating cost (in USD)]{Estimated operating cost (in USD) at gas price of 5 Gwei and exchange rate of \$280 per Ether (comp.~\autoref{app:conclusion})}
+	\caption[Contract invocation and deployment costs (in Gas)]{Contract invocation and deployment costs (in Gas) \footnotemark}
 	\label{tab:penaltyGas}
-\end{table}
+	\end{table}
+	
+	\FloatBarrier
+
+\end{description}
+  
+\footnotetext{A full discussion surrounding these projected figures can be found in the \autoref{app:conclusion} on \autopageref{app:conclusion}.}
+
+
+
+
+
+
+
+
+
+
+%It must be reiterated that the implementation omits two aspects which are essential to production. At the same time, these aspects depend  
+
+% Subtle differences like these have been 
+
+%presented solution should be accepted as such. 
