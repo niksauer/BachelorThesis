@@ -142,7 +142,7 @@ Before a contract is deployed, developers will typically activate the compiler's
 \begin{table}[hbt]
 	\centering	
 	\begin{tabular}{r|r|r}
-    	optimizer & thrown aways & reusables \\
+    	optimizer & thrown-aways & reusables \\
     	\hline
     	turned off & 36,340 & 35,614 \\
     	1 runs & 36,298 & 35,613 \\ 
@@ -151,15 +151,15 @@ Before a contract is deployed, developers will typically activate the compiler's
     	10,000 runs & 35,894 & 35,343 \\
     	100,000 runs & 35,894 & 35,343 \\
 	\end{tabular}
-	\caption[Average gas used to report thrown away one-way bottles and reusable bottle purchases]{Average gas used by \texttt{DPGCore} to report thrown away one-way bottles and reusable bottle purchase (measured across 1,000 calls with linear increase in payload)}
+	\caption[Average gas used to report thrown-away one-way bottles and reusable bottle purchases]{Average gas used by \texttt{DPGCore} to report thrown-away one-way bottles and reusable bottle purchase (measured across 1,000 calls with linear increase in payload)}
 	\label{tab:reportGas}
 \end{table}
 
 \FloatBarrier
 
-The aforementioned optimization limit is seen throughout \Cref{tab:collectorGas,tab:depositRefundGas,tab:reportGas}, such that further analysis will settle on \texttt{-{}-runs=10000}. Optimizing for initial contract deployment does not make sense given the volume in requests that must be expected from a nationwide deposit-refund system. To be specific, the break-even point between 1 and 10,000 runs is reached after 280 thrown away one-way bottle reports \footnote{$ \Delta D \leq 280 \times \Delta R$ , where $\Delta D$ represents the savings in deployment costs achieved from setting \texttt{-{}-runs=1} and $\Delta F$ the difference in gas that must be paid more when compared to \texttt{-{}-runs=10000}.}. 
+The aforementioned optimization limit is seen throughout \Cref{tab:collectorGas,tab:depositRefundGas,tab:reportGas}, such that further analysis will settle on \texttt{-{}-runs=10000}. Optimizing for initial contract deployment does not make sense given the volume in requests that must be expected from a nationwide deposit-refund system. To be specific, the break-even point between 1 and 10,000 runs is reached after 280 thrown-away one-way bottle reports \footnote{$ \Delta D \leq 280 \times \Delta R$ , where $\Delta D$ represents the savings in deployment costs achieved from setting \texttt{-{}-runs=1} and $\Delta F$ the difference in gas that must be paid more when compared to \texttt{-{}-runs=10000}.}. 
 
-Until now, all approximations can be regarded as being very close since the behavior of those components does not rely on the input arguments. These arguments are solely checked for validity. Contrary, buying a one-way bottle via \texttt{DPGPenalty} can have the effect of generating a new token or transferring ownership of an existing one (comp.~\ref{sec:centralClearingHouse}). Both actions require a different amount of gas as is shown in \autoref{tab:penaltyGas}. Similarly, reporting a thrown away one-way bottle involves looking up its owner, whereas \texttt{DPGBasic} would simply increase the number of bottles that have been thrown away.
+Until now, all approximations can be regarded as being very close since the behavior of those components does not rely on the input arguments. These arguments are solely checked for validity. Contrary, buying a one-way bottle via \texttt{DPGPenalty} can have the effect of generating a new token or transferring ownership of an existing one (comp.~\ref{sec:centralClearingHouse}). Both actions require a different amount of gas as is shown in \autoref{tab:penaltyGas}. Similarly, reporting a thrown-away one-way bottle involves looking up its owner, whereas \texttt{DPGBasic} would simply increase the number of bottles that have been thrown away.
 
 \begin{table}[hbt]
 	\centering	
@@ -183,7 +183,7 @@ Until now, all approximations can be regarded as being very close since the beha
     	10 & 560,020 \\ 
     	50 & 2,726,797 \\
 	\end{tabular}
-	\caption[Average gas used to buy, transfer and return one-way bottles]{Average gas used by \texttt{DPGPenalty} to report thrown away one-way bottles (measured across 200 calls) [\texttt{solc runs=10000}]}
+	\caption[Average gas used to buy, transfer and return one-way bottles]{Average gas used by \texttt{DPGPenalty} to report thrown-away one-way bottles (measured across 200 calls) [\texttt{solc runs=10000}]}
 	\label{tab:penaltyGas}
 \end{table}
 

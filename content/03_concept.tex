@@ -11,16 +11,16 @@
 An incentivized deposit-refund system, as is outlined in the following, aims to:
 
 \begin{enumerate}[label=(\Alph*)]
-  \item \label{bolsterQuote} bolster the quote of beverages sold in reusable packaging
-  \item \label{preventPollution} prevent pollution of the environment caused from throwing away bottles
+  \item \label{bolsterQuote} bolster the portion of beverages sold in reusable packaging
+  \item \label{preventPollution} prevent pollution of the environment caused by throwing away bottles
   \item support the cause of environmental agencies
 \end{enumerate}
 
-From a game theoretical perspective, \ref{bolsterQuote} and \ref{preventPollution} are presumably achieved by \footnote{Lending itself to the fact that solely threatening retailers and bottlers with the introduction of a deposit-refund system had not been a successful approach (comp.~\autoref{ftn:presumedEffects} and \autoref{fig:reusableQuoteDevelopment} on pp.~\rangeref{presumedHappenedEffects}).}:
+From a game theory perspective, \ref{bolsterQuote} and \ref{preventPollution} could be presumably achieved by \footnote{The government's sole threat to introduce a deposit-refund system did not succeeded in achieving \ref{bolsterQuote} (comp.~\autoref{ftn:presumedEffects} and \autoref{fig:reusableQuoteDevelopment} on pp.~\rangeref{presumedHappenedEffects}).}:
 
 \begin{itemize}
   \item rewarding consumers who purchase reusable bottles
-  \item punishing consumers whose bottles are eventually thrown away
+  \item penalizing consumers who throw away their bottles
 \end{itemize}
 
 To translate these measures into reality, it will be necessary to alter the current deposit-refund system (see~\ref{sec:depositRefundCycle}) so that:
@@ -30,7 +30,7 @@ To translate these measures into reality, it will be necessary to alter the curr
   \item a penalty is added onto future deposits of consumers who repeatedly pollute
 \end{itemize}
 
-Practically, this will require garbage collection to report how many and which specific one-way bottles have been thrown away. Otherwise, it will not be possible to calculate the amount of non-claimed deposits and identify which consumer was responsible for the bottle at last. The latter infers that bottles must be uniquely identifiable. On the other hand, such a system can only be realized if retailers forward the information that a consumer has bought reusable bottles and has thereby become eligible to receive rewards. Furthermore, to establish proper ownership, they must also report which one-way bottles a consumer has purchased. Lastly, it should be prevented that anybody can report these figures, pretend to be an environmental agency or claim someone else's rewards. This core functionality, together with the existing minimum level of service, can be expressed in terms of the different interactions a certain user may have with the system, known as a use case diagram and given by \autoref{fig:useCaseOverview}.
+Practically, this will require garbage collection agencies to report how many and which specific one-way bottles have been thrown away. Otherwise, it will not be possible to calculate the amount of non-claimed deposits and identify which consumer was last responsible for the bottle. The latter infers that bottles must be uniquely identifiable. On the other hand, such a system can only be realized if retailers forward the information that a consumer has bought reusable bottles and has thereby become eligible to receive rewards. Furthermore, to establish proper ownership, they must also report which one-way bottles a consumer has purchased. Lastly, it should be prevented that anybody can report these figures, pretend to be an environmental agency or claim someone else's rewards. This core functionality, along with the existing minimum level of service, can be expressed in terms of the different interactions a certain user may have with the system. This is depicted in \autoref{fig:useCaseOverview}.
 
 \begin{figure}[hbt]
   \includegraphics[width=\textwidth]{images/concept/use_case_overview}
@@ -40,7 +40,7 @@ Practically, this will require garbage collection to report how many and which s
 
 \FloatBarrier
 
-From this overview, it becomes apparent that a revised approach will essentially incorporate an accounting layer to enable the punishment and rewarding of consumers. Basic protocols of interaction (i.e.~buying and returning a bottle) should only be modified to the minimum extent needed.
+From this overview, it becomes apparent that a revised approach will essentially incorporate an accounting layer to enable the penalization and rewarding of consumers. Basic protocols of interaction (i.e.~buying and returning a bottle) should only be modified to the minimum extent needed.
 
 \subsection{Proposed Rules}
 \label{sec:rules}
@@ -51,9 +51,9 @@ Having given a high-level introduction to an incentivized deposit-refund system,
 \begin{itemize}
  	\item 50\% of non-claimed deposits are reserved for donations (\textit{agency fund})
   	\item 50\% of non-claimed deposits are reserved for rewards (\textit{consumer fund})
-  	\item rewards and donations can be claimed once in each period
+  	\item rewards and donations can be claimed once within a specific period
   	\item a period's duration is set at 4 weeks
-  	\item a consumer's reward ($r_c$) is based on the relative amount of reusable bottles ($b$) he has purchased within the previous period, thus can be calculated as:
+  	\item a consumer's reward ($r_c$) is based on the relative amount of reusable bottles ($b$) he has purchased within the previous period and can thus be calculated as:
 
 \begin{equation}
 r_c = \frac{b}{b_{total}} \times f_c
@@ -62,7 +62,7 @@ r_c = \frac{b}{b_{total}} \times f_c
 
 where $b_{total}$ denotes the total number of reusable bottles sold within that period and $f_c$ resembles the consumer fund
 
-	\item non-claimed rewards are withheld % for self-financing
+	\item non-claimed rewards are withheld from the consumer by the application % for self-financing
   	\item the agency fund ($f_a$) is evenly distributed, so that each's donation ($d$) will be $d = f_a/n$, where $n$ refers to the number of approved agencies
   	\item non-claimed donations remain available for all agencies in the next period
 \end{itemize}
@@ -71,7 +71,7 @@ where $b_{total}$ denotes the total number of reusable bottles sold within that 
 
 \begin{itemize}
  	\item if a consumer repeatedly pollutes, he must pay a penalty on top of each deposit
-	\item the threshold ($t$) to receive a penalty is set at 5 thrown away bottles
+	\item the threshold ($t$) to receive a penalty is set at 5 thrown-away bottles
   	\item the penalty's value ($v$) is set at \EUR{0.05}
   	\item a consumer's penalty ($p_c$) is proportional to the number of bottles ($b$) he has thrown away during the lifetime of this system, meaning that: 
 
@@ -80,8 +80,8 @@ p_c = \frac{b - (b \mod t)}{t} \times v
 \label{eq:penaltyCalculcation}
 \end{equation}
 
-  	\item the penalty is refunded, if the consumer returns the bottle on his own
-  	\item the penalty is seized, if the bottle is thrown away or returned by someone else
+  	\item the penalty is refunded if the consumer returns the bottle on his own
+  	\item the penalty is seized if the bottle is thrown away or returned by someone else
 %  	\item seized penalties are also used for self-financing
 \end{itemize}
 
@@ -100,8 +100,8 @@ Of course, consumers and environmental agencies will also expect a method to cla
 
 \paragraph{Garbage collector}
 \begin{enumerate}[font=\sffamily,label={\textbf{FR-\protect\twodigits{\theenumi}}},leftmargin=1.4cm, ref=FR-\protect\twodigits{\theenumi}]
-	\item As a garbage collector, I can report the number of thrown away one-way bottles, so that the amount of non-claimed deposits can be calculated. \label{itm:reportNumber}
-	\item As a garbage collector, I can report the identifier of a thrown away one-way bottle, so that the responsible consumer can be punished. \label{itm:reportIdentifier}
+	\item As a garbage collector, I can report the number of thrown-away one-way bottles, so that the amount of non-claimed deposits can be calculated. \label{itm:reportNumber}
+	\item As a garbage collector, I can report the identifier of a thrown-away one-way bottle, so that the responsible consumer can be penalized. \label{itm:reportIdentifier}
 \end{enumerate}
 
 \paragraph{Retailer}
@@ -133,9 +133,9 @@ Of course, consumers and environmental agencies will also expect a method to cla
 While an incentivized deposit-refund system may be effective, it does assume a variety of conditions that must be in place for it to function properly. As previously hinted, they can be described as the:
 
 \begin{description}
-	\item[Obligation to report thrown away one-way bottles]
+	\item[Obligation to report thrown-away one-way bottles]
 	\hfill \\
-	In addition to reporting the total number of thrown away bottles\hide{(\ref{itm:reportNumber})}, garbage collection must also be obliged to communicate the individual identifiers\hide{(\ref{itm:reportIdentifier})}. This assumes that one-way bottles are marked with a label that is unique across all bottles in circulation. Finally, and to automate the whole process, special object recognition machinery will be required along the sorting belt of any given refuse disposal site.
+	In addition to reporting the total number of thrown-away bottles\hide{(\ref{itm:reportNumber})}, garbage collection must also be obliged to communicate the individual identifiers\hide{(\ref{itm:reportIdentifier})}. This assumes that one-way bottles are marked with a label that is unique across all bottles in circulation. Finally, and to automate the whole process, special object recognition machinery will be required along the sorting belt of any given refuse disposal site.
 	\item[Obligation to report bottle purchase]
 	\hfill \\
 	Retailers and initial distributors alike must report which particular one-way bottles a consumer has purchased\hide{(\ref{itm:reportOneWays})}. The same (i.e. quantity) goes for buying reusable bottles \hide{(\ref{itm:reportReusableNumber})} although this only happens through opt-in as people should not be forced to accept rewards. In both cases, it will be necessary to have consumers present a unique means of identification as they complete the purchase.
@@ -208,7 +208,7 @@ For all this to work, the very first deposit charged for a one-way bottle must b
 \begin{itemize}
 	\item [(2)] Like today, the deposit of a one-way bottle is still directly paid to the retailer upon each subsequent sale but as already indicated, not again transmitted to the smart-contract. However, should the consumer qualify for a penalty (see~\ref{sec:rules}), this penalty (converted to Ether) is sent to the smart-contract along with the purchase report itself. Furthermore, each report causes the token to be re-associated with the new consumer. In case that the previous owner had to pay a penalty \footnote{Even though unlikely, this indicates that a retailer has lost or thrown away one-way bottles.}, that amount will be credited to him for later withdrawal as he is not responsible for the bottle anymore.
 	\item [(3a)] By returning a one-way bottle, the accompanying report triggers the smart-contract to compare the consumer's identity with that recorded for the bottle (i.e.~that associated with the token). Should these match, the penalty will be credited for later withdrawal. Otherwise, the penalty is withheld (comp.~\ref{sec:rules}). Irrespective of the outcome, the token is destroyed meaning that the bottle's identifier could be reused in the future. Additionally, tack-back points must physically refund the consumer (comp.~\ref{itm:levyDepositObligation} on \autopageref{itm:levyDepositObligation})
-	\item [(3b)] Should the consumer decide to throw away a one-way bottle, this information is (likely) to be reported by garbage collection sooner or later and triggers an increase in the responsible consumer's record of thrown away bottles which is used to calculate his penalty (comp.~\autoref{eq:penaltyCalculcation}). Assuming that a penalty had been paid for this bottle, it is withheld (comp. \ref{sec:rules}). Lastly, the token is burned and the number of bottles which have been thrown away in the current period is incremented, as is required to correctly calculate \autoref{eq:rewardCalculation}.
+	\item [(3b)] Should the consumer decide to throw away a one-way bottle, this information is (likely) to be reported by garbage collection sooner or later and triggers an increase in the responsible consumer's record of thrown-away bottles which is used to calculate his penalty (comp.~\autoref{eq:penaltyCalculcation}). Assuming that a penalty had been paid for this bottle, it is withheld (comp. \ref{sec:rules}). Lastly, the token is burned and the number of bottles which have been thrown away in the current period is incremented, as is required to correctly calculate \autoref{eq:rewardCalculation}.
 	\item [(4)] Since tack-back points still directly refund consumers, settlement for these advance payments is needed. This happens by transmitting the same signed dataset which is used today and produced either by a reverse vending machine or a commissioned counting center (see~\ref{sec:depositRefundCycle}). The smart-contract can then verify the payload's signature, after which a message with equivalent value in Ether will be sent to the refund claimant's (i.e. the caller's) address. 
 	\item [(5)] Environmental agencies can simply claim their donation by signing a transaction and addressing it to this smart-contract, though, for it to work, the encapsulated message must contain the appropriate function signature (see~\ref{sec:accounts}). Determining that a caller is indeed an environmental agency happens by looking up his approval status. Likewise, eligible consumers (i.e.~those that have been reported to have purchased reusable bottles) can claim their reward in the same fashion with the difference being that permission does not have to be checked since the reward amount is not statically calculated (comp.~\autoref{eq:rewardCalculation}) and by such would simply result in a zero value.
 \end{itemize}
@@ -230,10 +230,10 @@ The classes (i.e.~contracts \cite[p.~75]{solidityDocs}) encountered within this 
 	\hfill \\
 	As mentioned in \autoref{sec:incentivizedOverview}, some kind of an accounting layer will be needed to reward reusable bottle consumers. Here, a smart-contract called \texttt{DPGCore} will take upon this task and provide actors with \ref{itm:reportNumber}, \ref{itm:reportReusablePurchase} and \ref{itm:reportReusableNumber}. Since all reported figures are tied to a specific timeframe (i.e.~the current period) and rewards can only be claimed for the past timeframe (comp.~\ref{sec:rules}), \texttt{DPGCore} maintains a reference to two distinct \texttt{Periods} which each track the total number of bottles that have been thrown away in that specific period, as well as the number of reusable bottles a particular \texttt{Consumer} has purchased. The connection to both properties allows \ref{itm:claimReward} and \ref{itm:claimDonation} to be implemented within the same contract. Finally, it makes available two additional functions that for one, enable the settlement process outlined above and two, offer the ability to lock down a deposit that has been transmitted by an initial distributor (comp.~\ref{itm:basicRequirement}). 
 	
-	By taking a closer look at the conceptual model presented, one can make out the fact that it will not be possible to directly put in a claim to be reimbursed, report a thrown away bottle or lock up a deposit because the methods are marked as protected. Consequently, they can only be exposed through inheritance. This behavior is intended considering that the penalty can be regarded as an extension to an incentivized deposit-refund system \footnote{As the name implies, incentivization primarily refers to rewarding reusable bottle purchases.} and by such, requires the APIs to be extended with additional arguments that capture the individual bottle identifiers. Further, this design choice will break up the monolith and simplify deployment should it be decided that a penalty is not needed for production, in which case the subclass \texttt{DPGBasic} can be used out of the box.
+	By taking a closer look at the conceptual model presented, one can make out the fact that it will not be possible to directly put in a claim to be reimbursed, report a thrown-away bottle or lock up a deposit because the methods are marked as protected. Consequently, they can only be exposed through inheritance. This behavior is intended considering that the penalty can be regarded as an extension to an incentivized deposit-refund system \footnote{As the name implies, incentivization primarily refers to rewarding reusable bottle purchases.} and by such, requires the APIs to be extended with additional arguments that capture the individual bottle identifiers. Further, this design choice will break up the monolith and simplify deployment should it be decided that a penalty is not needed for production, in which case the subclass \texttt{DPGBasic} can be used out of the box.
 	\item[Access Control\label{itm:accessControl}]
 	\hfill \\
-	To relieve \texttt{DPGCore} of the duty to additionally have to track which addresses resemble approved environmental agencies, garbage collectors or tack-back points, \texttt{DPGActorManager} has been established as a separate contract. It is advised that the same or some other key pair in possession of \ac{DPG} is used to deploy this smart-contract, as only the owner (i.e.~the deployer) will be able to add or remove additional \texttt{Actors}. Communication between \texttt{DPGCore} and \texttt{DPGActorManager} will happen by exchanging messages (see~\ref{sec:accounts}). Together, this will ensure \ref{itm:accessSecurity} in regard to unauthorized donation claims, thrown away bottle reports and bottle returns. Despite these measures, another, more concerning authorization scheme is still undefined. 
+	To relieve \texttt{DPGCore} of the duty to additionally have to track which addresses resemble approved environmental agencies, garbage collectors or tack-back points, \texttt{DPGActorManager} has been established as a separate contract. It is advised that the same or some other key pair in possession of \ac{DPG} is used to deploy this smart-contract, as only the owner (i.e.~the deployer) will be able to add or remove additional \texttt{Actors}. Communication between \texttt{DPGCore} and \texttt{DPGActorManager} will happen by exchanging messages (see~\ref{sec:accounts}). Together, this will ensure \ref{itm:accessSecurity} in regard to unauthorized donation claims, thrown-away bottle reports and bottle returns. Despite these measures, another, more concerning authorization scheme is still undefined. 
 	
 	Prevention of unauthorized (reusable \footnote{Non-existent authorization would allow attackers to bluntly increase their share in rewards.}) bottle purchases could be done in two ways:
 	
@@ -313,7 +313,7 @@ From here, multiple statements will be made as to how a blockchain-based solutio
 	\begin{description}[leftmargin=*, wide=0pt]
   		\item[Public]
   		\hfill \\
-  		The application will most certainly experience 100\% availability because the likelihood of all 17.6k miners (comp.~\ref{sec:ethereumPopularity}) going offline is extremely low. As such, it will not be necessary that clients maintain a backlog of unsent reports. Furthermore, the transaction pool will act as a backlog should Ethereum experience an overly high demand in which it is unable to directly process a request.
+  		The application will most certainly experience 100\% availability because the likelihood of all 17.6K miners (comp.~\ref{sec:ethereumPopularity}) going offline is extremely low. As such, it will not be necessary that clients maintain a backlog of unsent reports. Furthermore, the transaction pool will act as a backlog should Ethereum experience an overly high demand in which it is unable to directly process a request.
   		\item[Private]
   		\hfill \\
   		\ac{DPG} will be fully responsible for ensuring continuous uptime although the system's distributed nature will permit multiple nodes to go offline.

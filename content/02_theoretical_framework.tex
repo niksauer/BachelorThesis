@@ -383,7 +383,7 @@ Compared to a general purpose computer, the main differences are that \cite[p.~2
 
 \begin{itemize}
   \item state changes are governed by rules of consensus
-  \item state is distributed globally on a shared ledger
+  \item state of the computer is distributed globally on a shared ledger
 \end{itemize}
 
 From a computer science perspective, Ethereum may therefore be described as a deterministic but practically unbounded state-machine characterized by its \cite[p.~23]{Antonopoulos.2018}: 
@@ -398,23 +398,21 @@ From a computer science perspective, Ethereum may therefore be described as a de
 Naturally, and as is the case with most base layer technologies, Ethereum does not represent the only smart-contract platform available \footnote{Contenders include (alphabetically listed): Cardano, Corda, EOS, Hyperledger Fabric, Lisk, NEM, NEO, Stratis and Waves.}. Nevertheless, several key figures support the claim of Ethereum dominating this space: 
 
 \begin{itemize}
-  \item 94 of top 100 tokens (i.e.~\acp{dApp}) launched on Ethereum (87\% of top 800) \cite{coinmarketTop100Tokens} \cite{ethereumNetworkState}
-  \item ranks well above competitors (\#33 vs. \#72 for EOS) when comparing traffic of dedicated sites in StackExchange network \cite{stackExchangeTechnology}
+  \item 94 of the top 100 tokens were launched on Ethereum (87\% of the top 800) \cite{coinmarketTop100Tokens} \cite{ethereumNetworkState}
+  \item Ethereum ranks well above competitors (\#33 vs. \#72 for EOS) when comparing the traffic of dedicated sites in StackExchange network \cite{stackExchangeTechnology}
 %  \item 1M MetaMask users (browser plug-in for lightweight blockchain connectivity) \cite{ethereumNetworkState}
 \end{itemize}
 
-Moreover, \citeauthor{10.1371/journal.pone.0169556} argue that upon emergence of a new, technically more advanced platform, the blockchain with a stronger development team and open-source community is more likely to succeed \cite[p.~14]{10.1371/journal.pone.0169556}. This developer and community focused nature is clearly seen within the Ethereum landscape:
+Moreover, \citeauthor{10.1371/journal.pone.0169556} argue that upon the emergence of a new, technically more advanced platform, the blockchain possessing the stronger development team and open-source community is more likely to succeed \cite[p.~14]{10.1371/journal.pone.0169556}. The following points illustrate how much Ethereum's ecosystem is focused towards developers and its community:
 
 \begin{itemize}
-  \item StackExchange topic encounters mainly developer focused questions \cite[p.~6]{blockchainTechnologyGrowth}
-  \item \textasciitilde 14.3k answered questions (vs. \textasciitilde 850 for EOS) [68\% vs. 81\% of total questions] \cite{stackExchangeTechnology}
-  \item \textasciitilde17.5k repositories on GitHub (vs. \textasciitilde3.4k for EOS \& \textasciitilde2.5k for Hyperledger)  \footnote{A fuzzy, top-level search has been conducted on \href{https://github.com/search?q=ethereum}{GitHub} on August 15\textsuperscript{th}, 2018.}
-%  \item 550k downloads of Truffle (development \& testing framework) \cite{ethereumNetworkState}
+  \item StackExchange encounters mainly developer focused questions and has answered 14.3K questions (vs.~850 for EOS) [68\% vs. 81\% of total questions] \cite[p.~6]{blockchainTechnologyGrowth} \cite{stackExchangeTechnology}
+  \item GitHub lists 17.5K Ethereum-related projects (vs.~3.4K for EOS \& 2.5K for Hyperledger) \footnote{A fuzzy, top-level search was conducted on \href{https://github.com/search?q=ethereum}{GitHub} on August 15\textsuperscript{th}, 2018.}
 \end{itemize}
 
-Most importantly, Ethereum is estimated to have around 250k developers \cite{ethereumNetworkState}, a 30-fold lead to Hyperledger Fabric, the second most active community, according to a report from Gartner \cite{bloomberg2017}. 
+Most importantly, Ethereum is estimated to have around 250K developers \cite{ethereumNetworkState}, a 30-fold lead to Hyperledger Fabric, the second most active community, according to a report from Gartner \cite{bloomberg2017}. 
 
-Similarly, the degree of decentralization should not be neglected when considering platforms based on public permissionless blockchains. To this extent, Ethereum boosts \textasciitilde17.6k nodes across six continents \footnote{EOS does not qualify since the 21 block producers used in its delegated proof-of-stake consensus mechanism are elected from a list of pre-approved candidates \cite[p.~6]{eosWhitepaper} \cite{eosBlockproducers}. A similar case can be made for NEO which is only currently in the process of decentralization \cite{neoDecentralization} \cite{neoConsensus}.} \cite{ethernodes}.  
+Similarly, the degree of decentralization should not be neglected when considering platforms based on public permissionless blockchains. To this extent, Ethereum boosts 17.6K nodes across six continents \footnote{EOS does not qualify since the 21 block producers used in its delegated proof-of-stake consensus mechanism are elected from a list of pre-approved candidates \cite[p.~6]{eosWhitepaper} \cite{eosBlockproducers}. A similar case can be made for NEO which is only currently in the process of decentralization \cite{neoDecentralization} \cite{neoConsensus}.} \cite{ethernodes}.  
 
 %The scope of activity is also the best indicator of a cryptocurrency's market valuation \cite[p.~8]{10.1371/journal.pone.0169556}.   
 
@@ -435,6 +433,8 @@ At its core, the state of Ethereum is composed by objects called \textit{account
   \item Storage (empty by default)
 \end{itemize}
 
+\pagebreak
+
 Further, two types of accounts are distinguished \cite[p.~17]{ethereumWhitepaperGitHub}:
 
 \begin{description}
@@ -443,31 +443,31 @@ Further, two types of accounts are distinguished \cite[p.~17]{ethereumWhitepaper
 	Accounts created by or for human users of the Ethereum network. This implies the existence of a private key which controls access to the associated funds \cite[p.~13]{Antonopoulos.2018}. Such an account has no code, but can send messages by creating and signing a transaction.
 	\item[Contract accounts]
 	\hfill \\
-	Accounts containing code that executes whenever a message is received from another account \cite[p.~13]{Antonopoulos.2018}. Consequently, they are owned and controlled by the logic of the code stored respectively \cite[p.~57]{Antonopoulos.2018}. This code allows contract accounts to read and write to internal storage and send messages. The latter unlocks additional capabilities such as transferring Ether and creating new or interacting with existing contracts \cite[p.~19]{ethereumWhitepaperGitHub}.
+	Accounts containing code that executes whenever a message is received from another account \cite[p.~13]{Antonopoulos.2018}. Consequently, they are owned and controlled by the logic of the code stored respectively \cite[p.~57]{Antonopoulos.2018}. This code allows contract accounts to read and write to internal storage and send messages. The latter unlocks additional capabilities, such as transferring Ether, creating new contracts, or interacting with existing ones \cite[p.~19]{ethereumWhitepaperGitHub}.
 \end{description}
 
 \subsubsection{Messages \& Transactions}
 \label{sec:messagesTransactions}
-As previously indicated, a transaction is a signed data package that stores a message which originated from an \ac{EOA}. It works as expected from any cryptocurrency (i.e.~it results in a transfer of value, if confirmed and non-zero, positive amount was specified) but has been expanded by three additional fields for contract invocation \cite[p.~18]{ethereumWhitepaperGitHub}: 
+As previously indicated, a transaction is a signed data package that stores a message which originated from an \ac{EOA}. It works as expected from any cryptocurrency (i.e.~it results in a transfer of value, if confirmed and non-zero positive amount has been specified) but has been \textit{expanded} by three \textit{new} additional fields for contract invocation \cite[p.~18]{ethereumWhitepaperGitHub}: 
 
 \begin{AutoMultiColItemize}
   \item recipient
   \item signature (identifies sender)
-  \item amount of Ether (denoted in Wei \footnote{Smallest unit of currency, from which $1\ \text{Ether} = 1 \times 10^{18}\ \text{Wei}$. Following the International System of Units, Ether's denominations have both a scientific name, as well as a colloquial name that pays homage to the great minds of computing and cryptography \cite[p.~40]{Antonopoulos.2018}.})
+  \item amount of Ether (denoted in Wei \footnote{Smallest unit of currency, from which $1\ \text{Ether} = 1 \times 10^{18}\ \text{Wei}$. Following the International System of Units, Ether's denominations have both a scientific name as well as a colloquial name that pays homage to the great minds of computing and cryptography \cite[p.~40]{Antonopoulos.2018}.})
   \item \textit{data} (optional)
   \item \textit{start gas} (required)
   \item \textit{gas price} (required)
 \end{AutoMultiColItemize}
 
-On the other hand, messages are virtual objects that are never serialized \cite[p.~19]{ethereumWhitepaperGitHub}. This is due to the fact that all messages can be reconstructed by replying the transaction that triggered a contract's code to run and thus, produced the message in question \footnote{Messages are generated whenever a contract uses the \texttt{CALL} upcode \cite[p.~19]{ethereumWhitepaperGitHub}.}. More, they only implicitly contain the sender's address and do not allow the gas price to be specified as is explained in the following section.
+On the other hand, messages are virtual objects that are never serialized \cite[p.~19]{ethereumWhitepaperGitHub}. This is due to the fact that all messages can be reconstructed by replaying the transaction that triggered a contract's code to run and thus, produced the message in question \footnote{Messages are generated whenever a contract uses the \texttt{CALL} upcode \cite[p.~19]{ethereumWhitepaperGitHub}.}. Moreover, they only implicitly contain the sender's address and do not allow the gas price to be specified as is explained in the following section.
 
 \subsubsection{Gas}
 \label{sec:gas}
-Whereas Bitcoin's scripting language is constrained to simple true/false evaluation of spending conditions, Ethereum's language is Turing-complete, meaning that it can execute code of arbitrary and unbounded complexity \cite[p.~25]{Antonopoulos.2018}. In turn, this leads to additional security and resource management problems as it cannot be predicted whether a program will terminate or run in infinite loops to effectively cause a denial-of-service attack. To combat this attacking scheme, Ethereum introduces a metering mechanism called \textit{gas} which accounts for every instruction performed and assigns each a predetermined cost in units of gas \footnote{The current fee schedule can be found in \cite[p.~25]{ethereumYellowPaper}.} relative to the degree of computation required or burden imposed from writing to a persistent data store \cite[pp.~32--33]{Antonopoulos.2018}. For simple transactions (i.e.~a payment), the amount needed has been fixed at 21k units \cite[p.~153]{Antonopoulos.2018}. 
+Whereas Bitcoin's scripting language is constrained to simple true/false evaluation of spending conditions, Ethereum's language is Turing-complete, meaning that it can execute code of arbitrary and unbounded complexity \cite[p.~25]{Antonopoulos.2018}. In turn, this leads to additional security and resource management problems as it cannot be predicted whether a program will terminate or run in infinite loops to effectively cause a denial-of-service attack. To combat this attacking scheme, Ethereum has introduced a metering mechanism called \textit{gas} which accounts for every instruction performed and assigns each a predetermined cost in units of gas \footnote{The current fee schedule can be found in \cite[p.~25]{ethereumYellowPaper}.} relative to the degree of computation required or burden imposed from writing to a persistent data store \cite[pp.~32--33]{Antonopoulos.2018}. For simple transactions (i.e.~a payment), the amount needed has been fixed at 21K units \cite[p.~153]{Antonopoulos.2018}. 
 
-By requiring transactions to set an upper limit (\texttt{STARTGAS}), execution will deterministically terminate as soon as the gas consumed exceeds the gas supplied \cite[p.~33]{Antonopoulos.2018}. This gas allowance applies to both the transaction itself, as well as all sub-executions triggered through the encapsulated message \cite[p.~19]{ethereumWhitepaperGitHub}. Logically, the total amount to be consumed by invoking a particular method can only be estimated because contracts can evaluate different conditions leading to different execution paths. In any case, \acp{EOA} are only billed for the gas actually used \footnote{Assert-style exceptions consume all gas available \cite[p.~75]{solidityDocs}.} \cite[p.~154]{Antonopoulos.2018}. 
+By requiring transactions to set an upper limit (\texttt{STARTGAS}), execution will deterministically terminate as soon as the gas consumed exceeds the gas supplied \cite[p.~33]{Antonopoulos.2018}. This gas allowance applies to both the transaction itself, as well as to all sub-executions triggered through the encapsulated message \cite[p.~19]{ethereumWhitepaperGitHub}. Logically, the total amount to be consumed by invoking a particular method can only be estimated because contracts can evaluate different conditions leading to different execution paths. In any case, \acp{EOA} are only billed for the gas actually used \footnote{Assert-style exceptions consume all gas available \cite[p.~75]{solidityDocs}.} \cite[p.~154]{Antonopoulos.2018}. 
 
-Additionally, the \texttt{GASPRICE} field allows an originator to set the exchange rate for each unit of gas (measured in Wei per gas unit). Analogous to other cryptocurrencies, the higher the gas price \footnote{Often, the suggested gas price is calculated as the median across the last several blocks \cite[p.~153]{Antonopoulos.2018}. However, gas prices are predominantly determined by miners and can therefore fluctuate unexpectedly \cite[p.~54]{Antonopoulos.2018}.}, the faster the transaction is likely to confirm. Still, it may also be set to zero and the transaction might even get mined during periods of low demand \cite[p.~153]{Antonopoulos.2018}. 
+Additionally, the \texttt{GASPRICE} field allows an originator to set the exchange rate for each unit of gas (measured in Wei per gas unit). Analogous to other cryptocurrencies, the higher the gas price \footnote{Often, the suggested gas price is calculated as the median across the last several blocks \cite[p.~153]{Antonopoulos.2018}. However, gas prices are predominantly determined by miners and can therefore fluctuate unexpectedly \cite[p.~54]{Antonopoulos.2018}.}, the faster the transaction is likely to be confirmed. Still, it may also be set to zero and the transaction might even get mined during periods of low demand \cite[p.~153]{Antonopoulos.2018}. 
 
 With these two parameters in place, the final transaction fee, collected by miners, can be calculated as specified in \autoref{eq:transactionFee} \cite[p.~53]{Antonopoulos.2018} \cite[p.~20]{ethereumWhitepaperGitHub}.
 
@@ -484,26 +484,26 @@ In this sense, gas is the fuel of Ethereum and has been purposefully separated a
 Like any (distributed) state-machine, Ethereum requires a function to transition the current state ($s$) to the next final state ($s'$). This function is defined as $apply(s,\ tx) \rightarrow s'$, where $tx$ represents an unprocessed (i.e.~unconfirmed) transaction. Application works as following \cite[p.~20]{ethereumWhitepaperGitHub}:  
 
 \begin{enumerate}
-  \item Check if transaction is well formed, contains valid signature and matches nonce
+  \item Check if transaction is well-formed, contains valid signature and nonce
   \item Calculate $\text{fee} = \text{start gas} \times \text{gas price}$, determine sending address from signature, subtract fee and increment nonce
-  \item Set $\text{gas} = \text{start gas}$ and take off certain quantity per byte to pay for in transaction
+  \item Set $\text{gas} = \text{start gas}$ and take off certain quantity per byte in the transaction
   \item Transfer value to receiving account and run specified contract code if present
   \item If transaction failed due to insufficient funds or out of gas exception, revert all state changes except payment of mining fees
   \item Otherwise, refund remaining gas to sender and add fee to miner's balance
 \end{enumerate}
 
 \subsubsection{Code Execution}
-Instead of only tracking the state of currency ownership, Ethereum tracks a general-purpose, key-value data store \cite[p.~28]{Antonopoulos.2018}. More complex state transitions (i.e.~not a payment) can be achieved by loading the code stored for a specific contract account into memory and running it on an emulated computer called the \ac{EVM} \cite[p.~57]{Antonopoulos.2018}. \ac{EVM} code is written in a low-level, stack-based bytecode language, generated from compiling one of the many high-level languages available \footnote{A curated list of compatible smart-contract languages can be found at \cite{smartContractLanguages}.} (e.g.~LLL, Solidity, Vyper) \cite[p.~22]{ethereumWhitepaperGitHub} \cite[p.~29]{Antonopoulos.2018}. 
+Instead of only tracking the state of currency ownership, Ethereum tracks a general-purpose, key-value data store \cite[p.~28]{Antonopoulos.2018}. More complex state transitions (i.e.~not a payment) can be achieved by loading the code stored for a specific contract account into memory and running it on an emulated computer called the \ac{EVM} \cite[p.~57]{Antonopoulos.2018}. \ac{EVM} code is written in a low-level, stack-based bytecode language, generated by compiling one of the many high-level languages available \footnote{A curated list of compatible smart-contract languages can be found at \cite{smartContractLanguages}.} (e.g.~LLL, Solidity, Vyper) \cite[p.~22]{ethereumWhitepaperGitHub} \cite[p.~29]{Antonopoulos.2018}. 
 
 In general, code execution is an infinite loop that repeatedly carries out the operation at the current program counter until the end of code is reached or an \texttt{ERROR}, \texttt{STOP} or \texttt{RETURN} instruction is detected. During execution in the \ac{EVM}, code may access the value, sender and data of an incoming message, in addition to basic block header data and the global account state. Furthermore, operations have access to three types of space in which to store data \cite[p.~22]{ethereumWhitepaperGitHub}:
 
 \begin{itemize}
   \item stack (follows LIFO-principle with push and pop methods)
-  \item memory (infinitely expandable byte array)
+  \item memory (theoretically, this is an infinitely expandable byte array)
   \item storage (persistent key-value store)
 \end{itemize}
 
-Lastly, it must be mentioned that the \ac{EVM} is modeled as a completely isolated, sandboxed process preventing access to the network and filesystem \cite[p.~19]{solidityDocs}. This has the negative effect of rendering most traditional APIs useless \cite[p.~46]{Raval.2016}. 
+Lastly, it must be mentioned that the \ac{EVM} is modeled as a completely isolated and sandboxed process which prevents access to the network and filesystem \cite[p.~19]{solidityDocs}. This has the negative effect of rendering most traditional APIs useless \cite[p.~46]{Raval.2016}. 
 
 %Solidity represents the most dominant and widely used language \cite[p.~58]{Antonopoulos.2018}.
 
@@ -514,17 +514,17 @@ Lastly, it must be mentioned that the \ac{EVM} is modeled as a completely isolat
 %\end{quotation}
 
 \subsubsection{Block Validation}
-Ethereum, by definition, is a system that allows concurrency of operations but enforces a singleton state at each mined block \cite[p.~151]{Antonopoulos.2018}. To ensure that this state (also applies to forks) represents a valid state, the following block validation algorithm must be carried out by each node upon downloading a foreign block \cite[p.~57]{Antonopoulos.2018} \cite[pp.~23]{ethereumWhitepaperGitHub}:
+Ethereum, by definition, is a system that allows concurrency of operations but enforces a singleton state at each mined block \cite[p.~151]{Antonopoulos.2018}. To ensure that this state represents a valid state, the following block validation algorithm must be carried out by each node upon downloading a foreign block \cite[p.~57]{Antonopoulos.2018} \cite[pp.~23]{ethereumWhitepaperGitHub}:
 
 \begin{enumerate}
-  \item Check if previous block referenced exists and is valid
-  \item Check that timestamp is greater than previous but less than 15 minutes in future
+  \item Check if previous block exists and is valid
+  \item Check that timestamp is greater than that of the previous block but less than 15 minutes in the future
   \item Check that block number, difficulty and various other low-level Ethereum-specific parameters are valid
   \item Check that proof-of-work on block is valid
   \item Set $s[0] = \text{state of previous block}$ 
-  \item Set $tx = \text{block transaction list}$  (with $n$ transactions). For each $i$ in $0 \dots n-1$, set $s[i+1] = apply(s[i],\ tx[i])$. Return an error, if any iteration returns an error (comp.~\nameref{sec:stateTransition}) or total gas consumed exceeds the \texttt{GASLIMIT} \footnote{Similar to Bitcoin's block size, the \texttt{GASLIMIT} regulates the maximum number of transactions that can be included within a block \cite{blocksizeControversy} \cite[p.~8]{ethereumYellowPaper}. But instead of solely measuring storage space, it limits the amount of computation that a miner must apply. \label{ftn:gasLimit}}.
+  \item Set $tx = \text{block transaction list}$  (with $n$ transactions). For each $i$ in $0 \dots n-1$, set $s[i+1] = apply(s[i],\ tx[i])$. Return an error, if any iteration returns an error (comp.~\nameref{sec:stateTransition}) or total gas consumed exceeds the \texttt{GASLIMIT} \footnote{Similar to Bitcoin's block size, the \texttt{GASLIMIT} regulates the maximum number of transactions that can be included within a block \cite{blocksizeControversy} \cite[p.~8]{ethereumYellowPaper}. Yet instead of solely measuring storage space, it limits the amount of computation that a miner must expend. \label{ftn:gasLimit}}.
   \item Set $s_{final} = s[n]$ with block reward paid to miner
   \item Verify that Merkle tree root of $s_{final}$ is equal to root provided in block header
 \end{enumerate}
 
-This procedure also directly answers the question where contract code will be executed in terms of physical hardware. Namely, on all nodes that download and validate blocks containing transactions whose data field matches one of the methods of the recipient's contract code \cite[p.~24]{ethereumWhitepaperGitHub}.
+This procedure also directly answers the question as to where contract code will be executed in terms of physical hardware -- namely, on all nodes that download and validate blocks containing transactions whose data field matches one of the methods of the recipient's contract code \cite[p.~24]{ethereumWhitepaperGitHub}.
