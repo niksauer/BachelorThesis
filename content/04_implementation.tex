@@ -4,14 +4,14 @@
 \label{chp:implementation}
 
 \section{Limitations}
-The following chapter will attempt to highlight the most important implementation details and explain which considerations have lead to the solution given in \cite{depositRefundGitHub} \footnote{The accompanying class implementation model can be found in the \autoref{app:implementation} on \autopageref{fig:classImplementationModel}.}. This product should by no means be regarded as final since two important aspects are uncovered:
+The following chapter will attempt to highlight the most important implementation details and explain which considerations have led to the solution given in \cite{depositRefundGitHub} \footnote{The accompanying class implementation model can be found in the \autoref{app:implementation} on \autopageref{fig:classImplementationModel}.}. This product should by no means be regarded as final since two important aspects are uncovered:
 
 \begin{itemize}
   \item conversion of deposits (see~\ref{sec:depositConversion})
   \item signed receipts (see~\ref{itm:accessControl} on \autopageref{itm:accessControl})
 \end{itemize}
 
-Also, it must be noted that all programming has been done in Solidity, a statically typed, high-level language that was influenced by C++, Python and JavaScript \cite[p.~5]{solidityDocs}. Alternatives have not been considered, because Solidity represents Ethereum's most popular language \cite[p.~21]{Antonopoulos.2018}.
+Also, it must be noted that all programming has been done in Solidity, a statically typed, high-level language that was influenced by C++, Python and JavaScript \cite[p.~5]{solidityDocs}. Alternatives have not been considered because Solidity represents Ethereum's most popular language \cite[p.~21]{Antonopoulos.2018}.
 
 \pagebreak
 
@@ -20,13 +20,13 @@ Also, it must be noted that all programming has been done in Solidity, a statica
 In this context, accounting refers to the task of tracking how many reusable bottles a particular consumer has bought in a given timeframe, while also noting down the total number of one-way bottles that have been thrown away in that same timeframe (comp.~\ref{itm:accounting} on \autopageref{itm:accounting}). 
 
 \subsection{A/B Scheme}
-\Cref{sec:rules} states that the timeframe should be set to 4 weeks which has literally been done so by utilizing one of the six time unit suffixes available \cite[p.~68]{solidityDocs}:
+\Cref{sec:rules} states that the timeframe should be set to 4 weeks, which has literally been done by utilizing one of the six time unit suffixes available \cite[p.~68]{solidityDocs}:
 
 \begin{lstlisting}[caption=Definition of period length, label=lst:periodLength]
 uint public constant PERIOD_LENGTH = 4 weeks;
 \end{lstlisting}
 
-As previously explained, it will only be necessary to keep an account of the two most recent periods (comp.~\ref{itm:accounting} on \autopageref{itm:accounting}). By such, the application can be thought of as alternating between two data structures of which one represents the current period used for incoming reports, while the other is stored to determine a consumer's reward. Of course, this will require a reset of the older period as soon as a switch takes place. \autoref{fig:accountingTimeline} aims to illustrate this behavior as time progresses. 
+As previously explained, it will only be necessary to keep an account of the two most recent periods (comp.~\ref{itm:accounting} on \autopageref{itm:accounting}). By such, the application can be thought of as alternating between two data structures of which one represents the current period used for incoming reports, while the other determines a consumer's reward. Of course, this will require a reset of the older period as soon as a switch takes place. \autoref{fig:accountingTimeline} aims to illustrate this behavior as time progresses. 
 
 \begin{figure}[hbt]
 	  \includegraphics[width=\textwidth]{images/implementation/timeline}
@@ -46,7 +46,7 @@ Period private periodA;
 Period private periodB;
 \end{lstlisting}
 
-In order to avoid repetition, two additional helper functions are implemented to provide other methods with a constant access interface.  \autoref{lst:periodHelperFunction} showcases how this is done in respect to the current period. Again, the inverse logic will yield the past period. 
+In order to avoid repetition, two additional helper functions are implemented to provide a constant access interface.  \autoref{lst:periodHelperFunction} showcases how this is done in respect to the current period. Again, the inverse logic will yield the past period. 
 
 \begin{lstlisting}[language=Solidity, caption=Helper function to retrieve current period, label=lst:periodHelperFunction]
 function getAccountingPeriod() internal view returns (Period storage) {
@@ -54,12 +54,12 @@ function getAccountingPeriod() internal view returns (Period storage) {
 }
 \end{lstlisting}
  
-Here, the function's return type is marked as \texttt{storage}, meaning that it will return a reference to the period (stored in the contract's persistent storage [see~\ref{sec:accounts}]), not a copy of it. This greatly simplifies persistence as changes do not have to be written back manually. Alternatively, one could also directly maintain two storage pointers that reference the data structures in a logical manner. The advantage of that approach is that no helper function will be required for retrieval, though it might obscure how the application works and therefore, contradicts with a \ac{dApp}'s goal of establishing trust (comp.~\ref{sec:derivedDefinition}). Still, both possibilities have been confirmed to work equally.
+Here, the function's return type is marked as \texttt{storage}, meaning that it will return a reference to the period stored in the contract's persistent storage (see~\ref{sec:accounts}), not a copy of it. This greatly simplifies persistence as changes do not have to be written back manually. Alternatively, one could also directly maintain two storage pointers that reference the data structures in a logical manner. The advantage of that approach is that no helper function will be required for retrieval, though it might obscure how the application works and therefore, contradicts with a \ac{dApp}'s goal of establishing trust (comp.~\ref{sec:derivedDefinition}). Still, both possibilities have been confirmed to work equally.
  
- At this point, it should be noted that a function declared as \texttt{view} promises to not modify the contract's state \footnote{\texttt{Pure} functions additionally disallow access of state \cite[p.~82]{solidityDocs}.} \cite[p.~82]{solidityDocs}. This commitment can be clearly seen in \autoref{lst:periodHelperFunction} but is also enforced by the \ac{EVM} itself \cite[p.~83]{solidityDocs}. Practically, this allows nodes to perform synchronous read-only operations that are free of charge \cite{transactionCall}. On the contrary, calling such a function by means of transactions will still cost gas because the transaction must be stored in the blockchain even if it does not modify that particular contract storage \cite{constantGas}. 
+ At this point, it should be noted that a function declared as \texttt{view} promises to not modify the contract's state \footnote{\texttt{Pure} functions additionally disallow access of state \cite[p.~82]{solidityDocs}.} \cite[p.~82]{solidityDocs}. This commitment can be clearly seen in \autoref{lst:periodHelperFunction} but is also enforced by the \ac{EVM} itself \cite[p.~83]{solidityDocs}. Practically, this allows nodes to perform synchronous read-only operations that are free of charge \cite{transactionCall}. Unfortunately, calling such a function by means of transactions will still cost gas because the transaction must be stored in the blockchain even if it does not modify that particular contract storage \cite{constantGas}. 
  
 \subsection{Period Reset}
-Traditionally, resetting a period would be achieved by assigning it a new instance. Sadly, this method is not feasible because the \texttt{Period} data structure uses a mapping to assign each (consumer) address a \texttt{Consumer} data structure as can be seen in \autoref{lst:periodDataStructure}. 
+Traditionally, resetting a period would be achieved by assigning it a new instance. Sadly, this method is not feasible because the \texttt{Period} data structure uses a mapping to assign each (consumer) address a \texttt{Consumer} data structure, which can be seen in \autoref{lst:periodDataStructure}. 
 
 \begin{lstlisting}[language=Solidity, caption=Period data structure, label=lst:periodDataStructure]
 struct Period {
@@ -70,7 +70,7 @@ struct Period {
 }
 \end{lstlisting}
 
-Like often, this limitation can be traced back to gas (see~\ref{sec:gas}). Considering that mappings are virtually initialized such that every possible key exists and is mapped to a value whose byte-representation is all zeros \cite[p.~62]{solidityDocs}, this behavior is explained by the fact that one cannot provide enough gas to pay for the $2^{256}$ operations needed for a reset without exceeding the block's \texttt{GASLIMIT} (see~\autoref{ftn:gasLimit}). Therefore, \texttt{delete} has no effect on whole mappings \cite[p.~63]{solidityDocs}.
+As is often the case, this limitation can be traced back to gas (see~\ref{sec:gas}). Considering that mappings are virtually initialized such that every possible key exists and is mapped to a value whose byte-representation is all zeros \cite[p.~62]{solidityDocs}, this behavior is explained by the fact that one cannot provide enough gas to pay for the $2^{256}$ operations needed for a reset without exceeding the block's \texttt{GASLIMIT} (see~\autoref{ftn:gasLimit}). Therefore, \texttt{delete} has no effect on whole mappings \cite[p.~63]{solidityDocs}.
 
 \begin{lstlisting}[language=Solidity, caption=Consumer data structure, label=lst:consumerDataStructure]
 struct Consumer {
@@ -83,9 +83,9 @@ struct Consumer {
 A simple workaround is given by \autoref{lst:consumerDataStructure} in which an additional property called \texttt{lastResetPeriodIndex} is associated with each consumer to remember the period (index) in which the consumer's attributes were last reset. Should this index be smaller than the contract's \texttt{currentPeriodIndex}, a reset must occur before any attribute may be updated. Logically, the \texttt{lastResetPeriodIndex} must then be set to the \texttt{currentPeriodIndex} to prevent the consumer from being reset each time.
 
 \subsection{Period Advancement}
-Solidity function modifiers can be used to automatically check a condition prior to executing the function \cite[p.~79]{solidityDocs}. This application implements a modifier called \texttt{periodDependent} to ensure that reports always attribute to the most current period and do not change the results of the past one. By such, it may be regarded as the switch in the A/B scheme outlined before.
+Solidity function modifiers can be used to automatically check a condition prior to executing a function \cite[p.~79]{solidityDocs}. This application implements a modifier called \texttt{periodDependent} to ensure that reports always attribute to the most current period and do not change the results of the past one. By such, it may be regarded as the switch in the A/B scheme outlined before.
 
-Practically, this means that the application will check whether the current period's duration has exceeded the \texttt{PERIOD\_LENGTH} (see~\autoref{lst:periodLength}) and if so, switches periods before returning control to the method called which is symbolized by an underscore \cite[p.~81]{solidityDocs}. \autoref{lst:periodDependentModifier} displays this logic, where \texttt{now} is an alias for the current block timestamp \footnote{Timestamps can be influenced by miners and are only guaranteed to be somewhere between the timestamps of two consecutive blocks of the canonical chain \cite[p.~65]{solidityDocs}.}, \texttt{setNextPeriod()} the function used to actually switch periods and \texttt{currentPeriodStart} self-explanatory. All timestamps are given in unix epoch format \cite[p.~29]{solidityDocs}. 
+Practically, this means that the application will check whether the current period's duration has exceeded the \texttt{PERIOD\_LENGTH} (see~\autoref{lst:periodLength}). If so, the application switches periods before returning control to the method called, which is symbolized by an underscore \cite[p.~81]{solidityDocs}. \autoref{lst:periodDependentModifier} displays this logic, where \texttt{now} is an alias for the current block timestamp \footnote{Timestamps can be influenced by miners and are only guaranteed to be somewhere between the timestamps of two consecutive blocks of the canonical chain \cite[p.~65]{solidityDocs}.}, \texttt{setNextPeriod()} represents the function used to actually switch periods, and \texttt{currentPeriodStart} is self-explanatory. All timestamps are given in unix epoch format \cite[p.~29]{solidityDocs}. 
 
 \begin{lstlisting}[language=Solidity, caption=Function modifier to advance period, label=lst:periodDependentModifier]
 modifier periodDependent() {	
@@ -131,10 +131,10 @@ function reportReusableBottlePurchase(address _address, uint _bottleCount) publi
 \pagebreak
 
 \section[Access Control]{Access Control\\ {\normalsize realized via \texttt{DPGActorManager}}}
-In its most basic form, access control can be realized by maintaining a list of authorized addresses. For an incentivized deposit-refund system, this list must at least cover all environmental agencies who should be able to claim a donation (comp.~\ref{itm:accessControl} on \autopageref{itm:accessControl}). 
+In its most basic form, access control can be realized by maintaining a list of authorized addresses. For an incentivized deposit-refund system, this list must at least cover all environmental agencies which should be able to claim a donation (comp.~\ref{itm:accessControl} on \autopageref{itm:accessControl}). 
 
 \subsection{Storage Layout}
-Even though access control could be realized through a simple list (i.e.~an array), gas consumption diminishes this approach's efficiency because the average cost of checking whether a given address is contained in the list is linear to the number of approved addresses (i.e.~\texttt{O(n)}). Moreover, this cost cannot be predicted and may very well exceed the block's \texttt{GASLIMIT} causing the contract to be stalled \cite[p.~122]{solidityDocs}. Instead, a mapping is used to ensure \texttt{O(1)} lookups.
+Even though access control could be realized through a simple list (i.e.~an array), gas consumption diminishes this approach's efficiency because the average cost of checking whether a given address is contained in the list is linear to the number of approved addresses (i.e.~\texttt{O(n)}). Moreover, this cost cannot be predicted and may very well exceed the block's \texttt{GASLIMIT}, causing the contract to be stalled \cite[p.~122]{solidityDocs}. Instead, a mapping is used to ensure \texttt{O(1)} lookups.
 
 \begin{lstlisting}[language=Solidity, caption=Declaration of approved agencies and Actor data structure, label=lst:actorStorage]
 struct Actor {
@@ -147,7 +147,7 @@ mapping(address => Actor) private collectors;
 
 \subsection{Ownable}
 \label{sec:ownable}
-As mentioned in \autoref{sec:componentDesign}, only \ac{DPG} should be able to add or remove approved parties. Again, this is easily realized through modifiers and even promoted as one of its premiere use cases \cite[p.~80]{solidityDocs}. Because this functionality will be needed quite often (comp.~\autoref{fig:classImplementationModel} on \autopageref{fig:classImplementationModel}), the project extracts the logic into a separate contract that can be inherited from. From \autoref{lst:ownable} it can be seen that only the address passed as part of the constructor will be able to call a function that is marked as \texttt{onlyOwner}. In all other cases, the call will revert and refund the remaining gas since the \texttt{require} statement cannot be fulfilled \cite[p.~75]{solidityDocs}. 
+As mentioned in \autoref{sec:componentDesign}, only \ac{DPG} should be able to add or remove approved parties. Again, this is easily realized through modifiers and even promoted as one of its first and foremost use cases \cite[p.~80]{solidityDocs}. Because this functionality will be needed quite often (comp.~\autoref{fig:classImplementationModel} on \autopageref{fig:classImplementationModel}), the project extracts the logic into a separate contract that can be inherited from. From \autoref{lst:ownable} it can be seen that only the address passed as part of the constructor will be able to call a function that is marked as \texttt{onlyOwner}. In all other cases, the call will revert and refund the remaining gas since the \texttt{require} statement cannot be fulfilled \cite[p.~75]{solidityDocs}. 
 
 \begin{lstlisting}[language=Solidity, caption=Ownable contract, label=lst:ownable]
 contract Ownable {
@@ -186,10 +186,10 @@ One result of extracting functionality into a separate contract is the need for 
 	Internal function calls are translated into \ac{EVM} jump instructions. The current memory is not cleared and by such, allows references to be passed very efficiently. Only functions within the same contract can be called like this.
 	\item[External Call (\texttt{this.f()})]
 	\hfill \\
-	External function calls are executed via a message call. All function arguments have to be copied to the \texttt{calldata} location which is a non-modifiable, non-persistent area used solely for function arguments. Callers can specify the amount of Wei and gas. 
+	External function calls are executed via a message call. All function arguments have to be copied to the \texttt{calldata} location, which is a non-modifiable, non-persistent area used solely for function arguments. Callers can specify the amount of Wei and gas. 
 \end{description}
 
-A general recommendation is to use \texttt{external} if that function is expected to only ever be called externally, meaning that it will not be needed by the contract itself \cite{externalPublic}. Moreover, \texttt{external} functions are sometimes more efficient when dealing with large arrays of data \cite[p.~77]{solidityDocs}. Last but not least, \texttt{external} functions have the potential to reduce upfront storage costs. Consider the following example:
+A general recommendation is to use \texttt{external} if that function is only expected to be called externally, meaning that it will not be needed by the contract itself \cite{externalPublic}. Moreover, \texttt{external} functions are sometimes more efficient when dealing with large arrays of data \cite[p.~77]{solidityDocs}. Last but not least, \texttt{external} functions have the potential to reduce upfront storage costs. Consider the following example:
 
 \begin{lstlisting}[language=Solidity, caption=Sharing external contract interface via inheritance, label=lst:actorManagerReference]
 import "./DPGActorManager.sol";
@@ -204,9 +204,9 @@ contract DPGCore {
 }
 \end{lstlisting}
 
-From \autoref{lst:actorManagerReference} it can be seen that \texttt{DPGCore} declares a variable called \texttt{actorManager} which is of type \texttt{DPGActorManager}. This variable will be defined during construction by taking the address of an already deployed \texttt{DPGActorManager} instance and casting it to this type. Behind the scenes, \texttt{DPGCore} will be forced to inherit all of the bytecode from \texttt{DPGActorManager}, resulting in a potentially large code its own \cite{interfaces}, even though none of the \texttt{private} or \texttt{internal} properties of \texttt{DPGActorManager} can be used. 
+From \autoref{lst:actorManagerReference} it can be seen that \texttt{DPGCore} declares a variable called \texttt{actorManager} which is of type \texttt{DPGActorManager}. This variable will be defined during construction by taking the address of an already deployed \texttt{DPGActorManager} instance and casting it to this type. Behind the scenes, \texttt{DPGCore} will be forced to inherit all of the bytecode from \texttt{DPGActorManager}, resulting in a potentially large code of its own \cite{interfaces}, even though none of the \texttt{private} or \texttt{internal} properties of \texttt{DPGActorManager} can be used. 
 
-On the other hand, interfaces will limit this inheritance to the critical \ac{ABI} which is the standard way to interact with contracts, both from outside the blockchain and for contract-to-contract interaction \cite[pp.~93, 133]{solidityDocs}. The bytecode will be much smaller and less likely to run into an out of gas exception when being deployed \cite{interfaces}. \autoref{lst:actorManagerInterface} demonstrates this alternative approach. 
+On the other hand, interfaces will limit this inheritance to the critical \ac{ABI}, which is the standard way to interact with contracts, both from outside the blockchain and for contract-to-contract interaction \cite[pp.~93, 133]{solidityDocs}. The bytecode will be much smaller and less likely to run into an out-of-gas exception when being deployed \cite{interfaces}. \autoref{lst:actorManagerInterface} demonstrates this alternative approach. 
 
 \pagebreak
 
@@ -233,14 +233,14 @@ However, it must be noted that interfaces are limited to the aforementioned \tex
 \pagebreak
 
 \section[Penalty]{Penalty \\ {\normalsize realized via \texttt{DPGPenalty \& DPGToken}}}
-A consumer must face a penalty if the system repeatedly detects that he has thrown away his one-way bottles. Detection occurs after garbage collection reports the identifier of a bottle. Tracking who is responsible for a particular bottle happens by means of a non-fungible token which is associated with the consumer's identity upon purchase (comp.~\ref{itm:penalty} on \autopageref{itm:penalty}).
+A consumer must face a penalty if the system repeatedly detects that he has thrown away his one-way bottles. Detection occurs after garbage collection reports the identifier of a bottle. Tracking the person who is responsible for a particular bottle happens by means of associating a non-fungible token with the consumer's identity (comp.~\ref{itm:penalty} on \autopageref{itm:penalty}).
 
 \subsection{ERC-721 Token Standard}
-Non-fungible tokens are characterized by the fact that they cannot be substituted without incurring a difference in value, function or meaning. They represent unique tangible or intangible items (comp.~\ref{sec:fungibility}). In this case, such a token will represent a unique bottle that is tangible indeed. At the same time, this means that the very popular \texttt{\acs{ERC}-20} standard cannot be used because it was designed for fungibility \cite{erc20}. 
+Non-fungible tokens are characterized by the fact that they cannot be substituted without incurring a difference in value, function or meaning. They represent unique tangible or intangible items (comp.~\ref{sec:fungibility}). In this case, such a token will represent a unique bottle that is indeed tangible. At the same time, this means that the very popular \texttt{\acs{ERC}-20} standard cannot be used because it was designed for fungibility \cite{erc20}. 
 
 Before an alternative standard is presented, it should be mentioned that all token standards are a minimum specification for an implementation. They do not prescribe an exact implementation and do not prevent developers from adding functionality on top. Token standards encourage interoperability by agreeing on a set of functional requirements \cite[pp.~198--199]{Antonopoulos.2018}. 
 
-\texttt{\acs{ERC}-721} is a proposal to standardize non-fungible tokens, also known as deeds. It places no limitation or expectation on the nature of the thing whose ownership should be tracked, only that it can be uniquely identified \cite[p.~197]{Antonopoulos.2018}. Internally, this identifier will be a 256-bit unsigned integer which provides more than enough space for growth. The complete contract interface specification is given in \cite{erc721}. Here, only the most important methods shall be highlighted for discussion:
+\texttt{\acs{ERC}-721} is a proposal to standardize non-fungible tokens, also known as deeds. It places no limitation or expectation on the nature of the thing whose ownership should be tracked, requiring only that it can be uniquely identified \cite[p.~197]{Antonopoulos.2018}. Internally, this identifier will be a 256-bit unsigned integer which provides more than enough space for growth. The complete contract interface specification is given in \cite{erc721}. Here, only the most important methods shall be highlighted for subsequent discussion:
 
 \begin{lstlisting}[language=Solidity, caption=ERC-721 contract interface specification, label=lst:erc721]
 interface ERC721 {
@@ -254,24 +254,22 @@ interface ERC721 {
 Compared to \texttt{\acs{ERC}-20}, two major differences can be found. First, a new \texttt{safeTransferFrom} method is introduced. This method checks if the receiving party is a smart-contract and if so, will call \texttt{onERC721Received}, expecting the contract to confirm the transfer by echoing the function signature. Secondly, metadata such as the name and symbol is absent. This metadata, together with a new method that should return an asset's URI, has been moved into a separate optional interface called \texttt{ERC721Metadata}. For enumeration purposes, another optional interface has been defined as  \texttt{ERC721Enumerable}.
 
 \subsection{OpenZeppelin Framework}
-Basic standards like \texttt{\acs{ERC}-20} and \texttt{\acs{ERC}-721} have emerged from experience with hundreds of applications and fit 99\% of the use-cases. Choosing a standard like this will not only gain the value of the systems designed to work with it, but also allow developers to reuse and extend battle-tested reference implementations \cite[pp.~199--200]{Antonopoulos.2018}. 
+Basic standards like \texttt{\acs{ERC}-20} and \texttt{\acs{ERC}-721} have emerged from experience with hundreds of applications and fit 99\% of the use-cases. Choosing a standard like this will not only gain the benefits of the systems designed to work with it, but will also allow developers to reuse and extend battle-tested reference implementations \cite[pp.~199--200]{Antonopoulos.2018}. 
 
-OpenZeppelin provides \ac{dApp} developers with a library of smart-contracts that are tested and community-reviewed \cite{openZeppelin}. This project utilizes two of its components:
+OpenZeppelin provides \ac{dApp} developers with a library of smart-contracts that have been tested and community-reviewed \cite{openZeppelin}. This project utilizes two of its components:
 
 \begin{description}
   \item[SafeMath.sol]
   \hfill \\
-  Math operations with safety checks that revert on error
+  Performs math operations with safety checks that revert on error
   \item[ERC721Token.sol]
   \hfill \\Implements all the required and some optional functionality of the ERC721 standard
 \end{description}
  
-Installation via \acs{NPM} is simple and quick, though it is recommended that the \texttt{-{}-save-exact} flag is used to avoid breaking changes because the library does not follow semantic versioning.
- 
 \subsection{Token Transfer Restriction}
 Having settled on a token standard and reference implementation, this section details the adjustments that have been made to guarantee the application's promise of establishing a fully autonomous debt-tracking entity (comp.~\ref{itm:penalty} on \autopageref{itm:penalty}). 
 
-By default, \texttt{\acs{ERC}-721} only permits the owner of a token to initiate a transfer. Owners can also authorize an address to transfer a specific token on their behalf or even appoint an operator who is free to decide about all of the owner's tokens \cite{erc721}. OpenZeppelin's implementation abstracts these authorization rules with a single method named \texttt{isApprovedOrOwner(address, uint256)}, where \texttt{uint256} refers to the token and \texttt{address} represents the caller who wishes to transfer it \cite{openZeppelinGitHub}.
+By default, \texttt{\acs{ERC}-721} only permits the owner of a token to initiate a transfer. Owners can also authorize an address to transfer a specific token on their behalf or even appoint an operator who is free to decide what will happen with all of the owner's tokens \cite{erc721}. OpenZeppelin's implementation abstracts these authorization rules with a single method named \texttt{isApprovedOrOwner(address, uint256)}, where \texttt{uint256} refers to the token and \texttt{address} represents the caller who wishes to transfer it \cite{openZeppelinGitHub}.
 
 In this application context, none of the options should be accessible since they would allow refusal of ownership. To prevent this from happening, two changes have been introduced: 
 
@@ -280,7 +278,7 @@ In this application context, none of the options should be accessible since they
   \item return \texttt{true} in \texttt{isApprovedOrOwner(address, uint256)}
 \end{itemize}
 
-This approach infers that Solidity supports multiple inheritance since \texttt{DPGToken} must now inherit from both \texttt{ERC721Token} and \texttt{Ownable}. \autoref{lst:DPGToken} demoes how multiple inheritance is declared. Internally, this is implemented by copying code which means that only a single contract will be created on the blockchain \cite[p.~88]{solidityDocs}. 
+This approach infers that Solidity supports multiple inheritance since \texttt{DPGToken} must now inherit from both \texttt{ERC721Token} and \texttt{Ownable}. \autoref{lst:DPGToken} demonstrates how multiple inheritance is declared. Internally, this is implemented by copying code which means that only a single contract will be created on the blockchain \cite[p.~88]{solidityDocs}. 
 
 \begin{lstlisting}[language=Solidity, caption=Multiple inheritance by DPGToken, label=lst:DPGToken]
 contract DPGToken is ERC721Token, Ownable {
@@ -289,7 +287,7 @@ contract DPGToken is ERC721Token, Ownable {
 }
 \end{lstlisting}
 
-Finally, it will be necessary that \texttt{DPGPenalty} deploys the \texttt{DPGToken} contract on its own. Otherwise, it will not be set as the owner (comp.~\ref{sec:ownable}). Creating a new contract on the blockchain is done via the \texttt{new} keyword and requires the full code to be known in advance \cite[p.~71]{solidityDocs}. Optimizations like in \autoref{sec:externalInterface} are not possible. 
+Finally, it will be necessary that \texttt{DPGPenalty} deploys the \texttt{DPGToken} contract on its own. Otherwise, it will not be set as the owner (comp.~\ref{sec:ownable}). Creating a new contract on the blockchain is done via the \texttt{new} keyword and requires the full code to be known in advance \cite[p.~71]{solidityDocs}. Optimizations such as those in \autoref{sec:externalInterface} are not possible. 
 
 \begin{lstlisting}[language=Solidity, caption=Creating a contract from a contract, label=lst:DPGTokenCreation]
 contract DPGPenalty is DPGCore {

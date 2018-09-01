@@ -488,7 +488,7 @@ Like any (distributed) state-machine, Ethereum requires a function to transition
   \item Calculate $\text{fee} = \text{start gas} \times \text{gas price}$, determine sending address from signature, subtract fee and increment nonce
   \item Set $\text{gas} = \text{start gas}$ and take off certain quantity per byte in the transaction
   \item Transfer value to receiving account and run specified contract code if present
-  \item If transaction failed due to insufficient funds or out of gas exception, revert all state changes except payment of mining fees
+  \item If transaction failed due to insufficient funds or out-of-gas exception, revert all state changes except payment of mining fees
   \item Otherwise, refund remaining gas to sender and add fee to miner's balance
 \end{enumerate}
 
