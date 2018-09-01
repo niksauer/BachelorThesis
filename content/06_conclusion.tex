@@ -2,18 +2,19 @@
 
 \chapter{Conclusion and Discussion}
 \label{chp:conclusion}
-%- provide answer corresponding to problem statement > often open ended
+This research has examined whether Ethereum's decentralized blockchain-based application platform is suitable for realizing the incentivized deposit-refund system presented as part of this thesis. From a pure functional perspective, this is definitely the case although implementation generally requires a more rudimentary approach because the infrastructure imposes several uncommon but understandable constraints. None of these constraints affect the application functionality in any meaningful way. Still, they have been highlighted throughout development to convey the shift in thought that \ac{HPE} must embrace in order to become a \ac{dApp} developer.
 
-This research has examined whether a decentralized blockchain-based application platform like Ethereum is suitable for realizing the incentivized deposit-refund system presented earlier as part of this thesis. From a pure functional perspective, this is definitely the case although implementation generally requires a more rudimentary approach because the infrastructure imposes several uncommon but understandable constraints. None of these constraints affect the application functionality in any meaningful way. Still, they have been highlighted throughout development to convey the shift in thought that \ac{HPE} must embrace in order to become a \ac{dApp} developer. On the other hand, acceptance of the system is highly dependent on the structural quality exhibited which itself is influenced by the type of blockchain chosen for production. In this regard, especially two aspects should be emphasized: 
+On the other hand, acceptance of the system is highly dependent on the structural quality exhibited. Literature has shown that the type of blockchain chosen for production (i.e.~public or private) influences the quality of certain structural properties. Vice-versa, two of these properties will ultimately decide the choice: 
 
 \begin{description}
 	\item[Scalability]
 	\hfill \\
+	Each hour, 1.8M one-way bottles are used in Germany. This amounts to 16 billion bottles per year \cite{DUHEinweg}. Ethereum's main-chain has processed a maximum of 1.3M transactions in a day (i.e.~15 TPS) \cite{etherscan}. It is safe to assume that this number will not suffice if every action of the deposit-refund cycle should be communicated immediately instead of being aggregated into a bulk report. But because this application mainly operates on a set of users that are known in advance \footnote{Consumers do not actively participate other than claiming their rewards.}, a permissioned blockchain can also be employed. In these environments, scalability is bounded by the hardware used \footnote{The network can be orchestrated to scale vertically. By such, no tradeoff between decentralization and throughput has to be made when altering the blockchain parameters.}. 
 	
-
 	\item[Cost]
 	\hfill \\
-	
+	In this application context, a private environment does not charge for transactions since the infrastructure costs are presumed to be covered by the membership fees. The cost of invoking a particular contract method becomes more interesting if the Ethereum main-chain is indeed chosen for production. It is then given as the product of consumed gas and gas price, the latter of which is predominantly determined by miners. Moreover, the Ether used to pay for the gas is subject to exchange rate fluctuations. By such, it does not make sense to state theses costs in dollars. Instead, \autoref{tab:operatingCostGas} summarizes the gas consumption that has been established as an estimate.
+
 	\begin{table}[hbt]
 	\centering	
 	\begin{tabular}{l|r|r}
@@ -29,25 +30,37 @@ This research has examined whether a decentralized blockchain-based application 
     	report one-way bottle return & - & 66,099-66,204 \\
 	\end{tabular}
 	\caption[Contract invocation and deployment costs (in Gas)]{Contract invocation and deployment costs (in Gas) \footnotemark}
-	\label{tab:penaltyGas}
+	\label{tab:operatingCostGas}
 	\end{table}
 	
 	\FloatBarrier
 
 \end{description}
   
-\footnotetext{A full discussion surrounding these projected figures can be found in the \autoref{app:conclusion} on \autopageref{app:conclusion}.}
+\footnotetext{A full discussion surrounding the measurement of these figures can be found in the \autoref{app:conclusion} on \autopageref{app:conclusion}. To give an example of these costs in dollars, one may take the median gas price of 5 Gwei (valid for last 1,500 blocks) and the current exchange rate of \$290 per Ether. This leads to deployment costs of \$3.13-\$7.36 and invocation costs of \$0.03-\$0.22.}
+
+Factually, it can be summed that Ethereum's ecosystem provides developers with a robust set of features and tools to implement \acp{dApp} even though the knowledge base may not always be up-to-date. Unfortunately, the public infrastructure is currently unable to handle many of the traditional application loads. Also, one of the big challenges facing developers is the inherent contradiction between deploying code to an immutable ledger and a development platform that is still rapidly evolving. Smart-contract cannot be simply upgraded. 
+
+
+% enhancements and additions
+% fields of application
+
+
+
+
+%	However, it should not be forgotten that various scaling solutions are on the horizon. Moreover, a public deployment does not require bootstrapping the underlying mechanisms. Also, it offers a very high degree of decentralization which is important for health, resiliency and censorship resistance. 
+
+%	The latter of which is also a cost optimization measure that has been implemented.
+%
+%
+%Decentralization is a spectrum; it's not binary
+
+%Also, it must be reiterated that the implementation omits two aspects which are essential to production. The reason is that they have been identified as being out of scope because they largely depend on the . 
 
 
 
 
 
-
-
-
-
-
-%It must be reiterated that the implementation omits two aspects which are essential to production. At the same time, these aspects depend  
 
 % Subtle differences like these have been 
 
