@@ -193,7 +193,7 @@ The biggest roadblock to implementing an incentivized deposit-refund system (see
 
 \begin{figure}[hbt]
 	  \includegraphics[width=\textwidth]{images/concept/deposit_cycle_future_one_way_token}
-	  \caption[Future deposit-refund cycle]{Future deposit-refund cycle \footnotemark}
+	  \caption[Deposit-refund cycle in the future]{Deposit-refund cycle in the future \footnotemark}
 	  \label{fig:depositCycleFuture}
 \end{figure}
 
@@ -244,7 +244,7 @@ The classes (i.e.~contracts \cite[p.~75]{solidityDocs}) encountered within this 
 
 	Both options would either require a change to existing cashier systems or mandate retailers on all trade levels to register with \ac{DPG} in order to capture their identity, as currently, this can only be done for initial distributors and tack-back points (comp.~\ref{sec:DPGRoles}). On the other hand, option number one would solve two additional problems. First, anybody will be able to verify the report's contents and secondly, it can be ensured that the same purchase will not be reported twice. It is therefore highly recommended that signed receipts be utilized throughout the system, in which case \texttt{DPGActorManager} would only have to maintain a list of approved environmental agencies, provided that no unauthorized party can generate such a receipt.
 	
-	\item[Penalty\label{itm:penalty}]
+	\item[Penalization\label{itm:penalty}]
 	\hfill \\
 	Partially discussed above and in \autoref{sec:centralClearingHouse}, a penalty arises from repeatedly detecting that a consumer has thrown away one-way bottles. Detection occurs after garbage collection reports the identifier of a particular bottle, for which then the corresponding token is retrieved along with its owner. This \texttt{DPGToken} will be based on OpenZeppelin's reference implementation of the \texttt{\acs{ERC}-721} non-fungible token standard and even though reuse leads to additional project dependencies, it is still very much desirable because the underlying codebase is regularly tested and community-audited \footnote{\$4.5 Billion worth of digital assets are powered by OpenZeppelin's smart-contracts \cite{openZeppelin}.} \cite{openZeppelinGitHub}. 
 	

@@ -102,7 +102,7 @@ modifier periodDependent() {
 
 Finally, \autoref{lst:reportReusables} demonstrates how this modifier is applied to functions.
 
-\begin{lstlisting}[language=Solidity, caption=Function signature to report reusable bottle purchase, label=lst:reportReusables]
+\begin{lstlisting}[language=Solidity, caption=Function signature to report reusable bottle purchases, label=lst:reportReusables]
 function reportReusableBottlePurchase(address _address, uint _bottleCount) public periodDependent
 \end{lstlisting}
 
@@ -145,7 +145,7 @@ struct Actor {
 mapping(address => Actor) private collectors;
 \end{lstlisting}
 
-\subsection{Ownable}
+\subsection{Function Modifier}
 \label{sec:ownable}
 As mentioned in \autoref{sec:componentDesign}, only \ac{DPG} should be able to add or remove approved parties. Again, this is easily realized through modifiers and even promoted as one of its first and foremost use cases \cite[p.~80]{solidityDocs}. Because this functionality will be needed quite often (comp.~\autoref{fig:classImplementationModel} on \autopageref{fig:classImplementationModel}), the project extracts the logic into a separate contract that can be inherited from. From \autoref{lst:ownable} it can be seen that only the address passed as part of the constructor will be able to call a function that is marked as \texttt{onlyOwner}. In all other cases, the call will revert and refund the remaining gas since the \texttt{require} statement cannot be fulfilled \cite[p.~75]{solidityDocs}. 
 
@@ -232,7 +232,7 @@ However, it must be noted that interfaces are limited to the aforementioned \tex
 
 \pagebreak
 
-\section[Penalty]{Penalty \\ {\normalsize realized via \texttt{DPGPenalty \& DPGToken}}}
+\section[Penalization]{Penalization \\ {\normalsize realized via \texttt{DPGPenalty \& DPGToken}}}
 A consumer must face a penalty if the system repeatedly detects that he has thrown away his one-way bottles. Detection occurs after garbage collection reports the identifier of a bottle. Tracking the person who is responsible for a particular bottle happens by means of associating a non-fungible token with the consumer's identity (comp.~\ref{itm:penalty} on \autopageref{itm:penalty}).
 
 \subsection{ERC-721 Token Standard}
