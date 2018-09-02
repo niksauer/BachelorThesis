@@ -37,7 +37,7 @@ Given the scale of the project, it has been decided to mainly rely on requiremen
 
 \FloatBarrier
 
-In total, 85 test cases have been devised, all of which are available at \cite{depositRefundGitHub}. \autoref{tab:testSuites} breaks down this number into the individual test suites.
+In total, 85 test cases have been devised, all of which are available at \cite{depositRefundGitHub}. \autoref{tab:testSuites} breaks down this number into the individual test suites and functional requirements.
 
 \pagebreak
 
@@ -123,7 +123,7 @@ To demonstrate Truffle's capabilities in practice, the following scenario shall 
 It should fail to send the reward to consumer A (even though consumer A purchased 3 reusable bottles in the past period) because the reward amount is not greater than 0 as no report of thrown-away bottles was received in the past period.
 \end{quotation}
 
-This test will be part of the \texttt{DPG Claim Reward Test} suite (see~\autoref{tab:testSuites}). Suites are identified by the \texttt{contract()} function, which is a special abstraction of Mocha's \texttt{describe()} environment needed to provide aforementioned clean-room features. In order to send transactions from multiple \acp{EOA}, the \texttt{contract} function gets passed the \texttt{accounts} of the underlying Ethereum client \cite[Writing Tests in JavaScript]{truffleSuite}.
+This test will be part of the \texttt{DPG Claim Reward Test} suite (see~\autoref{tab:testSuites}). Suites are identified by the \texttt{contract()} function, which is a special abstraction of Mocha's \texttt{describe()} environment needed to provide aforementioned clean-room features. In order to send transactions from multiple \acp{EOA}, the \texttt{contract()} function gets passed the \texttt{accounts} of the underlying Ethereum client \cite[Writing Tests in JavaScript]{truffleSuite}.
 
 First off, a test suite must import all of its required components. This is done by using the \texttt{artifacts.require()} method which requests Truffle to generate a JavaScript interface for the specified Solidity contract \cite[Writing Tests in JavaScript]{truffleSuite}. Both import and setup of a suite are demonstrated in \autoref{lst:suiteSetup}.
 
@@ -148,7 +148,7 @@ contract("DPG Claim Reward Test", async (accounts) => {
 }
 \end{lstlisting}
 
-Notably, \autoref{lst:suiteSetup} also defines a so-called \texttt{beforeEach} hook. As the name implies, this method will be executed before each test. By extracting common setup steps, the test becomes independent as it no longer relies on the setup that a previous test would have otherwise performed. Here, setup involves redeployment of both contracts, putting in a deposit for 10 bottles and adding \texttt{collectorA} as an approved garbage collector. Also, it shows that the last argument of each contract method may be provided as a JSON so that developers can specify \texttt{from} which of the \texttt{accounts} the transaction should be sent and what \texttt{value} in Wei will be transferred \cite[Interacting With Your Contracts]{truffleSuite}.
+Notably, \autoref{lst:suiteSetup} also defines a so-called \texttt{beforeEach()} hook. As the name implies, this method will be executed before each test. By extracting common setup steps, the test becomes independent as it no longer relies on the setup that a previous test would have otherwise performed. Here, setup involves redeployment of both contracts, putting in a deposit for 10 bottles and adding \texttt{collectorA} as an approved garbage collector. Also, it shows that the last argument of each contract method may be provided as a JSON so that developers can specify \texttt{from} which of the \texttt{accounts} the transaction should be sent and what \texttt{value} in Wei will be transferred \cite[Interacting With Your Contracts]{truffleSuite}.
 
 Now, the actual test may be designed. Its logic is relatively simple and self-explanatory when taking a look at \autoref{lst:testDesign}. One particular detail should be noted. A custom \texttt{timeTravel} method has been implemented (outside of this suite) to bidirectionally travel in time by sending an \texttt{evm\_increaseTime} message to the Ethereum client. To force the changes into effect, a known bug then requires a consequent \texttt{evm\_mine} message \cite{truffleAwait}.
 

@@ -147,7 +147,7 @@ mapping(address => Actor) private collectors;
 
 \subsection{Function Modifier}
 \label{sec:ownable}
-As mentioned in \autoref{sec:componentDesign}, only \ac{DPG} should be able to add or remove approved parties. Again, this is easily realized through modifiers and even promoted as one of its first and foremost use cases \cite[p.~80]{solidityDocs}. Because this functionality will be needed quite often (comp.~\autoref{fig:classImplementationModel} on \autopageref{fig:classImplementationModel}), the project extracts the logic into a separate contract that can be inherited from. From \autoref{lst:ownable} it can be seen that only the address passed as part of the constructor will be able to call a function that is marked as \texttt{onlyOwner}. In all other cases, the call will revert and refund the remaining gas since the \texttt{require} statement cannot be fulfilled \cite[p.~75]{solidityDocs}. 
+As mentioned in \autoref{sec:componentDesign}, only \ac{DPG} should be able to add or remove parties. Again, this is easily realized through modifiers and even promoted as one of its first and foremost use cases \cite[p.~80]{solidityDocs}. Because this functionality will be needed quite often (comp.~\autoref{fig:classImplementationModel} on \autopageref{fig:classImplementationModel}), the project extracts the logic into a separate contract that can be inherited from. From \autoref{lst:ownable} it can be seen that only the address passed as part of the constructor will be able to call a function that is marked as \texttt{onlyOwner}. In all other cases, the call will revert and refund the remaining gas since the \texttt{require()} statement cannot be fulfilled \cite[p.~75]{solidityDocs}. 
 
 \begin{lstlisting}[language=Solidity, caption=Ownable contract, label=lst:ownable]
 contract Ownable {
@@ -251,7 +251,7 @@ interface ERC721 {
 }
 \end{lstlisting}
  
-Compared to \texttt{\acs{ERC}-20}, two major differences can be found. First, a new \texttt{safeTransferFrom} method is introduced. This method checks if the receiving party is a smart-contract and if so, will call \texttt{onERC721Received}, expecting the contract to confirm the transfer by echoing the function signature. Secondly, metadata such as the name and symbol is absent. This metadata, together with a new method that should return an asset's URI, has been moved into a separate optional interface called \texttt{ERC721Metadata}. For enumeration purposes, another optional interface has been defined as  \texttt{ERC721Enumerable}.
+Compared to \texttt{\acs{ERC}-20}, two major differences can be found. First, a new \texttt{safeTransferFrom()} method is introduced. This method checks if the receiving party is a smart-contract and if so, will call \texttt{onERC721Received()}, expecting the contract to confirm the transfer by echoing the function signature. Secondly, metadata such as the name and symbol is absent. This metadata, together with a new method that should return an asset's \acs{URI}, has been moved into a separate optional interface called \texttt{ERC721Metadata}. For enumeration purposes, another optional interface has been defined as  \texttt{ERC721Enumerable}.
 
 \subsection{OpenZeppelin Framework}
 Basic standards like \texttt{\acs{ERC}-20} and \texttt{\acs{ERC}-721} have emerged from experience with hundreds of applications and fit 99\% of the use-cases. Choosing a standard like this will not only gain the benefits of the systems designed to work with it, but will also allow developers to reuse and extend battle-tested reference implementations \cite[pp.~199--200]{Antonopoulos.2018}. 
@@ -274,7 +274,7 @@ By default, \texttt{\acs{ERC}-721} only permits the owner of a token to initiate
 In this application context, none of the options should be accessible since they would allow refusal of ownership. To prevent this from happening, two changes have been introduced: 
 
 \begin{itemize}
-  \item inherit from \texttt{Ownable} and mark all state-modifying methods as \texttt{onlyOwner}
+  \item inherit from \texttt{Ownable} contract and mark all state-modifying methods as \texttt{onlyOwner}
   \item return \texttt{true} in \texttt{isApprovedOrOwner(address, uint256)}
 \end{itemize}
 
