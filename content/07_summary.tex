@@ -2,3 +2,23 @@
 
 \chapter{Summary}
 \label{chp:summary}
+
+Imagine traveling to the Moon, not once, but 16 times in a row. This is the distance all one-way bottles sold in Germany in 2015 would cover if they were stacked on top of each other. They have produced 500K metric tons of waste, equal to the weight of 140K elephants \cite{duh2017}. Unfortunately, Germany's system of returnable one-way bottles on which a deposit is paid has not positively influenced this number. More worrisome, since its introduction in 2003, the portion of reusable beverage packaging has declined by almost 36\%, between then and 2015. At the same time, the system has benefitted bottlers as they get to keep all non-claimed deposits.
+
+This thesis presents the concept of an incentivized deposit-refund system, in which consumers are rewarded for choosing reusable beverage packaging but also penalized for throwing away one-way bottles. Hereby, the portion of reusable bottles could be raised and pollution of the environment prevented. However, such a system assumes a variety of conditions that must be fulfilled in order for it to function properly: each bottle is unique, each consumer is identified upon purchase,  each one-way and reusable bottle purchase is reported and the identifier of each thrown-away bottle communicated.
+
+%In practice, this will require the collection of non-claimed deposits for later redistribution, as well as adding a penalty onto future deposits of qualifying consumers. 
+
+Since any realization of such a system has to manage account balances, track the ownership of bottles and deal with deposits of low extrinsic value, the thesis goes on to propose a blockchain-based implementation. One advantage of this approach is that users are not required to register with yet another service that stores their bank account details on a vulnerable, centralized server. Centralized infrastructure increases the chances for downtime, censorship and counterparty risk, whereas open decentralized peer-to-peer infrastructure can give users the confidence that a product works as promised.
+
+Technically, this endeavor is hindered by the fact that \acf{DPG}, the organization responsible for providing the contractual and administrative basis needed to enable a nationwide deposit-refund system, has not established a central clearing mechanism. Clearing refers to the process of reimbursing take-back points for refunding consumers, irrespective of where they purchased the bottles. To upkeep this important functionality, the thesis lays out an architecture in which the deposit charged for a bottle is converted into a cryptocurrency and sent to a smart-contract, which is a program that runs on a blockchain-based application platform. In this case, Ethereum has been utilized to offer a fully autonomous method for settling refund claims. More importantly, the system can then pay out rewards since it knows how many reusable bottles a consumer has bought and how many one-way bottles have been thrown away. Next, to effectuate the penalty, a so-called non-fungible token is used. These tokens represent unique tangible or intangible items. By creating such a token upon purchase of a bottle and connecting it with the consumer's identity, the ownership of a bottle can be digitally tracked. Consequently, the person who would have been responsible for returning the bottle can be identified and penalized. 
+
+Throughout implementation of this architecture, Ethereum's special features and weak points are highlighted to convey the shift in thought that programmers must embrace in order to become a \acf{dApp} developer. Following implementation, the thesis outlines the test-driven development approach taken and demonstrates that enterprise-grade workflows can be achieved.
+
+Finally, the thesis concludes that while Ethereum certainly offers the means to implement an application such as this one, its operation would be constrained if deployed today on the public main-chain. Additionally, it acknowledges that an essential component, the securing of deposits in spite of Ethereum's volatile nature, has not been put into place. Further, the concept of an incentivized deposit-refund system should be thoroughly worked out so that our future trails to the Moon can be freed of litter more quickly.
+
+
+
+
+%To be specific, Ethereum's decentralized application platform is leveraged throughout the test-driven development process outlined, which hopes to convey the shift in thought that is necessary in order to become a \acf{dApp} developer.   
+
