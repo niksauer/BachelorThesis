@@ -271,6 +271,8 @@ Having settled on a token standard and reference implementation, this section de
 
 By default, \texttt{\acs{ERC}-721} only permits the owner of a token to initiate a transfer. Owners can also authorize an address to transfer a specific token on their behalf or even appoint an operator who is free to decide what will happen with all of the owner's tokens \cite{erc721}. OpenZeppelin's implementation abstracts these authorization rules with a single method named \texttt{isApprovedOrOwner(address, uint256)}, where \texttt{uint256} refers to the token and \texttt{address} represents the caller who wishes to transfer it \cite{openZeppelinGitHub}.
 
+\pagebreak
+
 In this application context, none of the options should be accessible since they would allow refusal of ownership. To prevent this from happening, two changes have been introduced: 
 
 \begin{itemize}
